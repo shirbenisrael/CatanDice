@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             histogram_images_layout.addView(m_histogram_images[i]);
 
             m_histogram_images[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
-            m_histogram_images[i].getLayoutParams().height = 10;
+            m_histogram_images[i].getLayoutParams().height = 20;
 
             histogram_text_layout.addView(m_histogram_text[i]);
 

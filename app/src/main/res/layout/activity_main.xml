@@ -1,70 +1,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_for_images"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.shirbi.catandice.MainActivity"
-    android:id="@+id/layout_for_images"
-    >
+    tools:context="com.shirbi.catandice.MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/layout_for_dices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            android:id="@+id/layout_for_dices">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/layout_for_dices_only"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:id="@+id/layout_for_dices_only">
+                android:orientation="horizontal"
+                android:visibility="visible">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/red_dice_result" />
+                <ImageView
+                    android:id="@+id/red_dice_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/yellow_dice_result" />
+                <ImageView
+                    android:id="@+id/yellow_dice_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
             <ImageButton
+                android:id="@+id/roll_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/roll_string"
                 android:onClick="onRollClick"
                 android:src="@drawable/roll_dices_small"
-                android:id="@+id/roll_button" />
+                android:text="@string/roll_string" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/histogram_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
             android:gravity="bottom"
-            android:id="@+id/histogram_images_layout">
-        </LinearLayout>
+            android:orientation="vertical"
+            android:visibility="visible">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            android:gravity="bottom"
-            android:id="@+id/histogram_text_layout">
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/histogram_images_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="visible"></LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/histogram_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="visible"></LinearLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 
