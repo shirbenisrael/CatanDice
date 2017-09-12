@@ -1,8 +1,9 @@
 package com.shirbi.catandice;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
@@ -10,10 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.graphics.Color;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity  {
 
     ImageView m_histogram_images[];
     TextView m_histogram_text[];
