@@ -24,6 +24,7 @@ public class MainActivity extends Activity  {
         setContentView(R.layout.activity_main);
 
         m_logic = new Logic();
+        m_show_histogram = true;
 
         m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE*2-1];
         m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE*2-1];
@@ -85,8 +86,8 @@ public class MainActivity extends Activity  {
     }
 
     private Logic m_logic;
-
     private Point m_size;
+    private boolean m_show_histogram;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,5 +141,41 @@ public class MainActivity extends Activity  {
         ShowHistogram();
 
         //TODO: Add sound?
+    }
+
+    public void onSettingClick(View view) {
+        int layout_to_hide[] =
+                {R.id.layout_for_dices, R.id.histogram_layout};
+
+        for (int i = 0; i < layout_to_hide.length; i++) {
+            findViewById(layout_to_hide[i]).setVisibility(View.INVISIBLE);
+        }
+
+        findViewById(R.id.setting_layout).setVisibility(View.VISIBLE);
+    }
+
+    public void onBackFromSettingClick(View view) {
+        if (m_show_histogram) {
+            findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
+        }  else {
+            findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
+        }
+
+        findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
+    }
+
+    public void onHistogramVisibilityClick(View view) {
+        m_show_histogram = !m_show_histogram;
+        if (m_show_histogram) {
+            ((TextView)findViewById(R.id.histogram_visibility_button)).setText(R.string.show_histogram);
+        }  else {
+            ((TextView)findViewById(R.id.histogram_visibility_button)).setText(R.string.hide_histogram);
+        }
+    }
+
+    public void onNewGameClick(View view) {
+        m_logic.Init();
+        ShowHistogram();
     }
 }

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- main operation -->
         <LinearLayout
             android:id="@+id/layout_for_dices"
             android:layout_width="match_parent"
@@ -36,6 +37,13 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/setting_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSettingClick"
+                android:text="@string/setting_string" />
+
             <ImageButton
                 android:id="@+id/roll_button"
                 android:layout_width="wrap_content"
@@ -46,6 +54,7 @@
 
         </LinearLayout>
 
+        <!-- Histogram -->
         <LinearLayout
             android:id="@+id/histogram_layout"
             android:layout_width="match_parent"
@@ -69,6 +78,38 @@
                 android:gravity="bottom"
                 android:orientation="horizontal"
                 android:visibility="visible"></LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Setting -->
+        <LinearLayout
+            android:id="@+id/setting_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <Button
+                android:id="@+id/histogram_visibility_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onHistogramVisibilityClick"
+                android:text="@string/show_histogram" />
+
+            <Button
+                android:id="@+id/new_game_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onNewGameClick"
+                android:text="@string/new_game_string" />
+
+            <Button
+                android:id="@+id/back_from_setting_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onBackFromSettingClick"
+                android:text="@string/back_string" />
 
         </LinearLayout>
 
