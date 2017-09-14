@@ -6,9 +6,8 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,7 +23,6 @@ public class MainActivity extends Activity  {
         setContentView(R.layout.activity_main);
 
         m_logic = new Logic();
-        m_show_histogram = true;
 
         m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE*2-1];
         m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE*2-1];
@@ -69,6 +67,14 @@ public class MainActivity extends Activity  {
     }
 
     private void ShowHistogram() {
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
+
+        if (checkBox.isChecked()) {
+            findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
+        }  else {
+            findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
+        }
+
         int[] histogram = m_logic.GetSumHistogram();
 
         for (int i = 0; i < m_histogram_images.length; i++) {
@@ -88,28 +94,6 @@ public class MainActivity extends Activity  {
     private Logic m_logic;
     private Point m_size;
     private boolean m_show_histogram;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
         ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
@@ -155,27 +139,13 @@ public class MainActivity extends Activity  {
     }
 
     public void onBackFromSettingClick(View view) {
-        if (m_show_histogram) {
-            findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
-        }  else {
-            findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
-        }
-
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
         findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
-    }
 
-    public void onHistogramVisibilityClick(View view) {
-        m_show_histogram = !m_show_histogram;
-        if (m_show_histogram) {
-            ((TextView)findViewById(R.id.histogram_visibility_button)).setText(R.string.show_histogram);
-        }  else {
-            ((TextView)findViewById(R.id.histogram_visibility_button)).setText(R.string.hide_histogram);
-        }
+        ShowHistogram();
     }
 
     public void onNewGameClick(View view) {
         m_logic.Init();
-        ShowHistogram();
     }
 }
