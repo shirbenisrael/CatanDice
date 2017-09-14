@@ -13,10 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class MainActivity extends Activity  {
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
-    ImageView m_histogram_images[];
-    TextView m_histogram_text[];
+public class MainActivity extends Activity {
+
+    private ImageView m_histogram_images[];
+    private TextView m_histogram_text[];
+    private Timer m_timer;
+    private int m_count_down;
 
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
 
@@ -33,16 +39,16 @@ public class MainActivity extends Activity  {
 
         m_logic = new Logic(m_num_players);
 
-        m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE*2-1];
-        m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE*2-1];
+        m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE * 2 - 1];
+        m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE * 2 - 1];
 
         m_size = GetWindowSize();
 
         int dice_width = m_size.x / 2;
         int dice_height = dice_width;
 
-        ImageView red_dice_result_image = (ImageView)findViewById(R.id.red_dice_result);
-        ImageView yellow_dice_result_image = (ImageView)findViewById(R.id.yellow_dice_result);
+        ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
+        ImageView yellow_dice_result_image = (ImageView) findViewById(R.id.yellow_dice_result);
 
         red_dice_result_image.getLayoutParams().width = dice_width;
         red_dice_result_image.getLayoutParams().height = dice_height;
@@ -50,8 +56,8 @@ public class MainActivity extends Activity  {
         yellow_dice_result_image.getLayoutParams().width = dice_width;
         yellow_dice_result_image.getLayoutParams().height = dice_height;
 
-        LinearLayout histogram_images_layout = (LinearLayout)findViewById(R.id.histogram_images_layout);
-        LinearLayout histogram_text_layout = (LinearLayout)findViewById(R.id.histogram_text_layout);
+        LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
+        LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
 
         for (int i = 0; i < m_histogram_images.length; i++) {
             m_histogram_images[i] = new ImageView(this);
@@ -80,15 +86,15 @@ public class MainActivity extends Activity  {
 
         if (checkBox.isChecked()) {
             findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
-        }  else {
+        } else {
             findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
         }
 
         int[] histogram = m_logic.GetSumHistogram();
 
         for (int i = 0; i < m_histogram_images.length; i++) {
-            int width=m_histogram_images[i].getWidth();
-            int height= histogram[i] * 10 + 1;
+            int width = m_histogram_images[i].getWidth();
+            int height = histogram[i] * 10 + 1;
             m_histogram_images[i].setLayoutParams(new LinearLayout.LayoutParams(width, height));
         }
     }
@@ -126,18 +132,54 @@ public class MainActivity extends Activity  {
     }
 
     public void onRollClick(View view) {
+        m_count_down = 10;
+        m_timer = new Timer();
 
-        Card card;
-        card = m_logic.GetNewCard();
+        SetMainButtonsEnable(false);
 
-        SetDicesImagesRolled(card.m_red, card.m_yellow);
+        m_timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
 
-        ShowHistogram();
-
-        ShowMessage(card.m_message);
+        }, 0, 100);
 
         //TODO: Add sound?
     }
+
+    private void TimerMethod() {
+        //This method is called directly by the timer
+        //and runs in the same thread as the timer.
+
+        //We call the method that will work with the UI
+        //through the runOnUiThread method.
+        this.runOnUiThread(m_timer_tick);
+    }
+
+    private Runnable m_timer_tick = new Runnable() {
+        public void run() {
+            //This method runs in the same thread as the UI.
+            m_count_down--;
+
+            if (m_count_down == 0) {
+                m_timer.cancel();
+                Card card;
+                card = m_logic.GetNewCard();
+                SetDicesImagesRolled(card.m_red, card.m_yellow);
+                ShowHistogram();
+                ShowMessage(card.m_message);
+                SetMainButtonsEnable(true);
+            } else {
+                Random rand = new Random();
+                SetDicesImagesRolled(
+                        (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1),
+                        (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1));
+            }
+        }
+    };
+
+
 
     public void onSettingClick(View view) {
         int layout_to_hide[] =
@@ -158,7 +200,7 @@ public class MainActivity extends Activity  {
     }
 
     public void SetNumPlayers() {
-        RadioGroup radioButtonGroup = (RadioGroup)findViewById(R.id.num_players_radio_group);
+        RadioGroup radioButtonGroup = (RadioGroup) findViewById(R.id.num_players_radio_group);
 
         int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
         View radioButton = radioButtonGroup.findViewById(radioButtonID);
@@ -173,7 +215,7 @@ public class MainActivity extends Activity  {
     }
 
     public void ShowMessage(Card.MessageWithCard messageType) {
-        TextView message_text_view = (TextView)findViewById(R.id.message_text_view);
+        TextView message_text_view = (TextView) findViewById(R.id.message_text_view);
 
         switch (messageType) {
             case NO_MESSAGE:
@@ -186,5 +228,10 @@ public class MainActivity extends Activity  {
                 message_text_view.setText(R.string.seven_without_robber_string);
                 break;
         }
+    }
+
+    private void SetMainButtonsEnable(boolean isEnable) {
+        findViewById(R.id.roll_button).setEnabled(isEnable);
+        findViewById(R.id.setting_button).setEnabled(isEnable);
     }
 }
