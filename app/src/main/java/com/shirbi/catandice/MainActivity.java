@@ -3,6 +3,7 @@ package com.shirbi.catandice;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ public class MainActivity extends Activity {
     private TextView m_histogram_text[];
     private Timer m_timer;
     private int m_count_down;
+    private MediaPlayer m_media_player;
 
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
 
@@ -134,6 +136,9 @@ public class MainActivity extends Activity {
     public void onRollClick(View view) {
         m_count_down = 10;
         m_timer = new Timer();
+
+        m_media_player = MediaPlayer.create(getApplicationContext(), R.raw.dices);
+        m_media_player.start();
 
         SetMainButtonsEnable(false);
 
