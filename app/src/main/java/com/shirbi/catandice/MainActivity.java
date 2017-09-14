@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class MainActivity extends Activity  {
@@ -156,7 +157,18 @@ public class MainActivity extends Activity  {
         ShowHistogram();
     }
 
+    public void SetNumPlayers() {
+        RadioGroup radioButtonGroup = (RadioGroup)findViewById(R.id.num_players_radio_group);
+
+        int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+        View radioButton = radioButtonGroup.findViewById(radioButtonID);
+        int idx = radioButtonGroup.indexOfChild(radioButton);
+
+        m_num_players = idx + 3;
+    }
+
     public void onNewGameClick(View view) {
+        SetNumPlayers();
         m_logic.Init(m_num_players);
     }
 

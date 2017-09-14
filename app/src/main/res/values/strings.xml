@@ -8,4 +8,5 @@
     <string name="back_string">חזרה</string>
     <string name="seven_with_robber_string">יצא שבע! השודד תוקף!</string>
     <string name="seven_without_robber_string">שבע בתחילת משחק! השודד ישן...</string>
+    <string name="num_players_string">מספר שחקנים:</string>
 </resources>

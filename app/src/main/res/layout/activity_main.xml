@@ -40,9 +40,9 @@
             <TextView
                 android:id="@+id/message_text_view"
 
-                android:gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
 
             <Button
                 android:id="@+id/setting_button"
@@ -96,6 +96,53 @@
             android:gravity="bottom"
             android:orientation="vertical"
             android:visibility="invisible">
+
+            <LinearLayout
+                android:id="@+id/num_players_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/num_players_radio_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_button_3_players"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_4_players"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="4" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_5_players"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_6_players"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/num_players_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/num_players_string" />
+
+            </LinearLayout>
 
             <CheckBox
                 android:id="@+id/histogram_visibility_checkbox"
