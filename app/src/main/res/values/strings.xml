@@ -6,4 +6,6 @@
     <string name="new_game_string">משחק חדש</string>
     <string name="show_histogram">הצג היסטוגרמה</string>
     <string name="back_string">חזרה</string>
+    <string name="seven_with_robber_string">יצא שבע! השודד תוקף!</string>
+    <string name="seven_without_robber_string">שבע בתחילת משחק! השודד ישן...</string>
 </resources>

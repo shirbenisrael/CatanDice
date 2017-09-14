@@ -17,12 +17,20 @@ public class MainActivity extends Activity  {
     ImageView m_histogram_images[];
     TextView m_histogram_text[];
 
+    public static final int DEFAULT_NUMBER_OF_PLAYERS;
+
+    static {
+        DEFAULT_NUMBER_OF_PLAYERS = 4;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        m_logic = new Logic();
+        m_num_players = DEFAULT_NUMBER_OF_PLAYERS;
+
+        m_logic = new Logic(m_num_players);
 
         m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE*2-1];
         m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE*2-1];
@@ -94,6 +102,7 @@ public class MainActivity extends Activity  {
     private Logic m_logic;
     private Point m_size;
     private boolean m_show_histogram;
+    private int m_num_players;
 
     public void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
         ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
@@ -124,6 +133,8 @@ public class MainActivity extends Activity  {
 
         ShowHistogram();
 
+        ShowMessage(card.m_message);
+
         //TODO: Add sound?
     }
 
@@ -146,6 +157,22 @@ public class MainActivity extends Activity  {
     }
 
     public void onNewGameClick(View view) {
-        m_logic.Init();
+        m_logic.Init(m_num_players);
+    }
+
+    public void ShowMessage(Card.MessageWithCard messageType) {
+        TextView message_text_view = (TextView)findViewById(R.id.message_text_view);
+
+        switch (messageType) {
+            case NO_MESSAGE:
+                message_text_view.setText("");
+                break;
+            case SEVEN_WITH_ROBBER:
+                message_text_view.setText(R.string.seven_with_robber_string);
+                break;
+            case SEVEN_WITHOUT_ROBBER:
+                message_text_view.setText(R.string.seven_without_robber_string);
+                break;
+        }
     }
 }

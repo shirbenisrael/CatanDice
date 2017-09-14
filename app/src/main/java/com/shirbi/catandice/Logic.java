@@ -8,12 +8,13 @@ import java.util.Random;
 public class Logic {
 
     private Random rand;
+    private int m_histogram[];
+    private int m_num_players;
+    private int m_current_turn_number;
 
-        private int m_histogram[];
-
-    public Logic() {
+    public Logic(int num_players) {
         m_histogram = new int[Card.MAX_NUMBER_ON_DICE * Card.MAX_NUMBER_ON_DICE];
-        Init();
+        Init(num_players);
     }
 
     public Card GetNewCard() {
@@ -42,25 +43,41 @@ public class Logic {
         }
 
         m_histogram[i]++;
-        return IndexToCard(i);
+
+        m_current_turn_number++;
+
+        Card cardToReturn = IndexToCard(i);
+
+        if (cardToReturn.m_red + cardToReturn.m_yellow == 7) {
+            if (m_current_turn_number <= m_num_players * 2) {
+                cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
+            } else {
+                cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
+            }
+        }
+
+        return cardToReturn;
     }
 
     private Card IndexToCard(int i) {
         int redNumber = (i / Card.MAX_NUMBER_ON_DICE) + 1;
         int yellowNumber = (i % Card.MAX_NUMBER_ON_DICE) + 1;
 
-        Card cardToReturn = new Card(redNumber, yellowNumber);
+        Card cardToReturn = new Card(redNumber, yellowNumber, Card.MessageWithCard.NO_MESSAGE);
 
         return cardToReturn;
 
     }
 
-    public void Init() {
+    public void Init(int num_players) {
         for(int i=0;i<m_histogram.length;i++) {
             m_histogram[i] = 0;
         }
 
         rand = new Random();
+
+        m_current_turn_number = 0;
+        m_num_players = num_players;
     }
 
     public int[] GetSumHistogram() {
