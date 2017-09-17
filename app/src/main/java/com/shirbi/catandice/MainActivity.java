@@ -248,8 +248,27 @@ public class MainActivity extends Activity {
     }
 
     public void onNewGameClick(View view) {
+        findViewById(R.id.num_players_layout_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.layout_for_dices).setVisibility(View.INVISIBLE);
+        findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
+    }
+
+    public void onSelectNumPlayersClick(View view) {
+        findViewById(R.id.num_players_layout_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
+
         SetNumPlayers();
         m_logic.Init(m_num_players);
+        ShowHistogram();
+
+        ShowMessage(Card.MessageWithCard.NEW_GAME);
+    }
+
+    public void onBackFromNumPlayersClick(View view) {
+        findViewById(R.id.num_players_layout_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
+
+        ShowHistogram();
     }
 
     public void ShowMessage(Card.MessageWithCard messageType) {
@@ -265,11 +284,15 @@ public class MainActivity extends Activity {
             case SEVEN_WITHOUT_ROBBER:
                 message_text_view.setText(R.string.seven_without_robber_string);
                 break;
+            case NEW_GAME:
+                message_text_view.setText(R.string.new_game_roll_string);
+                break;
         }
     }
 
     private void SetMainButtonsEnable(boolean isEnable) {
         findViewById(R.id.roll_button).setEnabled(isEnable);
         findViewById(R.id.setting_button).setEnabled(isEnable);
+        findViewById(R.id.new_game_button).setEnabled(isEnable);
     }
 }

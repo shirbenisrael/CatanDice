@@ -44,12 +44,29 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal" />
 
-            <Button
-                android:id="@+id/setting_button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onSettingClick"
-                android:text="@string/setting_string" />
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+
+                <Button
+                    android:id="@+id/setting_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onSettingClick"
+                    android:text="@string/setting_string" />
+
+                <Button
+                    android:id="@+id/new_game_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onNewGameClick"
+                    android:text="@string/new_game_string" />
+
+            </LinearLayout>
+
 
             <ImageButton
                 android:id="@+id/roll_button"
@@ -88,6 +105,70 @@
 
         </LinearLayout>
 
+        <!-- Num players -->
+        <LinearLayout
+            android:id="@+id/num_players_layout_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/num_players_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/num_players_string" />
+
+            <RadioGroup
+                android:id="@+id/num_players_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_button_3_players"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_4_players"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="4" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_5_players"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_6_players"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/select_num_players_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSelectNumPlayersClick"
+                android:text="@string/continue_string" />
+
+            <Button
+                android:id="@+id/back_from_num_players_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onBackFromNumPlayersClick"
+                android:text="@string/back_string" />
+
+        </LinearLayout>
+
         <!-- Setting -->
         <LinearLayout
             android:id="@+id/setting_layout"
@@ -103,45 +184,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioGroup
-                    android:id="@+id/num_players_radio_group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radio_button_3_players"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3" />
-
-                    <RadioButton
-                        android:id="@+id/radio_button_4_players"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="4" />
-
-                    <RadioButton
-                        android:id="@+id/radio_button_5_players"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="5" />
-
-                    <RadioButton
-                        android:id="@+id/radio_button_6_players"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="6" />
-
-                </RadioGroup>
-
-                <TextView
-                    android:id="@+id/num_players_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/num_players_string" />
-
             </LinearLayout>
 
             <CheckBox
@@ -149,13 +191,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/show_histogram" />
-
-            <Button
-                android:id="@+id/new_game_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onNewGameClick"
-                android:text="@string/new_game_string" />
 
             <Button
                 android:id="@+id/back_from_setting_button"

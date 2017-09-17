@@ -17,7 +17,8 @@ public class Card {
     public enum MessageWithCard {
         NO_MESSAGE,
         SEVEN_WITHOUT_ROBBER,
-        SEVEN_WITH_ROBBER
+        SEVEN_WITH_ROBBER,
+        NEW_GAME
     }
 
     public Card(int red, int yellow, MessageWithCard message) {
