@@ -1,6 +1,8 @@
 package com.shirbi.catandice;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
@@ -25,11 +27,40 @@ public class MainActivity extends Activity {
     private Timer m_timer;
     private int m_count_down;
     private MediaPlayer m_media_player;
+    private Point m_size;
+
+    /* Need to store */
+    private boolean m_show_histogram;
+    private int m_num_players;
+    private Logic m_logic;
 
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
 
     static {
         DEFAULT_NUMBER_OF_PLAYERS = 4;
+    }
+
+    private void StoreState() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.m_show_histogram), m_show_histogram);
+        editor.putInt(getString(R.string.m_num_players), m_num_players);
+        m_logic.StoreState(this, editor);
+        editor.commit();
+    }
+
+    private void RestoreState() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        m_show_histogram = sharedPref.getBoolean(getString(R.string.m_show_histogram), true);
+        m_num_players = sharedPref.getInt(getString(R.string.m_num_players), DEFAULT_NUMBER_OF_PLAYERS);
+        m_logic.RestoreState(this, sharedPref);
+    }
+
+    @Override
+    protected void onDestroy () {
+        StoreState();
+        super.onDestroy();
     }
 
     @Override
@@ -40,6 +71,11 @@ public class MainActivity extends Activity {
         m_num_players = DEFAULT_NUMBER_OF_PLAYERS;
 
         m_logic = new Logic(m_num_players);
+
+        RestoreState();
+
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
+        checkBox.setChecked(m_show_histogram);
 
         m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE * 2 - 1];
         m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE * 2 - 1];
@@ -81,12 +117,12 @@ public class MainActivity extends Activity {
             m_histogram_text[i].setText(String.valueOf(i + 2));
             m_histogram_text[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
         }
+
+        ShowHistogram();
     }
 
     private void ShowHistogram() {
-        final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
-
-        if (checkBox.isChecked()) {
+        if (m_show_histogram) {
             findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
@@ -94,8 +130,9 @@ public class MainActivity extends Activity {
 
         int[] histogram = m_logic.GetSumHistogram();
 
+        int width = m_size.x / m_histogram_images.length;
+
         for (int i = 0; i < m_histogram_images.length; i++) {
-            int width = m_histogram_images[i].getWidth();
             int height = histogram[i] * 10 + 1;
             m_histogram_images[i].setLayoutParams(new LinearLayout.LayoutParams(width, height));
         }
@@ -107,11 +144,6 @@ public class MainActivity extends Activity {
         display.getSize(size);
         return size;
     }
-
-    private Logic m_logic;
-    private Point m_size;
-    private boolean m_show_histogram;
-    private int m_num_players;
 
     public void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
         ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
@@ -149,8 +181,6 @@ public class MainActivity extends Activity {
             }
 
         }, 0, 100);
-
-        //TODO: Add sound?
     }
 
     private void TimerMethod() {
@@ -200,6 +230,9 @@ public class MainActivity extends Activity {
     public void onBackFromSettingClick(View view) {
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
         findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
+
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
+        m_show_histogram = checkBox.isChecked();
 
         ShowHistogram();
     }

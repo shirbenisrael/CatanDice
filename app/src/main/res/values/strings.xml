@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Catan Dice</string>
 
+    <string name="m_num_players">m_num_players</string>
+    <string name="m_show_histogram">m_show_histogram</string>
+    <string name="m_histogram">m_histogram</string>
+    <string name="m_current_turn_number">m_current_turn_number</string>
+
+
+    <!-- Need translation -->
     <string name="roll_string">הטלת קוביות</string>
     <string name="setting_string">הגדרות</string>
     <string name="new_game_string">משחק חדש</string>

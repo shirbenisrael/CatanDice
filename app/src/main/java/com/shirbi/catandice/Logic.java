@@ -1,6 +1,10 @@
 package com.shirbi.catandice;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.Random;
+import java.util.StringTokenizer;
 
 /**
  * Created by shirbi on 20/08/2017.
@@ -89,4 +93,30 @@ public class Logic {
         }
         return hisotgramToReturn;
     }
+
+
+
+    public void StoreState(Context context, SharedPreferences.Editor editor) {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < m_histogram.length; i++) {
+            str.append(m_histogram[i]).append(",");
+        }
+        editor.putString(context.getString(R.string.m_histogram), str.toString());
+        editor.putInt(context.getString(R.string.m_current_turn_number), m_current_turn_number);
+    }
+
+    public void RestoreState(Context context, SharedPreferences sharedPref) {
+        m_num_players = sharedPref.getInt(context.getString(R.string.m_num_players), MainActivity.DEFAULT_NUMBER_OF_PLAYERS);
+        m_current_turn_number = sharedPref.getInt(context.getString(R.string.m_current_turn_number), 0);
+
+        String savedString = sharedPref.getString(context.getString(R.string.m_histogram), "");
+        StringTokenizer st = new StringTokenizer(savedString, ",");
+
+        for (int i = 0; i < m_histogram.length; i++) {
+            if (st.hasMoreTokens()){
+                m_histogram[i] = Integer.parseInt(st.nextToken());
+            }
+        }
+    }
 }
+
