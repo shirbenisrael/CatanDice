@@ -18,4 +18,5 @@
     <string name="num_players_string">מספר שחקנים:</string>
     <string name="continue_string">המשך</string>
     <string name="new_game_roll_string">משחק חדש - הטל קוביות!</string>
+    <string name="turn_number">תור מספר</string>
 </resources>

@@ -203,7 +203,8 @@ public class MainActivity extends Activity {
                 card = m_logic.GetNewCard();
                 SetDicesImagesRolled(card.m_red, card.m_yellow);
                 ShowHistogram();
-                ShowMessage(card.m_message);
+                ShowMessage(card.m_message , card.m_turn_number);
+                m_media_player.release();
                 SetMainButtonsEnable(true);
             } else {
                 Random rand = new Random();
@@ -261,7 +262,7 @@ public class MainActivity extends Activity {
         m_logic.Init(m_num_players);
         ShowHistogram();
 
-        ShowMessage(Card.MessageWithCard.NEW_GAME);
+        ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
     }
 
     public void onBackFromNumPlayersClick(View view) {
@@ -271,23 +272,27 @@ public class MainActivity extends Activity {
         ShowHistogram();
     }
 
-    public void ShowMessage(Card.MessageWithCard messageType) {
+    public void ShowMessage(Card.MessageWithCard messageType, int turn_number) {
         TextView message_text_view = (TextView) findViewById(R.id.message_text_view);
 
+        String turn_number_message = getString(R.string.turn_number) + ": " + Integer.toString(turn_number) + "   ";
+        String message_type = "";
+
         switch (messageType) {
-            case NO_MESSAGE:
-                message_text_view.setText("");
-                break;
             case SEVEN_WITH_ROBBER:
-                message_text_view.setText(R.string.seven_with_robber_string);
+                message_type = getString(R.string.seven_with_robber_string);
                 break;
             case SEVEN_WITHOUT_ROBBER:
-                message_text_view.setText(R.string.seven_without_robber_string);
+                message_type = getString(R.string.seven_without_robber_string);
                 break;
             case NEW_GAME:
-                message_text_view.setText(R.string.new_game_roll_string);
+                message_type = getString(R.string.new_game_roll_string);
+                break;
+            case NO_MESSAGE:
+            default:
                 break;
         }
+        message_text_view.setText(turn_number_message + message_type);
     }
 
     private void SetMainButtonsEnable(boolean isEnable) {

@@ -6,6 +6,7 @@ package com.shirbi.catandice;
 public class Card {
     public int m_red;
     public int m_yellow;
+    public int m_turn_number;
     public MessageWithCard m_message;
 
     public static final int MAX_NUMBER_ON_DICE;
@@ -25,6 +26,7 @@ public class Card {
         m_red = red;
         m_yellow = yellow;
         m_message = message;
+        m_turn_number = 0;
     }
 
 

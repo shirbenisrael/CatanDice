@@ -16,6 +16,12 @@ public class Logic {
     private int m_num_players;
     private int m_current_turn_number;
 
+    static final int LOG_OF_FAIRNESS_FACTOR;
+
+    static {
+        LOG_OF_FAIRNESS_FACTOR = 4;
+    }
+
     public Logic(int num_players) {
         m_histogram = new int[Card.MAX_NUMBER_ON_DICE * Card.MAX_NUMBER_ON_DICE];
         Init(num_players);
@@ -34,7 +40,9 @@ public class Logic {
         int sumWeights = 0;
 
         for(i=0;i<weights.length;i++) {
-            weights[i] = 1 << (maxAppear - m_histogram[i]);
+            int log_weight = LOG_OF_FAIRNESS_FACTOR *(maxAppear - m_histogram[i]);
+            weights[i] = 1 << Math.min(64, log_weight);
+
             sumWeights += weights[i];
         }
 
@@ -59,6 +67,8 @@ public class Logic {
                 cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
             }
         }
+
+        cardToReturn.m_turn_number = m_current_turn_number;
 
         return cardToReturn;
     }
