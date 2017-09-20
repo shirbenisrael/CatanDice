@@ -34,10 +34,65 @@ public class MainActivity extends Activity {
     private int m_num_players;
     private Logic m_logic;
 
+    private enum ShownState {
+        GAME,
+        NEW_GAME_STARTING,
+        SETTING
+    };
+
+    private ShownState m_shown_state;
+
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
 
     static {
         DEFAULT_NUMBER_OF_PLAYERS = 4;
+    }
+
+    private void ShowState(ShownState new_state) {
+        m_shown_state = new_state;
+
+        int all_layout[] = {R.id.layout_for_dices, R.id.histogram_layout, R.id.new_game_layout, R.id.setting_layout};
+        int layout_to_show = R.id.layout_for_dices;
+
+        switch (m_shown_state) {
+            case GAME:
+                layout_to_show = R.id.layout_for_dices;
+                break;
+            case NEW_GAME_STARTING:
+                layout_to_show = R.id.new_game_layout;
+                break;
+            case SETTING:
+                layout_to_show = R.id.setting_layout;
+                break;
+        }
+
+        for (int i = 0; i < all_layout.length; i++) {
+            View layout = findViewById(all_layout[i]);
+            if (all_layout[i] == layout_to_show) {
+                layout.setVisibility(View.VISIBLE);
+            } else {
+                layout.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        ShowHistogram();
+    }
+
+       @Override
+    public void onBackPressed() {
+        switch (m_shown_state) {
+            case GAME:
+                super.onBackPressed();
+                break;
+
+            case SETTING:
+                onBackFromSettingClick(null);
+                break;
+
+            case NEW_GAME_STARTING:
+                onBackFromNumPlayersClick(null);
+                break;
+        }
     }
 
     private void StoreState() {
@@ -118,14 +173,15 @@ public class MainActivity extends Activity {
             m_histogram_text[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
         }
 
-        ShowHistogram();
+        ShowState(ShownState.GAME);
     }
 
     private void ShowHistogram() {
-        if (m_show_histogram) {
+        if (m_show_histogram && m_shown_state == ShownState.GAME) {
             findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
+            return;
         }
 
         int[] histogram = m_logic.GetSumHistogram();
@@ -203,7 +259,7 @@ public class MainActivity extends Activity {
                 card = m_logic.GetNewCard();
                 SetDicesImagesRolled(card.m_red, card.m_yellow);
                 ShowHistogram();
-                ShowMessage(card.m_message , card.m_turn_number);
+                ShowMessage(card.m_message, card.m_turn_number);
                 m_media_player.release();
                 SetMainButtonsEnable(true);
             } else {
@@ -218,24 +274,18 @@ public class MainActivity extends Activity {
 
 
     public void onSettingClick(View view) {
-        int layout_to_hide[] =
-                {R.id.layout_for_dices, R.id.histogram_layout};
-
-        for (int i = 0; i < layout_to_hide.length; i++) {
-            findViewById(layout_to_hide[i]).setVisibility(View.INVISIBLE);
-        }
-
-        findViewById(R.id.setting_layout).setVisibility(View.VISIBLE);
+        ShowState(ShownState.SETTING);
     }
 
     public void onBackFromSettingClick(View view) {
-        findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
-
         final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
         m_show_histogram = checkBox.isChecked();
 
-        ShowHistogram();
+        ShowState(ShownState.GAME);
+    }
+
+    public void onBackFromNumPlayersClick(View view) {
+        ShowState(ShownState.GAME);
     }
 
     public void SetNumPlayers() {
@@ -249,27 +299,15 @@ public class MainActivity extends Activity {
     }
 
     public void onNewGameClick(View view) {
-        findViewById(R.id.num_players_layout_layout).setVisibility(View.VISIBLE);
-        findViewById(R.id.layout_for_dices).setVisibility(View.INVISIBLE);
-        findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
+        ShowState(ShownState.NEW_GAME_STARTING);
     }
 
     public void onSelectNumPlayersClick(View view) {
-        findViewById(R.id.num_players_layout_layout).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
-
         SetNumPlayers();
         m_logic.Init(m_num_players);
-        ShowHistogram();
 
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
-    }
-
-    public void onBackFromNumPlayersClick(View view) {
-        findViewById(R.id.num_players_layout_layout).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layout_for_dices).setVisibility(View.VISIBLE);
-
-        ShowHistogram();
+        ShowState(ShownState.GAME);
     }
 
     public void ShowMessage(Card.MessageWithCard messageType, int turn_number) {

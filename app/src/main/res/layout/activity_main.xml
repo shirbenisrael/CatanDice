@@ -105,9 +105,9 @@
 
         </LinearLayout>
 
-        <!-- Num players -->
+        <!-- Num game layout -->
         <LinearLayout
-            android:id="@+id/num_players_layout_layout"
+            android:id="@+id/new_game_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
