@@ -15,16 +15,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends Activity {
-
-    private ImageView m_histogram_images[];
-    private TextView m_histogram_text[];
-    private Timer m_timer;
+    private TextView m_histogram_counters[]; /* histograms values */
+    private ImageView m_histogram_images[]; /* histogram bars. */
+    private TextView m_histogram_text[]; /* static numbers under the histogram , 2,... 12 */
+    private Timer m_timer; /* time for rolling animation */
     private int m_count_down;
     private MediaPlayer m_media_player;
     private Point m_size;
@@ -132,8 +133,11 @@ public class MainActivity extends Activity {
         final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
         checkBox.setChecked(m_show_histogram);
 
-        m_histogram_images = new ImageView[Card.MAX_NUMBER_ON_DICE * 2 - 1];
-        m_histogram_text = new TextView[Card.MAX_NUMBER_ON_DICE * 2 - 1];
+        int num_bars = Card.MAX_NUMBER_ON_DICE * 2 - 1;
+
+        m_histogram_counters = new TextView[num_bars];
+        m_histogram_images = new ImageView[num_bars];
+        m_histogram_text = new TextView[num_bars];
 
         m_size = GetWindowSize();
 
@@ -153,6 +157,11 @@ public class MainActivity extends Activity {
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
 
         for (int i = 0; i < m_histogram_images.length; i++) {
+            LinearLayout layout_for_bar_and_counter = new LinearLayout(getApplicationContext());
+            layout_for_bar_and_counter.setOrientation(LinearLayout.VERTICAL);
+            layout_for_bar_and_counter.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+            m_histogram_counters[i] = new TextView(this);
             m_histogram_images[i] = new ImageView(this);
             m_histogram_text[i] = new TextView(this);
 
@@ -162,7 +171,12 @@ public class MainActivity extends Activity {
             m_histogram_text[i].setTextColor(Color.YELLOW);
             m_histogram_text[i].setGravity(Gravity.CENTER);
 
-            histogram_images_layout.addView(m_histogram_images[i]);
+            m_histogram_counters[i].setTextColor(Color.YELLOW);
+            m_histogram_counters[i].setGravity(Gravity.CENTER);
+
+            histogram_images_layout.addView(layout_for_bar_and_counter);
+            layout_for_bar_and_counter.addView(m_histogram_counters[i]);
+            layout_for_bar_and_counter.addView(m_histogram_images[i]);
 
             m_histogram_images[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
             m_histogram_images[i].getLayoutParams().height = 20;
@@ -171,6 +185,8 @@ public class MainActivity extends Activity {
 
             m_histogram_text[i].setText(String.valueOf(i + 2));
             m_histogram_text[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
+
+            m_histogram_counters[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
         }
 
         ShowState(ShownState.GAME);
@@ -191,6 +207,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < m_histogram_images.length; i++) {
             int height = histogram[i] * 10 + 1;
             m_histogram_images[i].setLayoutParams(new LinearLayout.LayoutParams(width, height));
+            m_histogram_counters[i].setText(String.valueOf(histogram[i]));
         }
     }
 

@@ -105,7 +105,7 @@
 
         </LinearLayout>
 
-        <!-- Num game layout -->
+        <!-- Nem game layout -->
         <LinearLayout
             android:id="@+id/new_game_layout"
             android:layout_width="match_parent"
