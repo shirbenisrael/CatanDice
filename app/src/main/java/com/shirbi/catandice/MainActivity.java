@@ -10,12 +10,11 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckBox;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.view.ViewGroup.LayoutParams;
 
 import java.util.Random;
 import java.util.Timer;
@@ -31,14 +30,13 @@ public class MainActivity extends Activity {
     private Point m_size;
 
     /* Need to store */
-    private boolean m_show_histogram;
     private int m_num_players;
     private Logic m_logic;
 
     private enum ShownState {
         GAME,
         NEW_GAME_STARTING,
-        SETTING
+        SETTING,
     };
 
     private ShownState m_shown_state;
@@ -52,7 +50,7 @@ public class MainActivity extends Activity {
     private void ShowState(ShownState new_state) {
         m_shown_state = new_state;
 
-        int all_layout[] = {R.id.layout_for_dices, R.id.histogram_layout, R.id.new_game_layout, R.id.setting_layout};
+        int all_layout[] = {R.id.layout_for_dices, R.id.new_game_layout, R.id.setting_layout};
         int layout_to_show = R.id.layout_for_dices;
 
         switch (m_shown_state) {
@@ -75,8 +73,6 @@ public class MainActivity extends Activity {
                 layout.setVisibility(View.INVISIBLE);
             }
         }
-
-        ShowHistogram();
     }
 
        @Override
@@ -99,7 +95,6 @@ public class MainActivity extends Activity {
     private void StoreState() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(getString(R.string.m_show_histogram), m_show_histogram);
         editor.putInt(getString(R.string.m_num_players), m_num_players);
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -108,7 +103,6 @@ public class MainActivity extends Activity {
     private void RestoreState() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
-        m_show_histogram = sharedPref.getBoolean(getString(R.string.m_show_histogram), true);
         m_num_players = sharedPref.getInt(getString(R.string.m_num_players), DEFAULT_NUMBER_OF_PLAYERS);
         m_logic.RestoreState(this, sharedPref);
     }
@@ -129,9 +123,6 @@ public class MainActivity extends Activity {
         m_logic = new Logic(m_num_players);
 
         RestoreState();
-
-        final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
-        checkBox.setChecked(m_show_histogram);
 
         int num_bars = Card.MAX_NUMBER_ON_DICE * 2 - 1;
 
@@ -156,6 +147,16 @@ public class MainActivity extends Activity {
         LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
 
+        LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
+        LinearLayout background_histogram_layout = (LinearLayout) findViewById(R.id.histogram_background_layout);
+
+        int histogram_window_width = m_size.x * 9 / 10;
+        int histogram_window_height = m_size.y * 4 / 5;
+
+        main_histogram_layout.getLayoutParams().width = histogram_window_width;
+        main_histogram_layout.getLayoutParams().height = histogram_window_height;
+        main_histogram_layout.setBackgroundColor(Color.argb(80, 0, Color.BLACK, 0));
+
         for (int i = 0; i < m_histogram_images.length; i++) {
             LinearLayout layout_for_bar_and_counter = new LinearLayout(getApplicationContext());
             layout_for_bar_and_counter.setOrientation(LinearLayout.VERTICAL);
@@ -166,49 +167,48 @@ public class MainActivity extends Activity {
             m_histogram_text[i] = new TextView(this);
 
             int color = (i % 2) * 100 + 100;
-            m_histogram_images[i].setBackgroundColor(Color.argb(150, 0, color, 0));
+            int bar_color = Color.argb(150, 0, color, 0);
 
-            m_histogram_text[i].setTextColor(Color.YELLOW);
+            m_histogram_images[i].setBackgroundColor(bar_color);
+
+            m_histogram_text[i].setTextColor(bar_color);
             m_histogram_text[i].setGravity(Gravity.CENTER);
 
-            m_histogram_counters[i].setTextColor(Color.YELLOW);
+            m_histogram_counters[i].setTextColor(bar_color);
             m_histogram_counters[i].setGravity(Gravity.CENTER);
 
             histogram_images_layout.addView(layout_for_bar_and_counter);
             layout_for_bar_and_counter.addView(m_histogram_counters[i]);
             layout_for_bar_and_counter.addView(m_histogram_images[i]);
 
-            m_histogram_images[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
+            m_histogram_images[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
             m_histogram_images[i].getLayoutParams().height = 20;
 
             histogram_text_layout.addView(m_histogram_text[i]);
 
             m_histogram_text[i].setText(String.valueOf(i + 2));
-            m_histogram_text[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
+            m_histogram_text[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
 
-            m_histogram_counters[i].getLayoutParams().width = m_size.x / m_histogram_images.length;
+            m_histogram_counters[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
         }
 
         ShowState(ShownState.GAME);
     }
 
     private void ShowHistogram() {
-        if (m_show_histogram && m_shown_state == ShownState.GAME) {
-            findViewById(R.id.histogram_layout).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.histogram_layout).setVisibility(View.INVISIBLE);
-            return;
-        }
+
+        SetMainButtonsEnable(false);
 
         int[] histogram = m_logic.GetSumHistogram();
 
-        int width = m_size.x / m_histogram_images.length;
-
         for (int i = 0; i < m_histogram_images.length; i++) {
             int height = histogram[i] * 10 + 1;
-            m_histogram_images[i].setLayoutParams(new LinearLayout.LayoutParams(width, height));
+            m_histogram_images[i].getLayoutParams().height = height;
             m_histogram_counters[i].setText(String.valueOf(histogram[i]));
+            m_histogram_images[i].requestLayout();
         }
+
+        findViewById(R.id.histogram_background_layout).setVisibility(View.VISIBLE);
     }
 
     private Point GetWindowSize() {
@@ -275,7 +275,6 @@ public class MainActivity extends Activity {
                 Card card;
                 card = m_logic.GetNewCard();
                 SetDicesImagesRolled(card.m_red, card.m_yellow);
-                ShowHistogram();
                 ShowMessage(card.m_message, card.m_turn_number);
                 m_media_player.release();
                 SetMainButtonsEnable(true);
@@ -288,17 +287,22 @@ public class MainActivity extends Activity {
         }
     };
 
-
-
     public void onSettingClick(View view) {
         ShowState(ShownState.SETTING);
     }
 
-    public void onBackFromSettingClick(View view) {
-        final CheckBox checkBox = (CheckBox) findViewById(R.id.histogram_visibility_checkbox);
-        m_show_histogram = checkBox.isChecked();
+    public void onShowHistogramClick(View view) {
+        SetMainButtonsEnable(false);
+        ShowHistogram();
+    }
 
+    public void onBackFromSettingClick(View view) {
         ShowState(ShownState.GAME);
+    }
+
+    public void onBackFromHistogramClick(View view) {
+        findViewById(R.id.histogram_background_layout).setVisibility(View.INVISIBLE);
+        SetMainButtonsEnable(true);
     }
 
     public void onBackFromNumPlayersClick(View view) {
@@ -354,5 +358,6 @@ public class MainActivity extends Activity {
         findViewById(R.id.roll_button).setEnabled(isEnable);
         findViewById(R.id.setting_button).setEnabled(isEnable);
         findViewById(R.id.new_game_button).setEnabled(isEnable);
+        findViewById(R.id.show_histogram_button).setEnabled(isEnable);
     }
 }

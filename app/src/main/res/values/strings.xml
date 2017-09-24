@@ -18,4 +18,5 @@
     <string name="continue_string">Continue</string>
     <string name="new_game_roll_string">New game - Roll dices!</string>
     <string name="turn_number">Turn number</string>
+    <string name="enable_sound">Enable sound</string>
 </resources>
