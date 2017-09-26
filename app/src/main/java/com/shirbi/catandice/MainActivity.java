@@ -11,6 +11,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -155,7 +156,7 @@ public class MainActivity extends Activity {
 
         main_histogram_layout.getLayoutParams().width = histogram_window_width;
         main_histogram_layout.getLayoutParams().height = histogram_window_height;
-        main_histogram_layout.setBackgroundColor(Color.argb(80, 0, Color.BLACK, 0));
+        main_histogram_layout.setBackgroundColor(0xff101010);
 
         for (int i = 0; i < m_histogram_images.length; i++) {
             LinearLayout layout_for_bar_and_counter = new LinearLayout(getApplicationContext());
@@ -167,7 +168,7 @@ public class MainActivity extends Activity {
             m_histogram_text[i] = new TextView(this);
 
             int color = (i % 2) * 100 + 100;
-            int bar_color = Color.argb(150, 0, color, 0);
+            int bar_color = Color.rgb(0, color, 0);
 
             m_histogram_images[i].setBackgroundColor(bar_color);
 
@@ -180,8 +181,9 @@ public class MainActivity extends Activity {
             histogram_images_layout.addView(layout_for_bar_and_counter);
             layout_for_bar_and_counter.addView(m_histogram_counters[i]);
             layout_for_bar_and_counter.addView(m_histogram_images[i]);
+            layout_for_bar_and_counter.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            m_histogram_images[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
+            m_histogram_images[i].getLayoutParams().width = histogram_window_width / (m_histogram_images.length * 3);
             m_histogram_images[i].getLayoutParams().height = 20;
 
             histogram_text_layout.addView(m_histogram_text[i]);
@@ -201,8 +203,22 @@ public class MainActivity extends Activity {
 
         int[] histogram = m_logic.GetSumHistogram();
 
+
+        LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
+        LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
+        Button back_from_histogram_button = (Button) findViewById(R.id.back_from_histogram_button);
+
+        int max_bar_height = main_histogram_layout.getLayoutParams().height;
+        max_bar_height = (max_bar_height * 7)/10;
+
+        int max_histogram_value = 1;
+
         for (int i = 0; i < m_histogram_images.length; i++) {
-            int height = histogram[i] * 10 + 1;
+            max_histogram_value = Math.max(max_histogram_value, histogram[i]);
+        }
+
+        for (int i = 0; i < m_histogram_images.length; i++) {
+            int height = histogram[i] * max_bar_height / max_histogram_value;
             m_histogram_images[i].getLayoutParams().height = height;
             m_histogram_counters[i].setText(String.valueOf(histogram[i]));
             m_histogram_images[i].requestLayout();
