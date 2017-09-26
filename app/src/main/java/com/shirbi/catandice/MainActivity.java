@@ -38,6 +38,7 @@ public class MainActivity extends Activity {
         GAME,
         NEW_GAME_STARTING,
         SETTING,
+        HISTOGRAM
     };
 
     private ShownState m_shown_state;
@@ -51,27 +52,44 @@ public class MainActivity extends Activity {
     private void ShowState(ShownState new_state) {
         m_shown_state = new_state;
 
-        int all_layout[] = {R.id.layout_for_dices, R.id.new_game_layout, R.id.setting_layout};
-        int layout_to_show = R.id.layout_for_dices;
+        int all_layout[] = {
+                R.id.layout_for_dices,
+                R.id.new_game_layout,
+                R.id.setting_layout,
+                R.id.histogram_background_layout};
+
+        int layouts_for_game[] = {R.id.layout_for_dices};
+        int layouts_for_new_game[] = {R.id.new_game_layout};
+        int layouts_for_settings[] = {R.id.setting_layout};
+        int layouts_for_histogram[] = {R.id.layout_for_dices, R.id.histogram_background_layout};
+
+        int layouts_to_show[] = {0};
 
         switch (m_shown_state) {
             case GAME:
-                layout_to_show = R.id.layout_for_dices;
+                layouts_to_show = layouts_for_game;
                 break;
             case NEW_GAME_STARTING:
-                layout_to_show = R.id.new_game_layout;
+                layouts_to_show = layouts_for_new_game;
                 break;
             case SETTING:
-                layout_to_show = R.id.setting_layout;
+                layouts_to_show = layouts_for_settings;
+                break;
+            case HISTOGRAM:
+                layouts_to_show = layouts_for_histogram;
+            default:
                 break;
         }
 
         for (int i = 0; i < all_layout.length; i++) {
             View layout = findViewById(all_layout[i]);
-            if (all_layout[i] == layout_to_show) {
-                layout.setVisibility(View.VISIBLE);
-            } else {
-                layout.setVisibility(View.INVISIBLE);
+            layout.setVisibility(View.INVISIBLE);
+
+            for (int j = 0; j < layouts_to_show.length; j++) {
+                if (all_layout[i] == layouts_to_show[j]) {
+                    layout.setVisibility(View.VISIBLE);
+                    break;
+                }
             }
         }
     }
@@ -89,6 +107,10 @@ public class MainActivity extends Activity {
 
             case NEW_GAME_STARTING:
                 onBackFromNumPlayersClick(null);
+                break;
+
+            case HISTOGRAM:
+                onBackFromHistogramClick(null);
                 break;
         }
     }
@@ -310,6 +332,7 @@ public class MainActivity extends Activity {
     public void onShowHistogramClick(View view) {
         SetMainButtonsEnable(false);
         ShowHistogram();
+        ShowState(ShownState.HISTOGRAM);
     }
 
     public void onBackFromSettingClick(View view) {
@@ -317,7 +340,7 @@ public class MainActivity extends Activity {
     }
 
     public void onBackFromHistogramClick(View view) {
-        findViewById(R.id.histogram_background_layout).setVisibility(View.INVISIBLE);
+        ShowState(ShownState.GAME);
         SetMainButtonsEnable(true);
     }
 
