@@ -28,6 +28,10 @@ public class Card {
         private EventDice(int value){
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     public enum MessageWithCard {

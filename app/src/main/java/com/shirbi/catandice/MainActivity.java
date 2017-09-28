@@ -33,6 +33,9 @@ public class MainActivity extends Activity {
     /* Need to store */
     private int m_num_players;
     private Logic m_logic;
+    private int m_red_dice;
+    private int m_yellow_dice;
+    private Card.EventDice m_event_dice;
 
     private enum ShownState {
         GAME,
@@ -44,9 +47,11 @@ public class MainActivity extends Activity {
     private ShownState m_shown_state;
 
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
+    public static final int DEFAULT_NUMBER_ON_DICE;
 
     static {
         DEFAULT_NUMBER_OF_PLAYERS = 4;
+        DEFAULT_NUMBER_ON_DICE = 1;
     }
 
     private void ShowState(ShownState new_state) {
@@ -119,6 +124,10 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(getString(R.string.m_num_players), m_num_players);
+        editor.putInt(getString(R.string.m_red_dice), m_red_dice);
+        editor.putInt(getString(R.string.m_yellow_dice), m_yellow_dice);
+        editor.putInt(getString(R.string.m_event_dice), m_event_dice.getValue());
+
         m_logic.StoreState(this, editor);
         editor.commit();
     }
@@ -127,6 +136,12 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
         m_num_players = sharedPref.getInt(getString(R.string.m_num_players), DEFAULT_NUMBER_OF_PLAYERS);
+        m_red_dice = sharedPref.getInt(getString(R.string.m_red_dice), DEFAULT_NUMBER_ON_DICE);
+        m_yellow_dice = sharedPref.getInt(getString(R.string.m_yellow_dice), DEFAULT_NUMBER_ON_DICE);
+
+        int event_num = sharedPref.getInt(getString(R.string.m_event_dice), DEFAULT_NUMBER_ON_DICE);
+        m_event_dice = Card.EventDice.values()[event_num];
+
         m_logic.RestoreState(this, sharedPref);
     }
 
@@ -167,6 +182,9 @@ public class MainActivity extends Activity {
         set_dice_size(R.id.red_dice_result, dice_width);
         set_dice_size(R.id.yellow_dice_result, dice_width);
         set_dice_size(R.id.event_dice_result, dice_width);
+
+        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        SetEventDiceImage(m_event_dice);
 
         LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
@@ -332,6 +350,11 @@ public class MainActivity extends Activity {
                 m_timer.cancel();
                 Card card;
                 card = m_logic.GetNewCard();
+
+                m_red_dice = card.m_red;
+                m_yellow_dice = card.m_yellow;
+                m_event_dice = card.m_event_dice;
+
                 SetDicesImagesRolled(card.m_red, card.m_yellow);
                 SetEventDiceImage(card.m_event_dice);
 

@@ -1,5 +1,8 @@
 ﻿<resources>
     <string name="m_num_players">m_num_players</string>
+    <string name="m_red_dice">m_red_dice</string>
+    <string name="m_yellow_dice">m_yellow_dice</string>
+    <string name="m_event_dice">m_event_dice</string>
     <string name="m_show_histogram">m_show_histogram</string>
     <string name="m_histogram">m_histogram</string>
     <string name="m_current_turn_number">m_current_turn_number</string>
