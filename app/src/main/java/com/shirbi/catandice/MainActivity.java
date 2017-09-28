@@ -136,6 +136,12 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
+    private void set_dice_size(int dice_id, int size) {
+        ImageView dice = (ImageView) findViewById(dice_id);
+        dice.getLayoutParams().width = size;
+        dice.getLayoutParams().height = size;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,14 +164,9 @@ public class MainActivity extends Activity {
         int dice_width = m_size.x / 2;
         int dice_height = dice_width;
 
-        ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
-        ImageView yellow_dice_result_image = (ImageView) findViewById(R.id.yellow_dice_result);
-
-        red_dice_result_image.getLayoutParams().width = dice_width;
-        red_dice_result_image.getLayoutParams().height = dice_height;
-
-        yellow_dice_result_image.getLayoutParams().width = dice_width;
-        yellow_dice_result_image.getLayoutParams().height = dice_height;
+        set_dice_size(R.id.red_dice_result, dice_width);
+        set_dice_size(R.id.yellow_dice_result, dice_width);
+        set_dice_size(R.id.event_dice_result, dice_width);
 
         LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
@@ -256,6 +257,25 @@ public class MainActivity extends Activity {
         return size;
     }
 
+    public void SetEventDiceImage( Card.EventDice eventDice) {
+        ImageView event_dice_result = (ImageView) findViewById(R.id.event_dice_result);
+
+        switch (eventDice) {
+            case YELLOW_CITY:
+                event_dice_result.setImageResource(R.drawable.yellow_city);
+                break;
+            case GREEN_CITY:_CITY:
+                event_dice_result.setImageResource(R.drawable.green_city);
+                break;
+            case BLUE_CITY:
+                event_dice_result.setImageResource(R.drawable.blue_city);
+                break;
+            case PIRATE_SHIP:
+                event_dice_result.setImageResource(R.drawable.pirate_ship);
+                break;
+        }
+    }
+
     public void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
         ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
         ImageView yellow_dice_result_image = (ImageView) findViewById(R.id.yellow_dice_result);
@@ -313,6 +333,8 @@ public class MainActivity extends Activity {
                 Card card;
                 card = m_logic.GetNewCard();
                 SetDicesImagesRolled(card.m_red, card.m_yellow);
+                SetEventDiceImage(card.m_event_dice);
+
                 ShowMessage(card.m_message, card.m_turn_number);
                 m_media_player.release();
                 SetMainButtonsEnable(true);
@@ -321,6 +343,10 @@ public class MainActivity extends Activity {
                 SetDicesImagesRolled(
                         (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1),
                         (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1));
+
+                int event_num = rand.nextInt(Card.MAX_EVENTS_ON_EVENT_DICE);
+                Card.EventDice event = Card.EventDice.values()[event_num];
+                SetEventDiceImage(event);
             }
         }
     };

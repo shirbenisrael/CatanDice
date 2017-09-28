@@ -70,6 +70,22 @@ public class Logic {
 
         cardToReturn.m_turn_number = m_current_turn_number;
 
+        int event_dice = rand.nextInt(6);
+        switch (event_dice) {
+            case 0:
+                cardToReturn.m_event_dice = Card.EventDice.YELLOW_CITY;
+                break;
+            case 1:
+                cardToReturn.m_event_dice = Card.EventDice.GREEN_CITY;
+                break;
+            case 2:
+                cardToReturn.m_event_dice = Card.EventDice.BLUE_CITY;
+                break;
+            default:
+                cardToReturn.m_event_dice = Card.EventDice.PIRATE_SHIP;
+                break;
+        }
+
         return cardToReturn;
     }
 
