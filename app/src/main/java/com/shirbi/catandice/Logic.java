@@ -15,6 +15,7 @@ public class Logic {
     private int m_histogram[];
     private int m_num_players;
     private int m_current_turn_number;
+    private GameType m_game_type;
 
     static final int LOG_OF_FAIRNESS_FACTOR;
 
@@ -22,9 +23,23 @@ public class Logic {
         LOG_OF_FAIRNESS_FACTOR = 4;
     }
 
-    public Logic(int num_players) {
+    public enum GameType {
+        GAME_TYPE_REGULAR(0),
+        GAME_TYPE_CITIES_AND_KNIGHT(1);
+
+        private int value;
+        private GameType(int value){
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public Logic(int num_players, GameType game_type) {
         m_histogram = new int[Card.MAX_NUMBER_ON_DICE * Card.MAX_NUMBER_ON_DICE];
-        Init(num_players);
+        Init(num_players, game_type);
     }
 
     public Card GetNewCard() {
@@ -99,7 +114,7 @@ public class Logic {
 
     }
 
-    public void Init(int num_players) {
+    public void Init(int num_players, GameType game_type) {
         for(int i=0;i<m_histogram.length;i++) {
             m_histogram[i] = 0;
         }
@@ -108,6 +123,7 @@ public class Logic {
 
         m_current_turn_number = 0;
         m_num_players = num_players;
+        m_game_type = game_type;
     }
 
     public int[] GetSumHistogram() {

@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
     private Point m_size;
 
     /* Need to store */
+    private Logic.GameType m_game_type;
     private int m_num_players;
     private Logic m_logic;
     private int m_red_dice;
@@ -42,16 +43,20 @@ public class MainActivity extends Activity {
         NEW_GAME_STARTING,
         SETTING,
         HISTOGRAM
-    };
+    }
+
+    ;
 
     private ShownState m_shown_state;
 
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
     public static final int DEFAULT_NUMBER_ON_DICE;
+    public static final Logic.GameType DEFAULT_GAME_TYPE;
 
     static {
         DEFAULT_NUMBER_OF_PLAYERS = 4;
         DEFAULT_NUMBER_ON_DICE = 1;
+        DEFAULT_GAME_TYPE = Logic.GameType.GAME_TYPE_REGULAR;
     }
 
     private void ShowState(ShownState new_state) {
@@ -99,7 +104,7 @@ public class MainActivity extends Activity {
         }
     }
 
-       @Override
+    @Override
     public void onBackPressed() {
         switch (m_shown_state) {
             case GAME:
@@ -127,6 +132,7 @@ public class MainActivity extends Activity {
         editor.putInt(getString(R.string.m_red_dice), m_red_dice);
         editor.putInt(getString(R.string.m_yellow_dice), m_yellow_dice);
         editor.putInt(getString(R.string.m_event_dice), m_event_dice.getValue());
+        editor.putInt(getString(R.string.m_game_type), m_game_type.getValue());
 
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -142,11 +148,14 @@ public class MainActivity extends Activity {
         int event_num = sharedPref.getInt(getString(R.string.m_event_dice), DEFAULT_NUMBER_ON_DICE);
         m_event_dice = Card.EventDice.values()[event_num];
 
+        int game_type_num = sharedPref.getInt(getString(R.string.m_game_type), 0);
+        m_game_type = Logic.GameType.values()[game_type_num];
+
         m_logic.RestoreState(this, sharedPref);
     }
 
     @Override
-    protected void onDestroy () {
+    protected void onDestroy() {
         StoreState();
         super.onDestroy();
     }
@@ -163,8 +172,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         m_num_players = DEFAULT_NUMBER_OF_PLAYERS;
+        m_game_type = DEFAULT_GAME_TYPE;
 
-        m_logic = new Logic(m_num_players);
+        m_logic = new Logic(m_num_players, m_game_type);
 
         RestoreState();
 
@@ -185,6 +195,7 @@ public class MainActivity extends Activity {
 
         SetDicesImagesRolled(m_red_dice, m_yellow_dice);
         SetEventDiceImage(m_event_dice);
+        SetEventDiceVisibility();
 
         LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
@@ -244,13 +255,12 @@ public class MainActivity extends Activity {
 
         int[] histogram = m_logic.GetSumHistogram();
 
-
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
         Button back_from_histogram_button = (Button) findViewById(R.id.back_from_histogram_button);
 
         int max_bar_height = main_histogram_layout.getLayoutParams().height;
-        max_bar_height = (max_bar_height * 7)/10;
+        max_bar_height = (max_bar_height * 7) / 10;
 
         int max_histogram_value = 1;
 
@@ -273,6 +283,15 @@ public class MainActivity extends Activity {
         Point size = new Point();
         display.getSize(size);
         return size;
+    }
+
+    public void SetEventDiceVisibility() {
+        ImageView event_dice_result = (ImageView) findViewById(R.id.event_dice_result);
+        if (m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
+            event_dice_result.setVisibility(View.VISIBLE);
+        } else {
+            event_dice_result.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void SetEventDiceImage( Card.EventDice eventDice) {
@@ -397,6 +416,21 @@ public class MainActivity extends Activity {
         ShowState(ShownState.GAME);
     }
 
+    public void SetGameType() {
+        RadioGroup radioButtonGroup = (RadioGroup) findViewById(R.id.game_type_radio_group);
+
+        int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+        View radioButton = radioButtonGroup.findViewById(radioButtonID);
+        int idx = radioButtonGroup.indexOfChild(radioButton);
+
+        if (idx == 0) {
+            m_game_type = Logic.GameType.GAME_TYPE_REGULAR;
+        } else {
+            m_game_type = Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT;
+        }
+
+    }
+
     public void SetNumPlayers() {
         RadioGroup radioButtonGroup = (RadioGroup) findViewById(R.id.num_players_radio_group);
 
@@ -413,8 +447,11 @@ public class MainActivity extends Activity {
 
     public void onSelectNumPlayersClick(View view) {
         SetNumPlayers();
-        m_logic.Init(m_num_players);
+        SetGameType();
 
+        m_logic.Init(m_num_players, m_game_type);
+
+        SetEventDiceVisibility();
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
         ShowState(ShownState.GAME);
     }
