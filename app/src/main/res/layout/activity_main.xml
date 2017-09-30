@@ -162,14 +162,16 @@
 
             <RadioGroup
                 android:id="@+id/num_players_radio_group"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="4"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/radio_button_3_players"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="3" />
 
                 <RadioButton
@@ -177,18 +179,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:layout_weight="1"
                     android:text="4" />
 
                 <RadioButton
                     android:id="@+id/radio_button_5_players"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="5" />
 
                 <RadioButton
                     android:id="@+id/radio_button_6_players"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="6" />
 
             </RadioGroup>
