@@ -22,4 +22,7 @@
     <string name="new_game_roll_string">New game - Roll dices!</string>
     <string name="turn_number">Turn number</string>
     <string name="enable_sound">Enable sound</string>
+    <string name="game_type">Game Type:</string>
+    <string name="game_type_regular">Regular Game</string>
+    <string name="game_type_cities_and_knights">Cities &amp; Knight</string>
 </resources>

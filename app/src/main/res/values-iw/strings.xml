@@ -13,4 +13,7 @@
     <string name="continue_string">המשך</string>
     <string name="new_game_roll_string">משחק חדש - הטל קוביות!</string>
     <string name="turn_number">תור מספר</string>
+    <string name="game_type">סוג משחק:</string>
+    <string name="game_type_regular">משחק רגיל</string>
+    <string name="game_type_cities_and_knights">ערים ואבירים</string>
 </resources>
