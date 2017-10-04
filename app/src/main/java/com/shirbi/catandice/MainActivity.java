@@ -14,7 +14,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -25,6 +24,7 @@ public class MainActivity extends Activity {
     private TextView m_histogram_counters[]; /* histograms values */
     private ImageView m_histogram_images[]; /* histogram bars. */
     private TextView m_histogram_text[]; /* static numbers under the histogram , 2,... 12 */
+    private ImageView m_pirate_positions_images[];
     private Timer m_timer; /* time for rolling animation */
     private int m_count_down;
     private MediaPlayer m_media_player;
@@ -40,7 +40,8 @@ public class MainActivity extends Activity {
 
     private enum ShownState {
         GAME,
-        NEW_GAME_STARTING,
+        SELECT_GAME_TYPE,
+        SELECT_NUM_PLAYERS,
         SETTING,
         HISTOGRAM
     }
@@ -64,12 +65,14 @@ public class MainActivity extends Activity {
 
         int all_layout[] = {
                 R.id.layout_for_dices,
-                R.id.new_game_layout,
+                R.id.game_type_layout,
+                R.id.num_players_layout,
                 R.id.setting_layout,
                 R.id.histogram_background_layout};
 
         int layouts_for_game[] = {R.id.layout_for_dices};
-        int layouts_for_new_game[] = {R.id.new_game_layout};
+        int layouts_for_game_type[] = {R.id.game_type_layout};
+        int layouts_for_num_players[] = {R.id.num_players_layout};
         int layouts_for_settings[] = {R.id.setting_layout};
         int layouts_for_histogram[] = {R.id.layout_for_dices, R.id.histogram_background_layout};
 
@@ -79,14 +82,18 @@ public class MainActivity extends Activity {
             case GAME:
                 layouts_to_show = layouts_for_game;
                 break;
-            case NEW_GAME_STARTING:
-                layouts_to_show = layouts_for_new_game;
+            case SELECT_GAME_TYPE:
+                layouts_to_show = layouts_for_game_type;
+                break;
+            case SELECT_NUM_PLAYERS:
+                layouts_to_show = layouts_for_num_players;
                 break;
             case SETTING:
                 layouts_to_show = layouts_for_settings;
                 break;
             case HISTOGRAM:
                 layouts_to_show = layouts_for_histogram;
+                break;
             default:
                 break;
         }
@@ -115,7 +122,8 @@ public class MainActivity extends Activity {
                 onBackFromSettingClick(null);
                 break;
 
-            case NEW_GAME_STARTING:
+            case SELECT_GAME_TYPE:
+            case SELECT_NUM_PLAYERS:
                 onBackFromNumPlayersClick(null);
                 break;
 
@@ -160,10 +168,14 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    private void set_dice_size(int dice_id, int size) {
-        ImageView dice = (ImageView) findViewById(dice_id);
-        dice.getLayoutParams().width = size;
-        dice.getLayoutParams().height = size;
+    private void set_square_size_view(ImageView view, int size) {
+        view.getLayoutParams().width = size;
+        view.getLayoutParams().height = size;
+    }
+
+    private void set_square_size(int view_id, int size) {
+        ImageView view = (ImageView) findViewById(view_id);
+        set_square_size_view(view, size);
     }
 
     @Override
@@ -183,15 +195,16 @@ public class MainActivity extends Activity {
         m_histogram_counters = new TextView[num_bars];
         m_histogram_images = new ImageView[num_bars];
         m_histogram_text = new TextView[num_bars];
+        m_pirate_positions_images = new ImageView[Card.MAX_PIRATE_POSITIONS];
 
         m_size = GetWindowSize();
 
         int dice_width = m_size.x / 2;
         int dice_height = dice_width;
 
-        set_dice_size(R.id.red_dice_result, dice_width);
-        set_dice_size(R.id.yellow_dice_result, dice_width);
-        set_dice_size(R.id.event_dice_result, dice_width);
+        set_square_size(R.id.red_dice_result, dice_width);
+        set_square_size(R.id.yellow_dice_result, dice_width);
+        set_square_size(R.id.event_dice_result, dice_width);
 
         SetDicesImagesRolled(m_red_dice, m_yellow_dice);
         SetEventDiceImage(m_event_dice);
@@ -202,6 +215,8 @@ public class MainActivity extends Activity {
 
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
         LinearLayout background_histogram_layout = (LinearLayout) findViewById(R.id.histogram_background_layout);
+        LinearLayout layout_for_pirate_ship = (LinearLayout) findViewById(R.id.layout_for_pirate_ship);
+
 
         int histogram_window_width = m_size.x * 9 / 10;
         int histogram_window_height = m_size.y * 4 / 5;
@@ -209,6 +224,28 @@ public class MainActivity extends Activity {
         main_histogram_layout.getLayoutParams().width = histogram_window_width;
         main_histogram_layout.getLayoutParams().height = histogram_window_height;
         main_histogram_layout.setBackgroundColor(0xff101010);
+
+        for (int i = 0; i < Card.MAX_PIRATE_POSITIONS; i++) {
+            m_pirate_positions_images[i] = new ImageView(this);
+            int position_color;
+
+            switch (i) {
+                case 0:
+                    position_color = Color.GREEN;
+                    break;
+                case Card.MAX_PIRATE_POSITIONS - 1:
+                    position_color = Color.RED;
+                    break;
+                default:
+                    position_color = Color.GRAY;
+                    break;
+            }
+
+            layout_for_pirate_ship.addView(m_pirate_positions_images[i]);
+
+            set_square_size_view(m_pirate_positions_images[i], m_size.x / Card.MAX_PIRATE_POSITIONS);
+            m_pirate_positions_images[i].setBackgroundColor(position_color);
+        }
 
         for (int i = 0; i < m_histogram_images.length; i++) {
             LinearLayout layout_for_bar_and_counter = new LinearLayout(getApplicationContext());
@@ -286,11 +323,15 @@ public class MainActivity extends Activity {
     }
 
     public void SetEventDiceVisibility() {
-        ImageView event_dice_result = (ImageView) findViewById(R.id.event_dice_result);
+        View event_dice_result = findViewById(R.id.event_dice_result);
+        View layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
+
         if (m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
             event_dice_result.setVisibility(View.VISIBLE);
+            layout_for_pirate_ship.setVisibility(View.VISIBLE);
         } else {
             event_dice_result.setVisibility(View.INVISIBLE);
+            layout_for_pirate_ship.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -416,38 +457,53 @@ public class MainActivity extends Activity {
         ShowState(ShownState.GAME);
     }
 
-    public void SetGameType() {
-        RadioGroup radioButtonGroup = (RadioGroup) findViewById(R.id.game_type_radio_group);
+    public void SetGameType(View view) {
+        switch(view.getId())
+        {
+            case R.id.button_regular_game:
+                m_game_type = Logic.GameType.GAME_TYPE_REGULAR;
+                break;
 
-        int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
-        View radioButton = radioButtonGroup.findViewById(radioButtonID);
-        int idx = radioButtonGroup.indexOfChild(radioButton);
+            case R.id.button_cities_and_knights:
+                m_game_type = Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT;
+                break;
 
-        if (idx == 0) {
-            m_game_type = Logic.GameType.GAME_TYPE_REGULAR;
-        } else {
-            m_game_type = Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT;
+            default:
+                throw new RuntimeException("Unknow button ID");
         }
-
-    }
-
-    public void SetNumPlayers() {
-        RadioGroup radioButtonGroup = (RadioGroup) findViewById(R.id.num_players_radio_group);
-
-        int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
-        View radioButton = radioButtonGroup.findViewById(radioButtonID);
-        int idx = radioButtonGroup.indexOfChild(radioButton);
-
-        m_num_players = idx + 3;
     }
 
     public void onNewGameClick(View view) {
-        ShowState(ShownState.NEW_GAME_STARTING);
+        ShowState(ShownState.SELECT_GAME_TYPE);
+    }
+
+    public void onSelectGameTypeClick(View view) {
+        SetGameType(view);
+        ShowState(ShownState.SELECT_NUM_PLAYERS);
     }
 
     public void onSelectNumPlayersClick(View view) {
-        SetNumPlayers();
-        SetGameType();
+        switch(view.getId())
+        {
+            case R.id.button_3_players:
+                m_num_players = 3;
+                break;
+
+            case R.id.button_4_players:
+                m_num_players = 4;
+                break;
+
+            case R.id.button_5_players:
+                m_num_players = 5;
+                break;
+
+            case R.id.button_6_players:
+                m_num_players = 6;
+                break;
+
+            default:
+                throw new RuntimeException("Unknow button ID");
+        }
 
         m_logic.Init(m_num_players, m_game_type);
 

@@ -9,9 +9,11 @@ public class Card {
     public int m_turn_number;
     public MessageWithCard m_message;
     public EventDice m_event_dice;
+    public int m_pirate_position;
 
     public static final int MAX_NUMBER_ON_DICE;
     public static final int MAX_EVENTS_ON_EVENT_DICE;
+    public static final int MAX_PIRATE_POSITIONS = 8;
 
     static {
         MAX_NUMBER_ON_DICE = 6;
@@ -47,7 +49,6 @@ public class Card {
         m_message = message;
         m_turn_number = 0;
         m_event_dice = EventDice.PIRATE_SHIP;
+        m_pirate_position = 0;
     }
-
-
 }
