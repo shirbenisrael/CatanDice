@@ -46,8 +46,6 @@ public class MainActivity extends Activity {
         HISTOGRAM
     }
 
-    ;
-
     private ShownState m_shown_state;
 
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
@@ -227,6 +225,8 @@ public class MainActivity extends Activity {
 
         for (int i = 0; i < Card.MAX_PIRATE_POSITIONS; i++) {
             m_pirate_positions_images[i] = new ImageView(this);
+            m_pirate_positions_images[i].setImageResource(R.drawable.pirate_ship);
+
             int position_color;
 
             switch (i) {
@@ -237,7 +237,7 @@ public class MainActivity extends Activity {
                     position_color = Color.RED;
                     break;
                 default:
-                    position_color = Color.GRAY;
+                    position_color = (i % 2 == 0) ? Color.LTGRAY : Color.GRAY;
                     break;
             }
 
@@ -245,6 +245,7 @@ public class MainActivity extends Activity {
 
             set_square_size_view(m_pirate_positions_images[i], m_size.x / Card.MAX_PIRATE_POSITIONS);
             m_pirate_positions_images[i].setBackgroundColor(position_color);
+            m_pirate_positions_images[i].setImageAlpha(0);
         }
 
         for (int i = 0; i < m_histogram_images.length; i++) {
@@ -335,6 +336,18 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void SetPiratePosition(int piratePosition) {
+        for (int i = piratePosition+1; i < Card.MAX_PIRATE_POSITIONS; i++) {
+            m_pirate_positions_images[i].setImageAlpha(0);
+        }
+
+        for (int i = 0 ; i <= piratePosition; i++) {
+            int alpha = 150 >> (piratePosition-i);
+            m_pirate_positions_images[i].setImageAlpha(alpha );
+        }
+
+    }
+
     public void SetEventDiceImage( Card.EventDice eventDice) {
         ImageView event_dice_result = (ImageView) findViewById(R.id.event_dice_result);
 
@@ -419,6 +432,9 @@ public class MainActivity extends Activity {
                 SetEventDiceImage(card.m_event_dice);
 
                 ShowMessage(card.m_message, card.m_turn_number);
+
+                SetPiratePosition(card.m_pirate_position);
+
                 m_media_player.release();
                 SetMainButtonsEnable(true);
             } else {

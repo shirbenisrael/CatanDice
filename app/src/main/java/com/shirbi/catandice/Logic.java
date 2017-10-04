@@ -15,6 +15,7 @@ public class Logic {
     private int m_histogram[];
     private int m_num_players;
     private int m_current_turn_number;
+    private int m_pirate_position;
     private GameType m_game_type;
 
     static final int LOG_OF_FAIRNESS_FACTOR;
@@ -85,6 +86,10 @@ public class Logic {
 
         cardToReturn.m_turn_number = m_current_turn_number;
 
+        if (m_pirate_position == Card.MAX_PIRATE_POSITIONS-1) {
+            m_pirate_position = 0;
+        }
+
         int event_dice = rand.nextInt(6);
         switch (event_dice) {
             case 0:
@@ -98,8 +103,11 @@ public class Logic {
                 break;
             default:
                 cardToReturn.m_event_dice = Card.EventDice.PIRATE_SHIP;
+                m_pirate_position++;
                 break;
         }
+
+        cardToReturn.m_pirate_position = m_pirate_position;
 
         return cardToReturn;
     }
@@ -121,6 +129,7 @@ public class Logic {
 
         rand = new Random();
 
+        m_pirate_position = 0;
         m_current_turn_number = 0;
         m_num_players = num_players;
         m_game_type = game_type;
@@ -135,8 +144,6 @@ public class Logic {
         }
         return hisotgramToReturn;
     }
-
-
 
     public void StoreState(Context context, SharedPreferences.Editor editor) {
         StringBuilder str = new StringBuilder();
