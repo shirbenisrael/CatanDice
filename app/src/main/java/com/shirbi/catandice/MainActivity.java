@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
     private int m_red_dice;
     private int m_yellow_dice;
     private Card.EventDice m_event_dice;
+    private int m_pirate_position;
 
     private enum ShownState {
         GAME,
@@ -139,6 +140,7 @@ public class MainActivity extends Activity {
         editor.putInt(getString(R.string.m_yellow_dice), m_yellow_dice);
         editor.putInt(getString(R.string.m_event_dice), m_event_dice.getValue());
         editor.putInt(getString(R.string.m_game_type), m_game_type.getValue());
+        editor.putInt(getString(R.string.m_pirate_position), m_pirate_position);
 
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -150,6 +152,7 @@ public class MainActivity extends Activity {
         m_num_players = sharedPref.getInt(getString(R.string.m_num_players), DEFAULT_NUMBER_OF_PLAYERS);
         m_red_dice = sharedPref.getInt(getString(R.string.m_red_dice), DEFAULT_NUMBER_ON_DICE);
         m_yellow_dice = sharedPref.getInt(getString(R.string.m_yellow_dice), DEFAULT_NUMBER_ON_DICE);
+        m_pirate_position = sharedPref.getInt(getString(R.string.m_pirate_position), Logic.DEFAULT_PIRATE_POSITION);
 
         int event_num = sharedPref.getInt(getString(R.string.m_event_dice), DEFAULT_NUMBER_ON_DICE);
         m_event_dice = Card.EventDice.values()[event_num];
@@ -248,6 +251,8 @@ public class MainActivity extends Activity {
             m_pirate_positions_images[i].setImageAlpha(0);
         }
 
+        SetPiratePosition();
+
         for (int i = 0; i < m_histogram_images.length; i++) {
             LinearLayout layout_for_bar_and_counter = new LinearLayout(getApplicationContext());
             layout_for_bar_and_counter.setOrientation(LinearLayout.VERTICAL);
@@ -336,13 +341,13 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void SetPiratePosition(int piratePosition) {
-        for (int i = piratePosition+1; i < Card.MAX_PIRATE_POSITIONS; i++) {
+    public void SetPiratePosition() {
+        for (int i = m_pirate_position+1; i < Card.MAX_PIRATE_POSITIONS; i++) {
             m_pirate_positions_images[i].setImageAlpha(0);
         }
 
-        for (int i = 0 ; i <= piratePosition; i++) {
-            int alpha = 150 >> (piratePosition-i);
+        for (int i = 0 ; i <= m_pirate_position; i++) {
+            int alpha = 150 >> (m_pirate_position-i);
             m_pirate_positions_images[i].setImageAlpha(alpha );
         }
 
@@ -433,7 +438,8 @@ public class MainActivity extends Activity {
 
                 ShowMessage(card.m_message, card.m_turn_number);
 
-                SetPiratePosition(card.m_pirate_position);
+                m_pirate_position = card.m_pirate_position;
+                SetPiratePosition();
 
                 m_media_player.release();
                 SetMainButtonsEnable(true);

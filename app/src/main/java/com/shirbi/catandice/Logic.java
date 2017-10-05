@@ -19,9 +19,11 @@ public class Logic {
     private GameType m_game_type;
 
     static final int LOG_OF_FAIRNESS_FACTOR;
+    public static final int DEFAULT_PIRATE_POSITION;
 
     static {
         LOG_OF_FAIRNESS_FACTOR = 4;
+        DEFAULT_PIRATE_POSITION = 0;
     }
 
     public enum GameType {
@@ -129,7 +131,7 @@ public class Logic {
 
         rand = new Random();
 
-        m_pirate_position = 0;
+        m_pirate_position = DEFAULT_PIRATE_POSITION;
         m_current_turn_number = 0;
         m_num_players = num_players;
         m_game_type = game_type;
@@ -157,6 +159,7 @@ public class Logic {
     public void RestoreState(Context context, SharedPreferences sharedPref) {
         m_num_players = sharedPref.getInt(context.getString(R.string.m_num_players), MainActivity.DEFAULT_NUMBER_OF_PLAYERS);
         m_current_turn_number = sharedPref.getInt(context.getString(R.string.m_current_turn_number), 0);
+        m_pirate_position = sharedPref.getInt(context.getString(R.string.m_pirate_position), DEFAULT_PIRATE_POSITION);
 
         String savedString = sharedPref.getString(context.getString(R.string.m_histogram), "");
         StringTokenizer st = new StringTokenizer(savedString, ",");

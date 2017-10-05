@@ -7,7 +7,7 @@
     <string name="m_histogram">m_histogram</string>
     <string name="m_current_turn_number">m_current_turn_number</string>
     <string name="m_game_type">m_game_type</string>
-
+    <string name="m_pirate_position">m_pirate_position</string>
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
