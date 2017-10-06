@@ -26,4 +26,5 @@
     <string name="game_type">Game Type:</string>
     <string name="game_type_regular">Regular Game</string>
     <string name="game_type_cities_and_knights">Cities &amp; Knight</string>
+    <string name="alchemist">Alchemist</string>
 </resources>

@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     private int m_count_down;
     private MediaPlayer m_media_player;
     private Point m_size;
+    private boolean m_is_alchemist_active = false;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -331,13 +332,16 @@ public class MainActivity extends Activity {
     public void SetEventDiceVisibility() {
         View event_dice_result = findViewById(R.id.event_dice_result);
         View layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
+        View alchemist_button = findViewById(R.id.alchemist_button);
 
         if (m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
             event_dice_result.setVisibility(View.VISIBLE);
             layout_for_pirate_ship.setVisibility(View.VISIBLE);
+            alchemist_button.setVisibility(View.VISIBLE);
         } else {
             event_dice_result.setVisibility(View.INVISIBLE);
             layout_for_pirate_ship.setVisibility(View.INVISIBLE);
+            alchemist_button.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -427,14 +431,18 @@ public class MainActivity extends Activity {
             if (m_count_down == 0) {
                 m_timer.cancel();
                 Card card;
-                card = m_logic.GetNewCard();
+                card = m_logic.GetNewCard(m_is_alchemist_active);
 
                 m_red_dice = card.m_red;
                 m_yellow_dice = card.m_yellow;
                 m_event_dice = card.m_event_dice;
 
-                SetDicesImagesRolled(card.m_red, card.m_yellow);
+                if (!m_is_alchemist_active) {
+                    SetDicesImagesRolled(card.m_red, card.m_yellow);
+                }
                 SetEventDiceImage(card.m_event_dice);
+
+                m_is_alchemist_active = false;
 
                 ShowMessage(card.m_message, card.m_turn_number);
 
@@ -445,9 +453,11 @@ public class MainActivity extends Activity {
                 SetMainButtonsEnable(true);
             } else {
                 Random rand = new Random();
-                SetDicesImagesRolled(
-                        (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1),
-                        (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1));
+                if (!m_is_alchemist_active) {
+                    SetDicesImagesRolled(
+                            (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1),
+                            (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1));
+                }
 
                 int event_num = rand.nextInt(Card.MAX_EVENTS_ON_EVENT_DICE);
                 Card.EventDice event = Card.EventDice.values()[event_num];
@@ -497,6 +507,11 @@ public class MainActivity extends Activity {
 
     public void onNewGameClick(View view) {
         ShowState(ShownState.SELECT_GAME_TYPE);
+    }
+
+    public void onAlchemistClick(View view) {
+        m_is_alchemist_active = true;
+        onRollClick(view);
     }
 
     public void onSelectGameTypeClick(View view) {
@@ -562,5 +577,6 @@ public class MainActivity extends Activity {
         findViewById(R.id.setting_button).setEnabled(isEnable);
         findViewById(R.id.new_game_button).setEnabled(isEnable);
         findViewById(R.id.show_histogram_button).setEnabled(isEnable);
+        findViewById(R.id.alchemist_button).setEnabled(isEnable);
     }
 }

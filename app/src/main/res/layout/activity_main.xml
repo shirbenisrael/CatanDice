@@ -102,6 +102,13 @@
                     android:onClick="onNewGameClick"
                     android:text="@string/new_game_string" />
 
+                <Button
+                    android:id="@+id/alchemist_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onAlchemistClick"
+                    android:text="@string/alchemist" />
+
             </LinearLayout>
 
 

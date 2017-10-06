@@ -45,46 +45,53 @@ public class Logic {
         Init(num_players, game_type);
     }
 
-    public Card GetNewCard() {
-
-        int maxAppear = 0;
+    public Card GetNewCard(boolean is_alchemist) {
         int i;
+        Card cardToReturn;
 
-        for(i=0;i<m_histogram.length;i++) {
-            maxAppear = Math.max(maxAppear, m_histogram[i]);
+        if (!is_alchemist) {
+            int maxAppear = 0;
+
+            for (i = 0; i < m_histogram.length; i++) {
+                maxAppear = Math.max(maxAppear, m_histogram[i]);
+            }
+
+            int weights[] = new int[m_histogram.length];
+            int sumWeights = 0;
+
+            for (i = 0; i < weights.length; i++) {
+                int log_weight = LOG_OF_FAIRNESS_FACTOR * (maxAppear - m_histogram[i]);
+                weights[i] = 1 << Math.min(64, log_weight);
+
+                sumWeights += weights[i];
+            }
+
+            int randomValue = rand.nextInt(sumWeights);
+
+            i = 0;
+            while (weights[i] < randomValue) {
+                randomValue -= weights[i];
+                i++;
+            }
+
+            m_histogram[i]++;
+
+            cardToReturn = IndexToCard(i);
+
+            if (cardToReturn.m_red + cardToReturn.m_yellow == 7) {
+                if (m_game_type == GameType.GAME_TYPE_REGULAR) {
+                    if (m_current_turn_number <= m_num_players * 2) {
+                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
+                    } else {
+                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
+                    }
+                }
+            }
+        } else {
+            cardToReturn = IndexToCard(0);
         }
-
-        int weights[] = new int[m_histogram.length];
-        int sumWeights = 0;
-
-        for(i=0;i<weights.length;i++) {
-            int log_weight = LOG_OF_FAIRNESS_FACTOR *(maxAppear - m_histogram[i]);
-            weights[i] = 1 << Math.min(64, log_weight);
-
-            sumWeights += weights[i];
-        }
-
-        int randomValue = rand.nextInt(sumWeights);
-
-        i = 0;
-        while (weights[i] < randomValue) {
-            randomValue -= weights[i];
-            i++;
-        }
-
-        m_histogram[i]++;
 
         m_current_turn_number++;
-
-        Card cardToReturn = IndexToCard(i);
-
-        if (cardToReturn.m_red + cardToReturn.m_yellow == 7) {
-            if (m_current_turn_number <= m_num_players * 2) {
-                cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
-            } else {
-                cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
-            }
-        }
 
         cardToReturn.m_turn_number = m_current_turn_number;
 
@@ -92,21 +99,23 @@ public class Logic {
             m_pirate_position = 0;
         }
 
-        int event_dice = rand.nextInt(6);
-        switch (event_dice) {
-            case 0:
-                cardToReturn.m_event_dice = Card.EventDice.YELLOW_CITY;
-                break;
-            case 1:
-                cardToReturn.m_event_dice = Card.EventDice.GREEN_CITY;
-                break;
-            case 2:
-                cardToReturn.m_event_dice = Card.EventDice.BLUE_CITY;
-                break;
-            default:
-                cardToReturn.m_event_dice = Card.EventDice.PIRATE_SHIP;
-                m_pirate_position++;
-                break;
+        if (m_game_type == GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
+            int event_dice = rand.nextInt(6);
+            switch (event_dice) {
+                case 0:
+                    cardToReturn.m_event_dice = Card.EventDice.YELLOW_CITY;
+                    break;
+                case 1:
+                    cardToReturn.m_event_dice = Card.EventDice.GREEN_CITY;
+                    break;
+                case 2:
+                    cardToReturn.m_event_dice = Card.EventDice.BLUE_CITY;
+                    break;
+                default:
+                    cardToReturn.m_event_dice = Card.EventDice.PIRATE_SHIP;
+                    m_pirate_position++;
+                    break;
+            }
         }
 
         cardToReturn.m_pirate_position = m_pirate_position;

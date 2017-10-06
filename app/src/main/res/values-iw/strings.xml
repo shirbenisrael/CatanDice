@@ -16,4 +16,5 @@
     <string name="game_type">סוג משחק:</string>
     <string name="game_type_regular">משחק רגיל</string>
     <string name="game_type_cities_and_knights">ערים ואבירים</string>
+    <string name="alchemist">אלכמיסט</string>
 </resources>
