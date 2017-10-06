@@ -170,14 +170,24 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    private void set_square_size_view(ImageView view, int size) {
+    private void set_square_size_view(View view, int size) {
         view.getLayoutParams().width = size;
         view.getLayoutParams().height = size;
     }
 
     private void set_square_size(int view_id, int size) {
-        ImageView view = (ImageView) findViewById(view_id);
+        View view = findViewById(view_id);
         set_square_size_view(view, size);
+    }
+
+    private void arrange_buttons() {
+        int Ids[] =
+                {R.id.new_game_button, R.id.show_histogram_button, R.id.setting_button, R.id.alchemist_button};
+
+        int width = m_size.x / Ids.length;
+        for (int i = 0 ; i < Ids.length; i++) {
+            set_square_size(Ids[i], width);
+        }
     }
 
     @Override
@@ -289,6 +299,8 @@ public class MainActivity extends Activity {
 
             m_histogram_counters[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
         }
+
+        arrange_buttons();
 
         ShowState(ShownState.GAME);
     }

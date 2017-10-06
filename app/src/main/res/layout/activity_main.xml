@@ -80,7 +80,6 @@
                 android:orientation="horizontal"
                 android:visibility="visible">
 
-
                 <Button
                     android:id="@+id/setting_button"
                     android:layout_width="wrap_content"
@@ -88,18 +87,22 @@
                     android:onClick="onSettingClick"
                     android:text="@string/setting_string" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/show_histogram_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onShowHistogramClick"
+                    android:src="@drawable/histogram_icon"
+                    android:scaleType="fitCenter"
                     android:text="@string/show_histogram" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/new_game_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onNewGameClick"
+                    android:src="@drawable/restart_icon"
+                    android:scaleType="fitCenter"
                     android:text="@string/new_game_string" />
 
                 <Button
