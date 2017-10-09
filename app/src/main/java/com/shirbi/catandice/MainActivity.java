@@ -556,7 +556,10 @@ public class MainActivity extends Activity {
 
         m_logic.Init(m_num_players, m_game_type);
 
+        m_pirate_position = 0;
+
         SetEventDiceVisibility();
+        SetPiratePosition();
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
         ShowState(ShownState.GAME);
     }

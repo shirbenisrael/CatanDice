@@ -169,6 +169,8 @@ public class Logic {
         m_num_players = sharedPref.getInt(context.getString(R.string.m_num_players), MainActivity.DEFAULT_NUMBER_OF_PLAYERS);
         m_current_turn_number = sharedPref.getInt(context.getString(R.string.m_current_turn_number), 0);
         m_pirate_position = sharedPref.getInt(context.getString(R.string.m_pirate_position), DEFAULT_PIRATE_POSITION);
+        int game_type_num = sharedPref.getInt(context.getString(R.string.m_game_type), 0);
+        m_game_type = Logic.GameType.values()[game_type_num];
 
         String savedString = sharedPref.getString(context.getString(R.string.m_histogram), "");
         StringTokenizer st = new StringTokenizer(savedString, ",");
