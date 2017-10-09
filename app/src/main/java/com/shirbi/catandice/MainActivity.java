@@ -353,7 +353,7 @@ public class MainActivity extends Activity {
         } else {
             event_dice_result.setVisibility(View.INVISIBLE);
             layout_for_pirate_ship.setVisibility(View.INVISIBLE);
-            alchemist_button.setVisibility(View.INVISIBLE);
+            alchemist_button.setVisibility(View.GONE);
         }
     }
 
