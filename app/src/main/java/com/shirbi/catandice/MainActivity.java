@@ -188,6 +188,10 @@ public class MainActivity extends Activity {
         for (int i = 0 ; i < Ids.length; i++) {
             set_square_size(Ids[i], width);
         }
+
+        View view = findViewById(R.id.roll_button);
+        view.getLayoutParams().width = width*2;
+        view.getLayoutParams().height = width;
     }
 
     @Override
