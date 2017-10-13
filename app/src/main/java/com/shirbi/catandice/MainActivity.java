@@ -346,6 +346,10 @@ public class MainActivity extends Activity {
             max_histogram_value = Math.max(max_histogram_value, histogram[i]);
         }
 
+        if (max_histogram_value == 1) {
+            max_bar_height = max_bar_height / 2;
+        }
+
         for (int i = 0; i < m_histogram_images.length; i++) {
             int height = histogram[i] * max_bar_height / max_histogram_value;
             m_histogram_images[i].getLayoutParams().height = height;
