@@ -180,6 +180,19 @@ public class MainActivity extends Activity {
         set_square_size_view(view, size);
     }
 
+    private void set_square_size_with_margin(int view_id,
+                                             int size,
+                                             int top_margin,
+                                             int bottom_margin,
+                                             int left_margin,
+                                             int right_margin) {
+        set_square_size(view_id, size);
+
+        View view = findViewById(view_id);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)view.getLayoutParams();
+        lp.setMargins(left_margin, top_margin, right_margin, bottom_margin);
+    }
+
     private void arrange_buttons() {
         int Ids[] =
                 {R.id.new_game_button, R.id.show_histogram_button, R.id.setting_button, R.id.alchemist_button};
@@ -215,12 +228,17 @@ public class MainActivity extends Activity {
 
         m_size = GetWindowSize();
 
-        int dice_width = m_size.x / 2;
-        int dice_height = dice_width;
+        int dice_margin = m_size.x / 40;
+        int dice_num_horizontal = 2;
+        int dice_num_margins = dice_num_horizontal + 1;
+        int dice_width = (m_size.x - (dice_num_margins*dice_margin)) / dice_num_horizontal;
 
-        set_square_size(R.id.red_dice_result, dice_width);
-        set_square_size(R.id.yellow_dice_result, dice_width);
-        set_square_size(R.id.event_dice_result, dice_width);
+        set_square_size_with_margin(R.id.red_dice_result, dice_width, dice_margin,
+                dice_margin/2, dice_margin, dice_margin/2);
+        set_square_size_with_margin(R.id.yellow_dice_result, dice_width, dice_margin,
+                dice_margin/2, dice_margin/2, dice_margin);
+        set_square_size_with_margin(R.id.event_dice_result, dice_width, dice_margin/2,
+                dice_margin, dice_margin/2, dice_margin/2);
 
         SetDicesImagesRolled(m_red_dice, m_yellow_dice);
         SetEventDiceImage(m_event_dice);
