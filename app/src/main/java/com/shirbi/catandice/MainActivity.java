@@ -438,7 +438,16 @@ public class MainActivity extends Activity {
         m_count_down = 10;
         m_timer = new Timer();
 
-        m_media_player = MediaPlayer.create(getApplicationContext(), R.raw.dices);
+        int dices_sound_ids[] = {
+                R.raw.dices1,
+                R.raw.dices2,
+                R.raw.dices3,
+                R.raw.dices4,
+                R.raw.dices5
+        };
+
+        m_media_player = MediaPlayer.create(getApplicationContext(),
+                dices_sound_ids[new Random().nextInt(dices_sound_ids.length)]);
         m_media_player.start();
 
         SetMainButtonsEnable(false);
