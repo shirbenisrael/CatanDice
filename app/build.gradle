@@ -7,7 +7,7 @@ android {
         applicationId "com.shirbi.catandice"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 10
+        versionCode 11
         versionName "1.0"
     }
     buildTypes {
