@@ -14,6 +14,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -45,7 +46,8 @@ public class MainActivity extends Activity {
         SELECT_GAME_TYPE,
         SELECT_NUM_PLAYERS,
         SETTING,
-        HISTOGRAM
+        HISTOGRAM,
+        MESSAGE,
     }
 
     private ShownState m_shown_state;
@@ -68,13 +70,15 @@ public class MainActivity extends Activity {
                 R.id.game_type_layout,
                 R.id.num_players_layout,
                 R.id.setting_layout,
-                R.id.histogram_background_layout};
+                R.id.histogram_background_layout,
+                R.id.messages_relative_layout};
 
         int layouts_for_game[] = {R.id.layout_for_dices};
         int layouts_for_game_type[] = {R.id.game_type_layout};
         int layouts_for_num_players[] = {R.id.num_players_layout};
         int layouts_for_settings[] = {R.id.setting_layout};
         int layouts_for_histogram[] = {R.id.layout_for_dices, R.id.histogram_background_layout};
+        int layouts_for_message[] = {R.id.layout_for_dices, R.id.messages_relative_layout};
 
         int layouts_to_show[] = {0};
 
@@ -93,6 +97,9 @@ public class MainActivity extends Activity {
                 break;
             case HISTOGRAM:
                 layouts_to_show = layouts_for_histogram;
+                break;
+            case MESSAGE:
+                layouts_to_show = layouts_for_message;
                 break;
             default:
                 break;
@@ -129,6 +136,10 @@ public class MainActivity extends Activity {
 
             case HISTOGRAM:
                 onBackFromHistogramClick(null);
+                break;
+
+            case MESSAGE:
+                onBackFromMessageClick(null);
                 break;
         }
     }
@@ -248,16 +259,25 @@ public class MainActivity extends Activity {
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
 
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
-        LinearLayout background_histogram_layout = (LinearLayout) findViewById(R.id.histogram_background_layout);
         LinearLayout layout_for_pirate_ship = (LinearLayout) findViewById(R.id.layout_for_pirate_ship);
 
+        RelativeLayout messages_relative_layout = (RelativeLayout) findViewById(R.id.messages_relative_layout);
+        LinearLayout messages_background_layout = (LinearLayout) findViewById(R.id.messages_background_layout);
+        int total_dice_height = m_size.x;
+        RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(m_size.x , m_size.y);
+        params.leftMargin = m_size.x / 10;
+        params.topMargin = total_dice_height;
+        params.rightMargin = params.leftMargin;
+        params.bottomMargin = params.leftMargin;
+        messages_relative_layout.removeView(messages_background_layout);
+        messages_relative_layout.addView(messages_background_layout, params);
 
         int histogram_window_width = m_size.x * 9 / 10;
         int histogram_window_height = m_size.y * 4 / 5;
 
         main_histogram_layout.getLayoutParams().width = histogram_window_width;
         main_histogram_layout.getLayoutParams().height = histogram_window_height;
-        main_histogram_layout.setBackgroundColor(0xff101010);
 
         for (int i = 0; i < Card.MAX_PIRATE_POSITIONS; i++) {
             m_pirate_positions_images[i] = new ImageView(this);
@@ -497,7 +517,10 @@ public class MainActivity extends Activity {
                 SetPiratePosition();
 
                 m_media_player.release();
-                SetMainButtonsEnable(true);
+
+                if (card.m_message == Card.MessageWithCard.NO_MESSAGE) {
+                    SetMainButtonsEnable(true);
+                }
             } else {
                 Random rand = new Random();
                 if (!m_is_alchemist_active) {
@@ -528,6 +551,11 @@ public class MainActivity extends Activity {
     }
 
     public void onBackFromHistogramClick(View view) {
+        ShowState(ShownState.GAME);
+        SetMainButtonsEnable(true);
+    }
+
+    public void onBackFromMessageClick(View view) {
         ShowState(ShownState.GAME);
         SetMainButtonsEnable(true);
     }
@@ -596,13 +624,18 @@ public class MainActivity extends Activity {
         SetEventDiceVisibility();
         SetPiratePosition();
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
-        ShowState(ShownState.GAME);
     }
 
     public void ShowMessage(Card.MessageWithCard messageType, int turn_number) {
-        TextView message_text_view = (TextView) findViewById(R.id.message_text_view);
+        TextView turn_number_text_view = (TextView) findViewById(R.id.turn_number_text_view);
 
         String turn_number_message = getString(R.string.turn_number) + ": " + Integer.toString(turn_number) + "   ";
+        turn_number_text_view.setText(turn_number_message);
+
+        if (messageType == Card.MessageWithCard.NO_MESSAGE) {
+            return;
+        }
+
         String message_type = "";
 
         switch (messageType) {
@@ -619,7 +652,10 @@ public class MainActivity extends Activity {
             default:
                 break;
         }
-        message_text_view.setText(turn_number_message + message_type);
+
+        TextView large_message_view = (TextView) findViewById(R.id.large_message_view);
+        large_message_view.setText(message_type);
+        ShowState(ShownState.MESSAGE);
     }
 
     private void SetMainButtonsEnable(boolean isEnable) {

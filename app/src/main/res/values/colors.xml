@@ -1,4 +1,6 @@
 ﻿<resources>
     <color name="dime_main_layout_color">#96000000</color>
+    <color name="background_color">#ff101010</color>
+    <color name="message_color">#ffffff00</color>
 
 </resources>

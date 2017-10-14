@@ -67,7 +67,7 @@
 
             <!-- message_text_view -->
             <TextView
-                android:id="@+id/message_text_view"
+                android:id="@+id/turn_number_text_view"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,6 +133,52 @@
 
         </LinearLayout>
 
+        <!-- Large Messages -->
+        <RelativeLayout
+            android:id="@+id/messages_relative_layout"
+            android:visibility="invisible"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:id="@+id/messages_background_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/background_color"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background_color"
+                    android:gravity="center"
+                    android:layout_weight = "1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/large_message_view"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/game_type"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/message_color" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/back_from_message_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onBackFromMessageClick"
+                    android:layout_weight = "0"
+                    android:text="@string/back_string" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
         <!-- Histogram -->
         <LinearLayout
             android:id="@+id/histogram_background_layout"
@@ -147,6 +193,7 @@
                 android:id="@+id/histogram_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/background_color"
                 android:gravity="bottom"
                 android:orientation="vertical"
                 android:visibility="visible">
