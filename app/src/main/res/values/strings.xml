@@ -8,6 +8,8 @@
     <string name="m_current_turn_number">m_current_turn_number</string>
     <string name="m_game_type">m_game_type</string>
     <string name="m_pirate_position">m_pirate_position</string>
+    <string name="m_is_pirate_arrive">m_is_pirate_arrive</string>
+
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
@@ -18,6 +20,9 @@
     <string name="back_string">Back</string>
     <string name="seven_with_robber_string">Seven rolled! Robber Attacks!</string>
     <string name="seven_without_robber_string">Seven at beginning. Robber is sleeping...</string>
+    <string name="pirate_attack">Pirates Attack! Defend the island!</string>
+    <string name="pirate_attack_seven">Pirates Attack! Defend the island! Robber attacks too!</string>
+    <string name="pirate_attack_seven_first">Pirates Attack! Defend the island! Robber is sleeping...!</string>
     <string name="num_players_string">Number of players:</string>
     <string name="continue_string">Continue</string>
     <string name="new_game_roll_string">New game - Roll dices!</string>

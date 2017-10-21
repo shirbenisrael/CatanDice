@@ -40,7 +40,10 @@ public class Card {
         NO_MESSAGE,
         SEVEN_WITHOUT_ROBBER,
         SEVEN_WITH_ROBBER,
-        NEW_GAME
+        NEW_GAME,
+        PIRATE_ATTACK,
+        PIRATE_ATTACK_ROBBER_ATTACK,
+        PIRATE_ATTACK_ROBBER_IS_SLEEPING
     }
 
     public Card(int red, int yellow, MessageWithCard message) {

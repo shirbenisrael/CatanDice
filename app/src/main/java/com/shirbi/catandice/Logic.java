@@ -17,6 +17,7 @@ public class Logic {
     private int m_current_turn_number;
     private int m_pirate_position;
     private GameType m_game_type;
+    private boolean m_is_pirate_arrive;
 
     static final int LOG_OF_FAIRNESS_FACTOR;
     public static final int DEFAULT_PIRATE_POSITION;
@@ -43,6 +44,16 @@ public class Logic {
     public Logic(int num_players, GameType game_type) {
         m_histogram = new int[Card.MAX_NUMBER_ON_DICE * Card.MAX_NUMBER_ON_DICE];
         Init(num_players, game_type);
+    }
+
+    private void AddPirateToCardMessage(Card cardToReturn) {
+        if( cardToReturn.m_message == Card.MessageWithCard.SEVEN_WITH_ROBBER) {
+            cardToReturn.m_message = Card.MessageWithCard.PIRATE_ATTACK_ROBBER_ATTACK;
+        } else if( cardToReturn.m_message == Card.MessageWithCard.SEVEN_WITHOUT_ROBBER) {
+            cardToReturn.m_message = Card.MessageWithCard.PIRATE_ATTACK_ROBBER_IS_SLEEPING;
+        } else {
+            cardToReturn.m_message = Card.MessageWithCard.PIRATE_ATTACK;
+        }
     }
 
     public Card GetNewCard(boolean is_alchemist) {
@@ -85,6 +96,12 @@ public class Logic {
                     } else {
                         cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
                     }
+                } else {
+                    if (!m_is_pirate_arrive) {
+                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
+                    } else {
+                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
+                    }
                 }
             }
         } else {
@@ -114,6 +131,12 @@ public class Logic {
                 default:
                     cardToReturn.m_event_dice = Card.EventDice.PIRATE_SHIP;
                     m_pirate_position++;
+
+                    if (m_pirate_position == Card.MAX_PIRATE_POSITIONS-1) {
+                        AddPirateToCardMessage(cardToReturn);
+                        m_is_pirate_arrive = true;
+                    }
+
                     break;
             }
         }
@@ -144,6 +167,7 @@ public class Logic {
         m_current_turn_number = 0;
         m_num_players = num_players;
         m_game_type = game_type;
+        m_is_pirate_arrive = false;
     }
 
     public int[] GetSumHistogram() {
@@ -163,12 +187,14 @@ public class Logic {
         }
         editor.putString(context.getString(R.string.m_histogram), str.toString());
         editor.putInt(context.getString(R.string.m_current_turn_number), m_current_turn_number);
+        editor.putBoolean(context.getString(R.string.m_is_pirate_arrive), m_is_pirate_arrive);
     }
 
     public void RestoreState(Context context, SharedPreferences sharedPref) {
         m_num_players = sharedPref.getInt(context.getString(R.string.m_num_players), MainActivity.DEFAULT_NUMBER_OF_PLAYERS);
         m_current_turn_number = sharedPref.getInt(context.getString(R.string.m_current_turn_number), 0);
         m_pirate_position = sharedPref.getInt(context.getString(R.string.m_pirate_position), DEFAULT_PIRATE_POSITION);
+        m_is_pirate_arrive = sharedPref.getBoolean(context.getString(R.string.m_is_pirate_arrive), false);
         int game_type_num = sharedPref.getInt(context.getString(R.string.m_game_type), 0);
         m_game_type = Logic.GameType.values()[game_type_num];
 

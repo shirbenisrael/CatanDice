@@ -648,6 +648,15 @@ public class MainActivity extends Activity {
             case NEW_GAME:
                 message_type = getString(R.string.new_game_roll_string);
                 break;
+            case PIRATE_ATTACK:
+                message_type = getString(R.string.pirate_attack);
+                break;
+            case PIRATE_ATTACK_ROBBER_ATTACK:
+                message_type = getString(R.string.pirate_attack_seven);
+                break;
+            case PIRATE_ATTACK_ROBBER_IS_SLEEPING:
+                message_type = getString(R.string.pirate_attack_seven_first);
+                break;
             case NO_MESSAGE:
             default:
                 break;
