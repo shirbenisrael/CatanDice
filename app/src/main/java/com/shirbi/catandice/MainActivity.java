@@ -646,7 +646,8 @@ public class MainActivity extends Activity {
                 message_type = getString(R.string.seven_without_robber_string);
                 break;
             case NEW_GAME:
-                message_type = getString(R.string.new_game_roll_string);
+                int starting_player = new Random().nextInt(m_num_players) + 1;
+                message_type = String.format(getString(R.string.new_game_player_start), starting_player);
                 break;
             case PIRATE_ATTACK:
                 message_type = getString(R.string.pirate_attack);

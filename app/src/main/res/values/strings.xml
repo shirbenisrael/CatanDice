@@ -25,7 +25,7 @@
     <string name="pirate_attack_seven_first">Pirates Attack! Defend the island! Robber is sleeping...!</string>
     <string name="num_players_string">Number of players:</string>
     <string name="continue_string">Continue</string>
-    <string name="new_game_roll_string">New game - Roll dices!</string>
+    <string name="new_game_player_start">New game - player %1$d starts!</string>
     <string name="turn_number">Turn number</string>
     <string name="enable_sound">Enable sound</string>
     <string name="game_type">Game Type:</string>
