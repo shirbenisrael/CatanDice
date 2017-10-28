@@ -13,7 +13,7 @@
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
-    <string name="roll_string">Roll Dices</string>
+    <string name="roll_string">Roll Dice</string>
     <string name="setting_string">Setting</string>
     <string name="new_game_string">New Game</string>
     <string name="show_histogram">Show Histogram</string>
