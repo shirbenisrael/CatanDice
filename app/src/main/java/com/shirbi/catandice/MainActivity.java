@@ -352,6 +352,8 @@ public class MainActivity extends Activity {
         CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
         enable_sound_check_box.setChecked(m_is_sound_enable);
 
+        SetBackGround();
+
         ShowState(ShownState.GAME);
     }
 
@@ -492,6 +494,14 @@ public class MainActivity extends Activity {
         }, 0, 100);
     }
 
+    private void SetBackGround() {
+        LinearLayout main_layout = (LinearLayout) findViewById(R.id.layout_for_dices);
+
+        int resource = (m_game_type == Logic.GameType.GAME_TYPE_REGULAR)
+                ? R.drawable.regular_game_bg : R.drawable.cities_and_knights_bg;
+        main_layout.setBackgroundResource(resource);
+    }
+
     private void TimerMethod() {
         //This method is called directly by the timer
         //and runs in the same thread as the timer.
@@ -630,6 +640,8 @@ public class MainActivity extends Activity {
             default:
                 throw new RuntimeException("Unknow button ID");
         }
+
+        SetBackGround();
 
         m_logic.Init(m_num_players, m_game_type);
 
