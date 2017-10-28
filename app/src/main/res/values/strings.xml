@@ -9,7 +9,7 @@
     <string name="m_game_type">m_game_type</string>
     <string name="m_pirate_position">m_pirate_position</string>
     <string name="m_is_pirate_arrive">m_is_pirate_arrive</string>
-
+    <string name="m_is_sound_enable">m_is_sound_enable</string>
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>

@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
     private int m_yellow_dice;
     private Card.EventDice m_event_dice;
     private int m_pirate_position;
+    private boolean m_is_sound_enable;
 
     private enum ShownState {
         GAME,
@@ -153,6 +155,7 @@ public class MainActivity extends Activity {
         editor.putInt(getString(R.string.m_event_dice), m_event_dice.getValue());
         editor.putInt(getString(R.string.m_game_type), m_game_type.getValue());
         editor.putInt(getString(R.string.m_pirate_position), m_pirate_position);
+        editor.putBoolean(getString(R.string.m_is_sound_enable), m_is_sound_enable);
 
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -171,6 +174,8 @@ public class MainActivity extends Activity {
 
         int game_type_num = sharedPref.getInt(getString(R.string.m_game_type), 0);
         m_game_type = Logic.GameType.values()[game_type_num];
+
+        m_is_sound_enable = sharedPref.getBoolean(getString(R.string.m_is_sound_enable), true);
 
         m_logic.RestoreState(this, sharedPref);
     }
@@ -344,6 +349,9 @@ public class MainActivity extends Activity {
 
         arrange_buttons();
 
+        CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
+        enable_sound_check_box.setChecked(m_is_sound_enable);
+
         ShowState(ShownState.GAME);
     }
 
@@ -468,7 +476,10 @@ public class MainActivity extends Activity {
 
         m_media_player = MediaPlayer.create(getApplicationContext(),
                 dices_sound_ids[new Random().nextInt(dices_sound_ids.length)]);
-        m_media_player.start();
+
+        if (m_is_sound_enable) {
+            m_media_player.start();
+        }
 
         SetMainButtonsEnable(false);
 
@@ -547,6 +558,9 @@ public class MainActivity extends Activity {
     }
 
     public void onBackFromSettingClick(View view) {
+        CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
+        m_is_sound_enable = enable_sound_check_box.isChecked();
+
         ShowState(ShownState.GAME);
     }
 
