@@ -355,6 +355,8 @@ public class MainActivity extends Activity {
         SetBackGround();
 
         ShowState(ShownState.GAME);
+
+        ShowTurnNumber(m_logic.GetTurnNumber());
     }
 
     private void ShowHistogram() {
@@ -652,11 +654,16 @@ public class MainActivity extends Activity {
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
     }
 
-    public void ShowMessage(Card.MessageWithCard messageType, int turn_number) {
+
+    private void ShowTurnNumber(int turn_number) {
         TextView turn_number_text_view = (TextView) findViewById(R.id.turn_number_text_view);
 
         String turn_number_message = getString(R.string.turn_number) + ": " + Integer.toString(turn_number) + "   ";
         turn_number_text_view.setText(turn_number_message);
+    }
+
+    public void ShowMessage(Card.MessageWithCard messageType, int turn_number) {
+        ShowTurnNumber(turn_number);
 
         if (messageType == Card.MessageWithCard.NO_MESSAGE) {
             return;
