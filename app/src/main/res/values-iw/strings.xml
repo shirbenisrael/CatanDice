@@ -21,4 +21,8 @@
     <string name="game_type_cities_and_knights">ערים ואבירים</string>
     <string name="alchemist">אלכמיסט</string>
     <string name="enable_sound">השמע קולות</string>
+    <string name="cancel_last_move">בטל הטלה אחרונה?</string>
+    <string name="last_move_canceled">הטלה אחרונה בוטלה</string>
+    <string name="confirm">אשר</string>
+    <string name="cancel">בטל</string>
 </resources>

@@ -32,4 +32,8 @@
     <string name="game_type_regular">Regular Game</string>
     <string name="game_type_cities_and_knights">Cities &amp; Knight</string>
     <string name="alchemist">Alchemist</string>
+    <string name="cancel_last_move">Cancel Last Roll?</string>
+    <string name="last_move_canceled">Last Roll Canceled?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

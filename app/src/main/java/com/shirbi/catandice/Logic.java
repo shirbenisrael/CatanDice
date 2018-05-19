@@ -11,6 +11,12 @@ import java.util.StringTokenizer;
  */
 public class Logic {
 
+    private class Move {
+        public int histogram_cell_increase;
+        public boolean pirate_moved;
+        public boolean cell_increase;
+    }
+
     private Random rand;
     private int m_histogram[];
     private int m_num_players;
@@ -18,6 +24,7 @@ public class Logic {
     private int m_pirate_position;
     private GameType m_game_type;
     private boolean m_is_pirate_arrive;
+    private Move m_last_move;
 
     static final int LOG_OF_FAIRNESS_FACTOR;
     public static final int DEFAULT_PIRATE_POSITION;
@@ -60,6 +67,10 @@ public class Logic {
         int i;
         Card cardToReturn;
 
+        m_last_move = new Move();
+        m_last_move.cell_increase = false;
+        m_last_move.pirate_moved = false;
+
         if (!is_alchemist) {
             int maxAppear = 0;
 
@@ -86,6 +97,8 @@ public class Logic {
             }
 
             m_histogram[i]++;
+            m_last_move.histogram_cell_increase = i;
+            m_last_move.cell_increase = true;
 
             cardToReturn = IndexToCard(i);
 
@@ -131,6 +144,7 @@ public class Logic {
                 default:
                     cardToReturn.m_event_dice = Card.EventDice.PIRATE_SHIP;
                     m_pirate_position++;
+                    m_last_move.pirate_moved = true;
 
                     if (m_pirate_position == Card.MAX_PIRATE_POSITIONS-1) {
                         AddPirateToCardMessage(cardToReturn);
@@ -153,7 +167,6 @@ public class Logic {
         Card cardToReturn = new Card(redNumber, yellowNumber, Card.MessageWithCard.NO_MESSAGE);
 
         return cardToReturn;
-
     }
 
     public void Init(int num_players, GameType game_type) {
@@ -208,6 +221,39 @@ public class Logic {
                 m_histogram[i] = Integer.parseInt(st.nextToken());
             }
         }
+    }
+
+    public boolean CanCancelLastMove() {
+        return (m_last_move != null);
+    }
+
+    public int GetPiratePosition() {
+        return m_pirate_position;
+    }
+
+    public void CancelLastMove() {
+        if (m_current_turn_number == 0) {
+            return;
+        }
+
+        if (m_last_move == null) {
+            return;
+        }
+
+        if (m_last_move.cell_increase) {
+            m_histogram[m_last_move.histogram_cell_increase]--;
+        }
+
+        if (m_last_move.pirate_moved) {
+            m_pirate_position--;
+            if (m_pirate_position < 0) {
+                m_pirate_position = Card.MAX_PIRATE_POSITIONS-2;
+            }
+        }
+
+        m_current_turn_number--;
+
+        m_last_move = null;
     }
 }
 

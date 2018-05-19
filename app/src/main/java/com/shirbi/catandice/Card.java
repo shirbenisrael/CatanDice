@@ -43,7 +43,8 @@ public class Card {
         NEW_GAME,
         PIRATE_ATTACK,
         PIRATE_ATTACK_ROBBER_ATTACK,
-        PIRATE_ATTACK_ROBBER_IS_SLEEPING
+        PIRATE_ATTACK_ROBBER_IS_SLEEPING,
+        LAST_MOVE_CANCELED
     }
 
     public Card(int red, int yellow, MessageWithCard message) {
@@ -54,4 +55,7 @@ public class Card {
         m_event_dice = EventDice.PIRATE_SHIP;
         m_pirate_position = 0;
     }
+
 }
+
+

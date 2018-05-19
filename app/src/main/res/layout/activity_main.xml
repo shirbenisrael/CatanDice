@@ -130,6 +130,15 @@
                     android:onClick="onRollClick"
                     android:text="@string/roll_string" />
 
+                <ImageButton
+                    android:id="@+id/cancel_last_move_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onCancelLastMoveClick"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cancel_last_move"
+                    android:text="@string/new_game_string" />
+
             </LinearLayout>
 
         </LinearLayout>

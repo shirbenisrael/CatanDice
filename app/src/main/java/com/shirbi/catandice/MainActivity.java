@@ -1,11 +1,14 @@
 package com.shirbi.catandice;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
@@ -205,7 +208,7 @@ public class MainActivity extends Activity {
         set_square_size(view_id, size);
 
         View view = findViewById(view_id);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)view.getLayoutParams();
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) view.getLayoutParams();
         lp.setMargins(left_margin, top_margin, right_margin, bottom_margin);
     }
 
@@ -214,13 +217,17 @@ public class MainActivity extends Activity {
                 {R.id.new_game_button, R.id.show_histogram_button, R.id.setting_button, R.id.alchemist_button};
 
         int width = m_size.x / Ids.length;
-        for (int i = 0 ; i < Ids.length; i++) {
+        for (int i = 0; i < Ids.length; i++) {
             set_square_size(Ids[i], width);
         }
 
-        View view = findViewById(R.id.roll_button);
-        view.getLayoutParams().width = width*2;
-        view.getLayoutParams().height = width;
+        Ids = new int[] {R.id.roll_button, R.id.cancel_last_move_button};
+        width = m_size.x / Ids.length;
+        for (int i = 0; i < Ids.length; i++) {
+            View view = findViewById(Ids[i]);
+            view.getLayoutParams().width = width;
+            view.getLayoutParams().height = width / 2;
+        }
     }
 
     @Override
@@ -247,14 +254,14 @@ public class MainActivity extends Activity {
         int dice_margin = m_size.x / 40;
         int dice_num_horizontal = 2;
         int dice_num_margins = dice_num_horizontal + 1;
-        int dice_width = (m_size.x - (dice_num_margins*dice_margin)) / dice_num_horizontal;
+        int dice_width = (m_size.x - (dice_num_margins * dice_margin)) / dice_num_horizontal;
 
         set_square_size_with_margin(R.id.red_dice_result, dice_width, dice_margin,
-                dice_margin/2, dice_margin, dice_margin/2);
+                dice_margin / 2, dice_margin, dice_margin / 2);
         set_square_size_with_margin(R.id.yellow_dice_result, dice_width, dice_margin,
-                dice_margin/2, dice_margin/2, dice_margin);
-        set_square_size_with_margin(R.id.event_dice_result, dice_width, dice_margin/2,
-                dice_margin, dice_margin/2, dice_margin/2);
+                dice_margin / 2, dice_margin / 2, dice_margin);
+        set_square_size_with_margin(R.id.event_dice_result, dice_width, dice_margin / 2,
+                dice_margin, dice_margin / 2, dice_margin / 2);
 
         SetDicesImagesRolled(m_red_dice, m_yellow_dice);
         SetEventDiceImage(m_event_dice);
@@ -270,7 +277,7 @@ public class MainActivity extends Activity {
         LinearLayout messages_background_layout = (LinearLayout) findViewById(R.id.messages_background_layout);
         int total_dice_height = m_size.x;
         RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(m_size.x , m_size.y);
+                new RelativeLayout.LayoutParams(m_size.x, m_size.y);
         params.leftMargin = m_size.x / 10;
         params.topMargin = total_dice_height;
         params.rightMargin = params.leftMargin;
@@ -349,7 +356,7 @@ public class MainActivity extends Activity {
 
         arrange_buttons();
 
-        CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
+        CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
         enable_sound_check_box.setChecked(m_is_sound_enable);
 
         SetBackGround();
@@ -357,6 +364,8 @@ public class MainActivity extends Activity {
         ShowState(ShownState.GAME);
 
         ShowTurnNumber(m_logic.GetTurnNumber());
+
+        SetMainButtonsEnable(true);
     }
 
     private void ShowHistogram() {
@@ -416,25 +425,26 @@ public class MainActivity extends Activity {
     }
 
     public void SetPiratePosition() {
-        for (int i = m_pirate_position+1; i < Card.MAX_PIRATE_POSITIONS; i++) {
+        for (int i = m_pirate_position + 1; i < Card.MAX_PIRATE_POSITIONS; i++) {
             m_pirate_positions_images[i].setImageAlpha(0);
         }
 
-        for (int i = 0 ; i <= m_pirate_position; i++) {
-            int alpha = 150 >> (m_pirate_position-i);
-            m_pirate_positions_images[i].setImageAlpha(alpha );
+        for (int i = 0; i <= m_pirate_position; i++) {
+            int alpha = 150 >> (m_pirate_position - i);
+            m_pirate_positions_images[i].setImageAlpha(alpha);
         }
 
     }
 
-    public void SetEventDiceImage( Card.EventDice eventDice) {
+    public void SetEventDiceImage(Card.EventDice eventDice) {
         ImageView event_dice_result = (ImageView) findViewById(R.id.event_dice_result);
 
         switch (eventDice) {
             case YELLOW_CITY:
                 event_dice_result.setImageResource(R.drawable.yellow_city);
                 break;
-            case GREEN_CITY:_CITY:
+            case GREEN_CITY:
+                _CITY:
                 event_dice_result.setImageResource(R.drawable.green_city);
                 break;
             case BLUE_CITY:
@@ -570,7 +580,7 @@ public class MainActivity extends Activity {
     }
 
     public void onBackFromSettingClick(View view) {
-        CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
+        CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
         m_is_sound_enable = enable_sound_check_box.isChecked();
 
         ShowState(ShownState.GAME);
@@ -591,8 +601,7 @@ public class MainActivity extends Activity {
     }
 
     public void SetGameType(View view) {
-        switch(view.getId())
-        {
+        switch (view.getId()) {
             case R.id.button_regular_game:
                 m_game_type = Logic.GameType.GAME_TYPE_REGULAR;
                 break;
@@ -621,8 +630,7 @@ public class MainActivity extends Activity {
     }
 
     public void onSelectNumPlayersClick(View view) {
-        switch(view.getId())
-        {
+        switch (view.getId()) {
             case R.id.button_3_players:
                 m_num_players = 3;
                 break;
@@ -691,6 +699,9 @@ public class MainActivity extends Activity {
             case PIRATE_ATTACK_ROBBER_IS_SLEEPING:
                 message_type = getString(R.string.pirate_attack_seven_first);
                 break;
+            case LAST_MOVE_CANCELED:
+                message_type = getString(R.string.last_move_canceled);
+                break;
             case NO_MESSAGE:
             default:
                 break;
@@ -703,9 +714,38 @@ public class MainActivity extends Activity {
 
     private void SetMainButtonsEnable(boolean isEnable) {
         findViewById(R.id.roll_button).setEnabled(isEnable);
+        findViewById(R.id.cancel_last_move_button).setEnabled(isEnable && m_logic.CanCancelLastMove());
         findViewById(R.id.setting_button).setEnabled(isEnable);
         findViewById(R.id.new_game_button).setEnabled(isEnable);
         findViewById(R.id.show_histogram_button).setEnabled(isEnable);
         findViewById(R.id.alchemist_button).setEnabled(isEnable);
+    }
+
+    public void onCancelLastMoveClick(View view) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(R.string.cancel_last_move);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_logic.CancelLastMove();
+                SetDicesImagesRolled(1,1);
+                SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
+                m_pirate_position = m_logic.GetPiratePosition();
+                SetPiratePosition();
+                ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        builder.setIcon(R.drawable.cancel_last_move);
+        builder.show();
+
     }
 }
