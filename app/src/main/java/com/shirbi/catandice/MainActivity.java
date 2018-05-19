@@ -743,6 +743,7 @@ public class MainActivity extends Activity {
                 SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
                 m_pirate_position = m_logic.GetPiratePosition();
                 SetPiratePosition();
+                SetMainButtonsEnable(false);
                 ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
             }
         });
