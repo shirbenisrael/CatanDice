@@ -174,6 +174,8 @@ public class Logic {
             m_histogram[i] = 0;
         }
 
+        m_last_move = null;
+
         rand = new Random();
 
         m_pirate_position = DEFAULT_PIRATE_POSITION;
