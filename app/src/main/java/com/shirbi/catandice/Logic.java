@@ -171,13 +171,13 @@ public class Logic {
     }
 
     public int[] GetSumHistogram() {
-        int hisotgramToReturn[] = new int[Card.MAX_NUMBER_ON_DICE * 2 -1];
+        int histogramToReturn[] = new int[Card.MAX_NUMBER_ON_DICE * 2 -1];
 
         for(int i=0;i<m_histogram.length;i++) {
             Card card = IndexToCard(i);
-            hisotgramToReturn[card.m_red + card.m_yellow - 2] += m_histogram[i];
+            histogramToReturn[card.m_red + card.m_yellow - 2] += m_histogram[i];
         }
-        return hisotgramToReturn;
+        return histogramToReturn;
     }
 
     public int GetTurnNumber() {return m_current_turn_number;}
