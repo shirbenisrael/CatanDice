@@ -6,16 +6,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -714,11 +719,13 @@ public class MainActivity extends Activity {
 
     private void SetMainButtonsEnable(boolean isEnable) {
         findViewById(R.id.roll_button).setEnabled(isEnable);
-        findViewById(R.id.cancel_last_move_button).setEnabled(isEnable && m_logic.CanCancelLastMove());
-        findViewById(R.id.setting_button).setEnabled(isEnable);
-        findViewById(R.id.new_game_button).setEnabled(isEnable);
-        findViewById(R.id.show_histogram_button).setEnabled(isEnable);
         findViewById(R.id.alchemist_button).setEnabled(isEnable);
+        findViewById(R.id.setting_button).setEnabled(isEnable);
+
+        boolean enableCancelLastMove = isEnable && m_logic.CanCancelLastMove();
+        setImageButtonEnabled(isEnable, R.id.new_game_button, R.drawable.restart_icon);
+        setImageButtonEnabled(isEnable, R.id.show_histogram_button, R.drawable.histogram_icon);
+        setImageButtonEnabled(enableCancelLastMove, R.id.cancel_last_move_button, R.drawable.cancel_last_move);
     }
 
     public void onCancelLastMoveClick(View view) {
@@ -747,5 +754,31 @@ public class MainActivity extends Activity {
         builder.setIcon(R.drawable.cancel_last_move);
         builder.show();
 
+    }
+
+    public void setImageButtonEnabled(boolean enabled, int itemId, int iconResId) {
+        ImageButton item = (ImageButton)findViewById(itemId);
+        item.setEnabled(enabled);
+
+        Drawable originalIcon = ContextCompat.getDrawable(this, iconResId);
+        Drawable icon = enabled ? originalIcon : convertDrawableToGrayScale(originalIcon);
+        item.setImageDrawable(icon);
+    }
+
+    public static Drawable convertDrawableToGrayScale(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+
+        Drawable res = drawable.mutate();
+
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+
+        res.setColorFilter(filter);
+
+        return res;
     }
 }
