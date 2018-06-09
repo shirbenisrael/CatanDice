@@ -25,6 +25,7 @@ public class Logic {
     private GameType m_game_type;
     private boolean m_is_pirate_arrive;
     private Move m_last_move;
+    private boolean m_is_enable_fair_dice;
 
     static final int LOG_OF_FAIRNESS_FACTOR;
     public static final int DEFAULT_PIRATE_POSITION;
@@ -72,28 +73,32 @@ public class Logic {
         m_last_move.pirate_moved = false;
 
         if (!is_alchemist) {
-            int maxAppear = 0;
+            if (m_is_enable_fair_dice) {
+                int maxAppear = 0;
 
-            for (i = 0; i < m_histogram.length; i++) {
-                maxAppear = Math.max(maxAppear, m_histogram[i]);
-            }
+                for (i = 0; i < m_histogram.length; i++) {
+                    maxAppear = Math.max(maxAppear, m_histogram[i]);
+                }
 
-            int weights[] = new int[m_histogram.length];
-            int sumWeights = 0;
+                int weights[] = new int[m_histogram.length];
+                int sumWeights = 0;
 
-            for (i = 0; i < weights.length; i++) {
-                int log_weight = LOG_OF_FAIRNESS_FACTOR * (maxAppear - m_histogram[i]);
-                weights[i] = 1 << Math.min(64, log_weight);
+                for (i = 0; i < weights.length; i++) {
+                    int log_weight = LOG_OF_FAIRNESS_FACTOR * (maxAppear - m_histogram[i]);
+                    weights[i] = 1 << Math.min(64, log_weight);
 
-                sumWeights += weights[i];
-            }
+                    sumWeights += weights[i];
+                }
 
-            int randomValue = rand.nextInt(sumWeights);
+                int randomValue = rand.nextInt(sumWeights);
 
-            i = 0;
-            while (weights[i] < randomValue) {
-                randomValue -= weights[i];
-                i++;
+                i = 0;
+                while (weights[i] < randomValue) {
+                    randomValue -= weights[i];
+                    i++;
+                }
+            } else {
+                i = rand.nextInt(m_histogram.length);
             }
 
             m_histogram[i]++;
@@ -183,6 +188,11 @@ public class Logic {
         m_num_players = num_players;
         m_game_type = game_type;
         m_is_pirate_arrive = false;
+        m_is_enable_fair_dice = true;
+    }
+
+    public void SetEnableFairDice(boolean is_enable) {
+        m_is_enable_fair_dice = is_enable;
     }
 
     public int[] GetSumHistogram() {

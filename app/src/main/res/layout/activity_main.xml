@@ -336,6 +336,12 @@
             android:visibility="invisible">
 
             <CheckBox
+                android:id="@+id/enable_fair_dice_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enable_fair_dice" />
+
+            <CheckBox
                 android:id="@+id/enable_sound_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

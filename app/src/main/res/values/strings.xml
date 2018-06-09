@@ -10,6 +10,7 @@
     <string name="m_pirate_position">m_pirate_position</string>
     <string name="m_is_pirate_arrive">m_is_pirate_arrive</string>
     <string name="m_is_sound_enable">m_is_sound_enable</string>
+    <string name="m_is_fair_dice">m_is_fair_dice</string>
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
@@ -28,6 +29,7 @@
     <string name="new_game_player_start">New game - player %1$d starts!</string>
     <string name="turn_number">Turn number</string>
     <string name="enable_sound">Enable sound</string>
+    <string name="enable_fair_dice">Enable fair dice</string>
     <string name="game_type">Game Type:</string>
     <string name="game_type_regular">Regular Game</string>
     <string name="game_type_cities_and_knights">Cities &amp; Knight</string>

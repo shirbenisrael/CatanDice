@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
     private Card.EventDice m_event_dice;
     private int m_pirate_position;
     private boolean m_is_sound_enable;
+    private boolean m_is_fair_dice;
 
     private enum ShownState {
         GAME,
@@ -164,6 +165,7 @@ public class MainActivity extends Activity {
         editor.putInt(getString(R.string.m_game_type), m_game_type.getValue());
         editor.putInt(getString(R.string.m_pirate_position), m_pirate_position);
         editor.putBoolean(getString(R.string.m_is_sound_enable), m_is_sound_enable);
+        editor.putBoolean(getString(R.string.m_is_fair_dice), m_is_fair_dice);
 
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -184,8 +186,11 @@ public class MainActivity extends Activity {
         m_game_type = Logic.GameType.values()[game_type_num];
 
         m_is_sound_enable = sharedPref.getBoolean(getString(R.string.m_is_sound_enable), true);
+        m_is_fair_dice = sharedPref.getBoolean(getString(R.string.m_is_fair_dice), true);
 
         m_logic.RestoreState(this, sharedPref);
+
+        m_logic.SetEnableFairDice(m_is_fair_dice);
     }
 
     @Override
@@ -363,6 +368,9 @@ public class MainActivity extends Activity {
 
         CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
         enable_sound_check_box.setChecked(m_is_sound_enable);
+
+        CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
+        enable_fair_dice_check_box.setChecked(m_is_fair_dice);
 
         SetBackGround();
 
@@ -587,6 +595,11 @@ public class MainActivity extends Activity {
     public void onBackFromSettingClick(View view) {
         CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
         m_is_sound_enable = enable_sound_check_box.isChecked();
+
+        CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
+        m_is_fair_dice = enable_fair_dice_check_box.isChecked();
+
+        m_logic.SetEnableFairDice(m_is_fair_dice);
 
         ShowState(ShownState.GAME);
     }
