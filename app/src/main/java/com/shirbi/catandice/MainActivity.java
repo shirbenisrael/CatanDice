@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
     private int m_pirate_position;
     private boolean m_is_sound_enable;
     private boolean m_is_fair_dice;
+    private boolean m_is_shake_enable;
 
     private enum ShownState {
         GAME,
@@ -173,6 +174,7 @@ public class MainActivity extends Activity {
         editor.putInt(getString(R.string.m_pirate_position), m_pirate_position);
         editor.putBoolean(getString(R.string.m_is_sound_enable), m_is_sound_enable);
         editor.putBoolean(getString(R.string.m_is_fair_dice), m_is_fair_dice);
+        editor.putBoolean(getString(R.string.m_is_shake_enable), m_is_shake_enable);
 
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -194,6 +196,7 @@ public class MainActivity extends Activity {
 
         m_is_sound_enable = sharedPref.getBoolean(getString(R.string.m_is_sound_enable), true);
         m_is_fair_dice = sharedPref.getBoolean(getString(R.string.m_is_fair_dice), true);
+        m_is_shake_enable = sharedPref.getBoolean(getString(R.string.m_is_shake_enable), true);
 
         m_logic.RestoreState(this, sharedPref);
 
@@ -249,7 +252,7 @@ public class MainActivity extends Activity {
 
     private ShakeDetector.OnShakeListener m_shakeListener = new ShakeDetector.OnShakeListener() {
         public void onShake(int count) {
-            if (findViewById(R.id.roll_button).isEnabled() && (count >= NUM_SHAKES_TO_ROLL_DICE)) {
+            if (findViewById(R.id.roll_button).isEnabled() && (count >= NUM_SHAKES_TO_ROLL_DICE) && m_is_shake_enable) {
                 onRollClick(null);
             }
         }
@@ -391,6 +394,9 @@ public class MainActivity extends Activity {
 
         CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
         enable_fair_dice_check_box.setChecked(m_is_fair_dice);
+
+        CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
+        enable_shake_check_box.setChecked(m_is_shake_enable);
 
         SetBackGround();
 
@@ -620,6 +626,9 @@ public class MainActivity extends Activity {
         m_is_fair_dice = enable_fair_dice_check_box.isChecked();
 
         m_logic.SetEnableFairDice(m_is_fair_dice);
+
+        CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
+        m_is_shake_enable = enable_shake_check_box.isChecked();
 
         ShowState(ShownState.GAME);
     }

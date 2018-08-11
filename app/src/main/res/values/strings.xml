@@ -11,6 +11,7 @@
     <string name="m_is_pirate_arrive">m_is_pirate_arrive</string>
     <string name="m_is_sound_enable">m_is_sound_enable</string>
     <string name="m_is_fair_dice">m_is_fair_dice</string>
+    <string name="m_is_shake_enable">m_is_shake_enable</string>
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
@@ -38,4 +39,5 @@
     <string name="last_move_canceled">Last Roll Canceled?</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="shake_to_roll_dice">Shake To Roll Dice</string>
 </resources>
