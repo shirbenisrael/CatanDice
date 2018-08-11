@@ -10,6 +10,8 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +42,9 @@ public class MainActivity extends Activity {
     private MediaPlayer m_media_player;
     private Point m_size;
     private boolean m_is_alchemist_active = false;
+    private ShakeDetector m_shakeDetector;
+    private SensorManager m_sensorManager;
+    private Sensor m_accelerometer;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -66,11 +71,13 @@ public class MainActivity extends Activity {
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
     public static final int DEFAULT_NUMBER_ON_DICE;
     public static final Logic.GameType DEFAULT_GAME_TYPE;
+    public static final int NUM_SHAKES_TO_ROLL_DICE;
 
     static {
         DEFAULT_NUMBER_OF_PLAYERS = 4;
         DEFAULT_NUMBER_ON_DICE = 1;
         DEFAULT_GAME_TYPE = Logic.GameType.GAME_TYPE_REGULAR;
+        NUM_SHAKES_TO_ROLL_DICE = 2;
     }
 
     private void ShowState(ShownState new_state) {
@@ -240,6 +247,14 @@ public class MainActivity extends Activity {
         }
     }
 
+    private ShakeDetector.OnShakeListener m_shakeListener = new ShakeDetector.OnShakeListener() {
+        public void onShake(int count) {
+            if (findViewById(R.id.roll_button).isEnabled() && (count >= NUM_SHAKES_TO_ROLL_DICE)) {
+                onRollClick(null);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,6 +264,11 @@ public class MainActivity extends Activity {
         m_game_type = DEFAULT_GAME_TYPE;
 
         m_logic = new Logic(m_num_players, m_game_type);
+        m_shakeDetector = new ShakeDetector();
+        m_shakeDetector.setOnShakeListener(m_shakeListener);
+        m_sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        m_accelerometer = m_sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        m_sensorManager.registerListener(m_shakeDetector, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
 
         RestoreState();
 
