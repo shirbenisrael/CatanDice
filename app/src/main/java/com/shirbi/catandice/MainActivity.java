@@ -868,4 +868,27 @@ public class MainActivity extends Activity {
 
         return res;
     }
+
+    private void ShowAlertDialogMessage(String message, String title) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
+
+    public void onHelpFairDiceClick(View view) {
+        String message = getString(R.string.fair_dice_help_message);
+        String title = getString(R.string.fair_dice_title);
+        ShowAlertDialogMessage(message, title);
+    }
 }

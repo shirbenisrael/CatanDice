@@ -42,4 +42,7 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="shake_to_roll_dice">Shake To Roll Dice</string>
+    <string name="question_mark" translatable="false">?</string>
+    <string name="fair_dice_title">Fair Dice</string>
+    <string name="fair_dice_help_message">Reduce the chance of a pair of dice result that already appeared to appear until all other pairs appeared too.</string>
 </resources>
