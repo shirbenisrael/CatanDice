@@ -266,6 +266,14 @@
                 android:src="@drawable/cities_and_knights"
                 android:text="@string/game_type_cities_and_knights" />
 
+            <ImageButton
+                android:id="@+id/button_simple_dice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSelectGameTypeClick"
+                android:src="@drawable/simple_dice"
+                android:text="@string/game_type_simple_dice" />
+
             <Button
                 android:id="@+id/back_from_game_type_button"
                 android:layout_width="wrap_content"

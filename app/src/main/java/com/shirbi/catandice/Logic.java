@@ -37,7 +37,8 @@ public class Logic {
 
     public enum GameType {
         GAME_TYPE_REGULAR(0),
-        GAME_TYPE_CITIES_AND_KNIGHT(1);
+        GAME_TYPE_CITIES_AND_KNIGHT(1),
+        GAME_TYPE_SIMPLE_DICE(2);
 
         private int value;
         private GameType(int value){
@@ -107,18 +108,20 @@ public class Logic {
 
             cardToReturn = IndexToCard(i);
 
-            if (cardToReturn.m_red + cardToReturn.m_yellow == 7) {
-                if (m_game_type == GameType.GAME_TYPE_REGULAR) {
-                    if (m_current_turn_number <= m_num_players * 2) {
-                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
+            if (m_game_type != GameType.GAME_TYPE_SIMPLE_DICE) {
+                if (cardToReturn.m_red + cardToReturn.m_yellow == 7) {
+                    if (m_game_type == GameType.GAME_TYPE_REGULAR) {
+                        if (m_current_turn_number <= m_num_players * 2) {
+                            cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
+                        } else {
+                            cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
+                        }
                     } else {
-                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
-                    }
-                } else {
-                    if (!m_is_pirate_arrive) {
-                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
-                    } else {
-                        cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
+                        if (!m_is_pirate_arrive) {
+                            cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITHOUT_ROBBER;
+                        } else {
+                            cardToReturn.m_message = Card.MessageWithCard.SEVEN_WITH_ROBBER;
+                        }
                     }
                 }
             }

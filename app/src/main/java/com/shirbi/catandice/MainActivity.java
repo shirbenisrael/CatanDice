@@ -574,8 +574,22 @@ public class MainActivity extends Activity {
     private void SetBackGround() {
         LinearLayout main_layout = (LinearLayout) findViewById(R.id.layout_for_dices);
 
-        int resource = (m_game_type == Logic.GameType.GAME_TYPE_REGULAR)
-                ? R.drawable.regular_game_bg : R.drawable.cities_and_knights_bg;
+        int resource = R.drawable.regular_game_bg;
+
+        switch (m_game_type) {
+            case GAME_TYPE_CITIES_AND_KNIGHT:
+                resource = R.drawable.cities_and_knights_bg;
+                break;
+
+            case GAME_TYPE_REGULAR:
+                resource = R.drawable.regular_game_bg;
+                break;
+
+            case GAME_TYPE_SIMPLE_DICE:
+                resource = R.drawable.simple_dice_bg;
+                break;
+        }
+
         main_layout.setBackgroundResource(resource);
     }
 
@@ -681,6 +695,10 @@ public class MainActivity extends Activity {
 
             case R.id.button_cities_and_knights:
                 m_game_type = Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT;
+                break;
+
+            case R.id.button_simple_dice:
+                m_game_type = Logic.GameType.GAME_TYPE_SIMPLE_DICE;
                 break;
 
             default:
