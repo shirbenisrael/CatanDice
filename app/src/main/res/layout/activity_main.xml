@@ -326,41 +326,9 @@
 
         </LinearLayout>
 
-        <!-- Setting -->
-        <LinearLayout
+        <include
             android:id="@+id/setting_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:orientation="vertical"
-            android:visibility="invisible">
-
-            <CheckBox
-                android:id="@+id/enable_shake_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/shake_to_roll_dice" />
-
-            <CheckBox
-                android:id="@+id/enable_fair_dice_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enable_fair_dice" />
-
-            <CheckBox
-                android:id="@+id/enable_sound_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enable_sound" />
-
-            <Button
-                android:id="@+id/back_from_setting_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onBackFromSettingClick"
-                android:text="@string/back_string" />
-
-        </LinearLayout>
+            layout="@layout/settings" />
 
     </FrameLayout>
 
