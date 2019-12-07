@@ -18,6 +18,7 @@
     <string name="roll_string">Roll Dice</string>
     <string name="setting_string">Setting</string>
     <string name="new_game_string">New Game</string>
+    <string name="exit_app">Exit Application?</string>
     <string name="show_histogram">Show Histogram</string>
     <string name="back_string">Back</string>
     <string name="seven_with_robber_string">Seven rolled! Robber Attacks!</string>

@@ -27,4 +27,5 @@
     <string name="confirm">אשר</string>
     <string name="cancel">בטל</string>
     <string name="shake_to_roll_dice">ניעור המכשיר להטלת קוביות</string>
+    <string name="exit_app">יציאה מהאפליקציה?</string>
 </resources>

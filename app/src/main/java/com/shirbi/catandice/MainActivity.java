@@ -137,11 +137,37 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void Exit() {
+        super.onBackPressed();
+    }
+
+    public void showExitDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(getString(R.string.exit_app));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Exit();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
+
     @Override
     public void onBackPressed() {
         switch (m_shown_state) {
             case GAME:
-                super.onBackPressed();
+                showExitDialog();
                 break;
 
             case SETTING:
