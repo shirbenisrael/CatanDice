@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -13,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -890,5 +892,11 @@ public class MainActivity extends Activity {
         String message = getString(R.string.fair_dice_help_message);
         String title = getString(R.string.fair_dice_title);
         ShowAlertDialogMessage(message, title);
+    }
+
+    public void onRateAppClick(View view) {
+        final String appPackageName = getPackageName();
+
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
     }
 }

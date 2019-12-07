@@ -39,6 +39,28 @@
         android:layout_height="wrap_content"
         android:text="@string/enable_sound" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/black"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/please_rate" />
+
+        <Button
+            android:id="@+id/rate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRateAppClick"
+            android:text="@string/rate_app" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/back_from_setting_button"
         android:layout_width="wrap_content"

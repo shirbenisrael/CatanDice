@@ -45,4 +45,6 @@
     <string name="question_mark" translatable="false">?</string>
     <string name="fair_dice_title">Fair Dice</string>
     <string name="fair_dice_help_message">Reduce the chance of a pair of dice result that already appeared to appear until all other pairs appeared too.</string>
+    <string name="rate_app">Rate App</string>
+    <string name="please_rate">Did you like the app? Please rate us</string>
 </resources>
