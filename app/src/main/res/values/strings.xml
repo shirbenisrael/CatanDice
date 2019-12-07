@@ -1,17 +1,17 @@
 ﻿<resources>
-    <string name="m_num_players">m_num_players</string>
-    <string name="m_red_dice">m_red_dice</string>
-    <string name="m_yellow_dice">m_yellow_dice</string>
-    <string name="m_event_dice">m_event_dice</string>
-    <string name="m_show_histogram">m_show_histogram</string>
-    <string name="m_histogram">m_histogram</string>
-    <string name="m_current_turn_number">m_current_turn_number</string>
-    <string name="m_game_type">m_game_type</string>
-    <string name="m_pirate_position">m_pirate_position</string>
-    <string name="m_is_pirate_arrive">m_is_pirate_arrive</string>
-    <string name="m_is_sound_enable">m_is_sound_enable</string>
-    <string name="m_is_fair_dice">m_is_fair_dice</string>
-    <string name="m_is_shake_enable">m_is_shake_enable</string>
+    <string name="m_num_players" translatable="false">m_num_players</string>
+    <string name="m_red_dice" translatable="false">m_red_dice</string>
+    <string name="m_yellow_dice" translatable="false">m_yellow_dice</string>
+    <string name="m_event_dice" translatable="false">m_event_dice</string>
+    <string name="m_show_histogram" translatable="false">m_show_histogram</string>
+    <string name="m_histogram" translatable="false">m_histogram</string>
+    <string name="m_current_turn_number" translatable="false">m_current_turn_number</string>
+    <string name="m_game_type" translatable="false">m_game_type</string>
+    <string name="m_pirate_position" translatable="false">m_pirate_position</string>
+    <string name="m_is_pirate_arrive" translatable="false">m_is_pirate_arrive</string>
+    <string name="m_is_sound_enable" translatable="false">m_is_sound_enable</string>
+    <string name="m_is_fair_dice" translatable="false">m_is_fair_dice</string>
+    <string name="m_is_shake_enable" translatable="false">m_is_shake_enable</string>
 
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
