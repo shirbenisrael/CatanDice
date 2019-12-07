@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Catan Dice</string>
+    <string name="alchemist">алхимик</string>
+    <string name="back_string">назад</string>
+    <string name="cancel">Отмена</string>
+    <string name="cancel_last_move">Отменить последний бросок?</string>
+    <string name="confirm">Подтверждение</string>
+    <string name="continue_string">Продолжать</string>
+    <string name="enable_fair_dice">Включить честные кости</string>
+    <string name="enable_sound">Включить звук</string>
+    <string name="exit_app">Выход из приложения?</string>
+    <string name="fair_dice_help_message">Уменьшите вероятность появления пары костей, которая уже появилась, пока не появятся все остальные пары.</string>
+    <string name="fair_dice_title">Честная игра в кости</string>
+    <string name="game_type">Тип игры:</string>
+    <string name="game_type_cities_and_knights">Города и Рыцарь</string>
+    <string name="game_type_regular">Обычная игра</string>
+    <string name="game_type_simple_dice">Простые кости</string>
+    <string name="last_move_canceled">Последний бросок отменен?</string>
+    <string name="new_game_player_start">Новая игра - игрок %1$d начинается!</string>
+    <string name="new_game_string">Новая игра</string>
+    <string name="num_players_string">Количество игроков:</string>
+    <string name="pirate_attack">Пираты нападают! Защити остров!</string>
+    <string name="pirate_attack_seven">Пираты нападают! Защити остров! Грабитель тоже нападает!</string>
+    <string name="pirate_attack_seven_first">Пираты нападают! Защити остров! Грабитель спит ...!</string>
+    <string name="please_rate">Вам понравилось приложение? Пожалуйста, оцените нас</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="roll_string">Игральная кость</string>
+    <string name="setting_string">настройка</string>
+    <string name="seven_with_robber_string">Семерка прокатилась! Грабитель атакует!</string>
+    <string name="seven_without_robber_string">Семь в начале. Грабитель спит ...</string>
+    <string name="shake_to_roll_dice">Встряхните устройство для литья костей</string>
+    <string name="show_histogram">Показать гистограмму</string>
+    <string name="turn_number">Номер поворота</string>
+</resources>
