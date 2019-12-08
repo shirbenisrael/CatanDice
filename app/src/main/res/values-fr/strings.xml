@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Catan Dice</string>
+    <string name="alchemist">Alchimiste</string>
+    <string name="back_string">Retour</string>
+    <string name="cancel">Annuler</string>
+    <string name="cancel_last_move">Annuler le dernier rouleau?</string>
+    <string name="confirm">Confirmer</string>
+    <string name="continue_string">Continuer</string>
+    <string name="enable_fair_dice">Activer les dés équitables</string>
+    <string name="enable_sound">Activer le son</string>
+    <string name="exit_app">Quitter l\'application?</string>
+    <string name="fair_dice_help_message">Réduisez les chances de voir apparaître une paire de dés qui semblait déjà apparaître jusqu\'à ce que toutes les autres paires apparaissent également.</string>
+    <string name="fair_dice_title">Juste Dé</string>
+    <string name="game_type">Type de jeu:</string>
+    <string name="game_type_cities_and_knights">Villes et chevaliers</string>
+    <string name="game_type_regular">Jeu régulier</string>
+    <string name="game_type_simple_dice">Dés simples</string>
+    <string name="last_move_canceled">Dernier rouleau annulé?</string>
+    <string name="new_game_player_start">Nouveau jeu - le joueur %1$d commence!</string>
+    <string name="new_game_string">Nouveau jeu</string>
+    <string name="num_players_string">Nombre de joueurs:</string>
+    <string name="pirate_attack">Attaque de pirates! Défendez l\'île!</string>
+    <string name="pirate_attack_seven">Attaque de pirates! Défendez l\'île! Les attaques de voleurs aussi!</string>
+    <string name="pirate_attack_seven_first">Attaque de pirates! Défendez l\'île! Le voleur dort ...!</string>
+    <string name="please_rate">Vous avez aimé l\'application? Veuillez nous évaluer</string>
+    <string name="rate_app">Application de taux</string>
+    <string name="roll_string">Roulez les dés</string>
+    <string name="setting_string">Réglage</string>
+    <string name="turn_number">Numéro de tour</string>
+    <string name="seven_without_robber_string">Sept au début. Le voleur dort ...</string>
+    <string name="seven_with_robber_string">Seven roula! Attaques de voleurs!</string>
+    <string name="shake_to_roll_dice">Secouer pour lancer les dés</string>
+    <string name="show_histogram">Afficher l\'histogramme</string>
+</resources>
