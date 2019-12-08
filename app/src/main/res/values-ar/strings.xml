@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Catan Dice</string>
+    <string name="alchemist">الكيميائي</string>
+    <string name="back_string">عودة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="cancel_last_move">إلغاء آخر لفة؟</string>
+    <string name="confirm">أكد</string>
+    <string name="continue_string">واصل</string>
+    <string name="enable_fair_dice">تمكين النرد عادلة</string>
+    <string name="enable_sound">تمكين الصوت</string>
+    <string name="exit_app">الخروج من التطبيق؟</string>
+    <string name="fair_dice_help_message">قلل من فرصة ظهور زوج من النرد ظهر بالفعل حتى ظهرت جميع الأزواج الأخرى أيضًا.</string>
+    <string name="fair_dice_title">النرد عادلة</string>
+    <string name="game_type">نوع اللعبة:</string>
+    <string name="game_type_cities_and_knights">مدن وفرسان</string>
+    <string name="game_type_regular">لعبة عادية</string>
+    <string name="game_type_simple_dice">النرد البسيط</string>
+    <string name="last_move_canceled">آخر لفة ألغيت؟</string>
+    <string name="new_game_player_start">لعبة جديدة - يبدأ اللاعب %1$d!</string>
+    <string name="new_game_string">لعبة جديدة</string>
+    <string name="num_players_string">عدد اللاعبين:</string>
+    <string name="pirate_attack">هجوم القراصنة! الدفاع عن الجزيرة!</string>
+    <string name="pirate_attack_seven">هجوم القراصنة! الدفاع عن الجزيرة! هجمات السارق أيضا!</string>
+    <string name="pirate_attack_seven_first">هجوم القراصنة! الدفاع عن الجزيرة! السارق نائم ...!</string>
+    <string name="please_rate">هل أعجبك التطبيق؟ ارجوك قم بتقييمنا</string>
+    <string name="rate_app">معدل التطبيق</string>
+    <string name="roll_string">لفة النرد</string>
+    <string name="setting_string">ضبط</string>
+    <string name="seven_with_robber_string">توالت سبعة! هجمات السارق!</string>
+    <string name="seven_without_robber_string">سبعة في البداية. السارق نائم ...</string>
+    <string name="shake_to_roll_dice">اهتز إلى لفة النرد</string>
+    <string name="show_histogram">عرض الرسم البياني</string>
+    <string name="turn_number">بدوره الرقم</string>
+</resources>
