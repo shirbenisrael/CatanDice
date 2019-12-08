@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Catan Dice</string>
+    <string name="alchemist">Alquimista</string>
+    <string name="back_string">elretorno</string>
+    <string name="cancel">cancelar</string>
+    <string name="cancel_last_move">Cancelar último rollo?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="continue_string">Continuar</string>
+    <string name="enable_fair_dice">Habilitar dados justos</string>
+    <string name="enable_sound">Activar sonido</string>
+    <string name="exit_app">¿Salir de la aplicación?</string>
+    <string name="fair_dice_help_message">Reduzca la posibilidad de un par de resultados de dados que ya parecían aparecer hasta que aparecieron todos los demás pares.</string>
+    <string name="fair_dice_title">Dados justos</string>
+    <string name="game_type">Tipo de juego:</string>
+    <string name="game_type_cities_and_knights">Ciudades y caballeros</string>
+    <string name="game_type_regular">Juego regular</string>
+    <string name="game_type_simple_dice">Dados simples</string>
+    <string name="last_move_canceled">¿Último rollo cancelado?</string>
+    <string name="new_game_player_start">Nuevo juego: ¡comienza el jugador %1$d!</string>
+    <string name="new_game_string">Nuevo juego</string>
+    <string name="num_players_string">Número de jugadores:</string>
+    <string name="pirate_attack">¡Ataque de piratas! Defiende la isla!</string>
+    <string name="pirate_attack_seven">¡Ataque de piratas! Defiende la isla! ¡Los ataques de ladrones también!</string>
+    <string name="pirate_attack_seven_first">¡Ataque de piratas! Defiende la isla! ¡El ladrón está durmiendo ...!</string>
+    <string name="please_rate">¿Te gustó la aplicación? Por favor califícanos</string>
+    <string name="rate_app">Calificar aplicacion</string>
+    <string name="roll_string">Tirar el dado</string>
+    <string name="setting_string">Ajuste</string>
+    <string name="seven_with_robber_string">¡Siete rodados! ¡Ataques de ladrones!</string>
+    <string name="seven_without_robber_string">Siete al principio. El ladrón está durmiendo ...</string>
+    <string name="shake_to_roll_dice">Agitar para tirar dados</string>
+    <string name="show_histogram">Mostrar histograma</string>
+    <string name="turn_number">Número de giro</string>
+</resources>
