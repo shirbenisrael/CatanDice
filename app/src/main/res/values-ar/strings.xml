@@ -32,4 +32,8 @@
     <string name="shake_to_roll_dice">اهتز إلى لفة النرد</string>
     <string name="show_histogram">عرض الرسم البياني</string>
     <string name="turn_number">بدوره الرقم</string>
+    <string name="fix_yellow">إصلاح الأصفر</string>
+    <string name="fix_red">إصلاح الأحم</string>
+    <string name="roll_red">لفة الأحمر</string>
+    <string name="roll_yellow">لفة الأصفر</string>
 </resources>

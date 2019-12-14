@@ -33,4 +33,8 @@
     <string name="fair_dice_help_message">הפחתת הסיכוים של צירוף קוביות שכבר הופיע להופיע שוב לפני צירופים שעוד לא הופיעו</string>
     <string name="rate_app">דירוג האפליקציה</string>
     <string name="please_rate">אוהבים את האפלקיציה? בבקשה דרגו אותנו</string>
+    <string name="fix_red">קבע אדומה</string>
+    <string name="fix_yellow">קבע צהובה</string>
+    <string name="roll_red">הטל אדומה</string>
+    <string name="roll_yellow">הטל צהובה</string>
 </resources>

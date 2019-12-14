@@ -32,4 +32,8 @@
     <string name="shake_to_roll_dice">Agitar para tirar dados</string>
     <string name="show_histogram">Mostrar histograma</string>
     <string name="turn_number">Número de giro</string>
+    <string name="roll_yellow">Rodar el amarillo</string>
+    <string name="roll_red">Rodar el rojo</string>
+    <string name="fix_red">Arreglar el rojo</string>
+    <string name="fix_yellow">Arreglar el amarillo</string>
 </resources>

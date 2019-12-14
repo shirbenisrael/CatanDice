@@ -276,6 +276,14 @@ public class MainActivity extends Activity {
             view.getLayoutParams().width = width;
             view.getLayoutParams().height = width / 2;
         }
+
+        Ids = new int[] {R.id.roll_red_button, R.id.roll_yellow_button, R.id.fix_red_button, R.id.fix_yellow_button};
+        width = m_size.x / 3;
+        for (int id : Ids) {
+            View view = findViewById(id);
+            view.getLayoutParams().width = width;
+            view.getLayoutParams().height = width / 2;
+        }
     }
 
     private ShakeDetector.OnShakeListener m_shakeListener = new ShakeDetector.OnShakeListener() {
@@ -327,6 +335,7 @@ public class MainActivity extends Activity {
         SetDicesImagesRolled(m_red_dice, m_yellow_dice);
         SetEventDiceImage(m_event_dice);
         SetEventDiceVisibility();
+        SetOneDiceOperationVisibility();
 
         LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
@@ -491,6 +500,15 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void SetOneDiceOperationVisibility() {
+        View layout = findViewById(R.id.layout_for_one_dice_operation);
+        if (m_game_type == Logic.GameType.GAME_TYPE_SIMPLE_DICE) {
+            layout.setVisibility(View.VISIBLE);
+        } else {
+            layout.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void SetPiratePosition() {
         for (int i = m_pirate_position + 1; i < Card.MAX_PIRATE_POSITIONS; i++) {
             m_pirate_positions_images[i].setImageAlpha(0);
@@ -541,6 +559,22 @@ public class MainActivity extends Activity {
                 {R.drawable.yellow_1, R.drawable.yellow_2, R.drawable.yellow_3, R.drawable.yellow_4, R.drawable.yellow_5, R.drawable.yellow_6};
 
         yellow_dice_result_image.setImageResource(yellow_images[yellow_dice_number - 1]);
+    }
+
+    public void onRollRedClick(View view) {
+
+    }
+
+    public void onRollYellowClick(View view) {
+
+    }
+
+    public void onFixRedClick(View view) {
+
+    }
+
+    public void onFixYellowClick(View view) {
+
     }
 
     public void onRollClick(View view) {
@@ -751,6 +785,7 @@ public class MainActivity extends Activity {
         m_pirate_position = 0;
 
         SetEventDiceVisibility();
+        SetOneDiceOperationVisibility();
         SetPiratePosition();
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
     }

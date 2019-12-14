@@ -16,6 +16,10 @@
     <!-- Need translation -->
     <string name="app_name">Catan Dice</string>
     <string name="roll_string">Roll Dice</string>
+    <string name="roll_red">Roll Red</string>
+    <string name="roll_yellow">Roll Yellow</string>
+    <string name="fix_red">Fix Red</string>
+    <string name="fix_yellow">Fix Yellow</string>
     <string name="setting_string">Setting</string>
     <string name="new_game_string">New Game</string>
     <string name="exit_app">Exit Application?</string>

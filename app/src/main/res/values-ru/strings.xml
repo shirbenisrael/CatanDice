@@ -32,4 +32,8 @@
     <string name="shake_to_roll_dice">Встряхните устройство для литья костей</string>
     <string name="show_histogram">Показать гистограмму</string>
     <string name="turn_number">Номер поворота</string>
+    <string name="fix_yellow">Исправить желтый</string>
+    <string name="fix_red">Исправить красный</string>
+    <string name="roll_red">Ролл красный</string>
+    <string name="roll_yellow">Свернуть желтый</string>
 </resources>

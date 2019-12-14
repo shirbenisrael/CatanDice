@@ -32,4 +32,8 @@
     <string name="seven_with_robber_string">Seven roula! Attaques de voleurs!</string>
     <string name="shake_to_roll_dice">Secouer pour lancer les dés</string>
     <string name="show_histogram">Afficher l\'histogramme</string>
+    <string name="fix_yellow">Roulez le jaune</string>
+    <string name="fix_red">Roulez le rouge</string>
+    <string name="roll_red">Fixez le rouge</string>
+    <string name="roll_yellow">Fixez le jaune</string>
 </resources>
