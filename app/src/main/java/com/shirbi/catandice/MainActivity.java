@@ -605,7 +605,7 @@ public class MainActivity extends Activity {
     }
 
     public void onFixYellowClick(View view) {
-        fixOneDice(R.string.fix_yellow, true);
+        fixOneDice(R.string.fix_yellow, false);
     }
 
     public void onRollClick(View view) {
