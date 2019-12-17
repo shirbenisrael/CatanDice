@@ -574,12 +574,38 @@ public class MainActivity extends Activity {
         rollDice();
     }
 
-    public void onFixRedClick(View view) {
+    public void fixOneDice(int title_id, final boolean is_red) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(getString(title_id));
 
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+
+        builder.setItems(new CharSequence[] {"1", "2", "3", "4", "5", "6"},
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (is_red) {
+                            m_red_dice = which + 1;
+                        } else {
+                            m_yellow_dice = which + 1;
+                        }
+                        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void onFixRedClick(View view) {
+        fixOneDice(R.string.fix_red, true);
     }
 
     public void onFixYellowClick(View view) {
-
+        fixOneDice(R.string.fix_yellow, true);
     }
 
     public void onRollClick(View view) {
