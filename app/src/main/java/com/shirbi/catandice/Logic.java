@@ -210,6 +210,8 @@ public class Logic {
 
     public int GetTurnNumber() {return m_current_turn_number;}
 
+    public void IncreaseTurnNumber() { m_current_turn_number++; }
+
     public void StoreState(Context context, SharedPreferences.Editor editor) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < m_histogram.length; i++) {

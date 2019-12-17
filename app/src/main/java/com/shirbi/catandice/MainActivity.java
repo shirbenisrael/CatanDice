@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
     private ShakeDetector m_shakeDetector;
     private SensorManager m_sensorManager;
     private Sensor m_accelerometer;
+    private boolean m_roll_red, m_roll_yellow;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -562,11 +563,15 @@ public class MainActivity extends Activity {
     }
 
     public void onRollRedClick(View view) {
-
+        m_roll_red = true;
+        m_roll_yellow = false;
+        rollDice();
     }
 
     public void onRollYellowClick(View view) {
-
+        m_roll_red = false;
+        m_roll_yellow = true;
+        rollDice();
     }
 
     public void onFixRedClick(View view) {
@@ -578,6 +583,12 @@ public class MainActivity extends Activity {
     }
 
     public void onRollClick(View view) {
+        m_roll_red = true;
+        m_roll_yellow = true;
+        rollDice();
+    }
+
+    private void rollDice() {
         m_count_down = 10;
         m_timer = new Timer();
 
@@ -645,36 +656,54 @@ public class MainActivity extends Activity {
 
             if (m_count_down == 0) {
                 m_timer.cancel();
-                Card card;
-                card = m_logic.GetNewCard(m_is_alchemist_active);
 
-                m_red_dice = card.m_red;
-                m_yellow_dice = card.m_yellow;
-                m_event_dice = card.m_event_dice;
+                if (m_roll_red && m_roll_yellow) {
+                    Card card;
+                    card = m_logic.GetNewCard(m_is_alchemist_active);
 
-                if (!m_is_alchemist_active) {
-                    SetDicesImagesRolled(card.m_red, card.m_yellow);
-                }
-                SetEventDiceImage(card.m_event_dice);
+                    m_red_dice = card.m_red;
+                    m_yellow_dice = card.m_yellow;
+                    m_event_dice = card.m_event_dice;
 
-                m_is_alchemist_active = false;
+                    if (!m_is_alchemist_active) {
+                        SetDicesImagesRolled(card.m_red, card.m_yellow);
+                    }
+                    SetEventDiceImage(card.m_event_dice);
 
-                ShowMessage(card.m_message, card.m_turn_number);
+                    m_is_alchemist_active = false;
 
-                m_pirate_position = card.m_pirate_position;
-                SetPiratePosition();
+                    ShowMessage(card.m_message, card.m_turn_number);
 
-                m_media_player.release();
+                    m_pirate_position = card.m_pirate_position;
+                    SetPiratePosition();
 
-                if (card.m_message == Card.MessageWithCard.NO_MESSAGE) {
+                    if (card.m_message == Card.MessageWithCard.NO_MESSAGE) {
+                        SetMainButtonsEnable(true);
+                    }
+                } else {
+                    Random rand = new Random();
+                    if (m_roll_red) {
+                        m_red_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
+                    }
+                    if (m_roll_yellow) {
+                        m_yellow_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
+                    }
+                    SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+
+                    m_logic.IncreaseTurnNumber();
+
+                    ShowMessage(Card.MessageWithCard.NO_MESSAGE, m_logic.GetTurnNumber());
+
                     SetMainButtonsEnable(true);
                 }
+
+                m_media_player.release();
             } else {
                 Random rand = new Random();
                 if (!m_is_alchemist_active) {
-                    SetDicesImagesRolled(
-                            (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1),
-                            (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1));
+                    int red_to_show = m_roll_red ? (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1) : m_red_dice;
+                    int yellow_to_show = m_roll_yellow ? (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1) : m_yellow_dice;
+                    SetDicesImagesRolled(red_to_show, yellow_to_show);
                 }
 
                 int event_num = rand.nextInt(Card.MAX_EVENTS_ON_EVENT_DICE);
@@ -844,6 +873,10 @@ public class MainActivity extends Activity {
         findViewById(R.id.roll_button).setEnabled(isEnable);
         findViewById(R.id.alchemist_button).setEnabled(isEnable);
         findViewById(R.id.setting_button).setEnabled(isEnable);
+        findViewById(R.id.roll_red_button).setEnabled(isEnable);
+        findViewById(R.id.roll_yellow_button).setEnabled(isEnable);
+        findViewById(R.id.fix_red_button).setEnabled(isEnable);
+        findViewById(R.id.fix_yellow_button).setEnabled(isEnable);
 
         boolean enableCancelLastMove = isEnable && m_logic.CanCancelLastMove();
         setImageButtonEnabled(isEnable, R.id.new_game_button, R.drawable.restart_icon);
