@@ -2,6 +2,8 @@ package com.shirbi.catandice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +19,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.view.Display;
 import android.view.Gravity;
@@ -29,10 +33,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.shirbi.catandice.BluetoothChatService.TOAST;
 
 public class MainActivity extends Activity {
     private TextView m_histogram_counters[]; /* histograms values */
@@ -48,6 +56,14 @@ public class MainActivity extends Activity {
     private SensorManager m_sensorManager;
     private Sensor m_accelerometer;
     private boolean m_roll_red, m_roll_yellow;
+    private BluetoothAdapter mBluetoothAdapter = null;
+    // Name of the connected device
+    private String mConnectedDeviceName = null;
+    // String buffer for outgoing messages
+    private StringBuffer mOutStringBuffer;
+    private com.shirbi.catandice.BluetoothChatService mChatService = null;
+    private IncomingHandler mHandler = new IncomingHandler(this);
+    private Boolean mTwoPlayerGame = false;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -76,6 +92,11 @@ public class MainActivity extends Activity {
     public static final int DEFAULT_NUMBER_ON_DICE;
     public static final Logic.GameType DEFAULT_GAME_TYPE;
     public static final int NUM_SHAKES_TO_ROLL_DICE;
+
+    // Intent request codes
+    private static final int REQUEST_CONNECT_DEVICE = 1;
+    private static final int REQUEST_ENABLE_BT = 2;
+    private static final int REQUEST_DISCOVERABLE = 3;
 
     static {
         DEFAULT_NUMBER_OF_PLAYERS = 4;
@@ -309,6 +330,7 @@ public class MainActivity extends Activity {
         m_sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         m_accelerometer = m_sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         m_sensorManager.registerListener(m_shakeDetector, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         RestoreState();
 
@@ -992,5 +1014,204 @@ public class MainActivity extends Activity {
         final String appPackageName = getPackageName();
 
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+    }
+
+    private Boolean VerifyBlueToothEnabled() {
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void RunConnectActivity() {
+        Intent serverIntent = new Intent(this, DeviceListActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+    }
+
+    public void onConnectClick(View view) {
+        if (VerifyBlueToothEnabled()) {
+            RunConnectActivity();
+        }
+    }
+
+    private void ensureDiscoverable() {
+        if (mBluetoothAdapter.getScanMode() !=
+                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE);
+        } else {
+            if (mChatService == null) {
+                setupChat();
+                mChatService.start();
+            }
+        }
+    }
+
+    public void discoverable(View view) {
+        ensureDiscoverable();
+    }
+
+    public void onDisconnectClick(View view) {
+        disconnect(true);
+    }
+
+    private void disconnect(boolean send_message) {
+        if (!mTwoPlayerGame) {
+            return;
+        }
+
+        if (mChatService != null) {
+
+            if (send_message) {
+                String message = String.valueOf(BLUETOOTH_MESSAGES.DISCONNECT);
+                sendMessage(message);
+            }
+
+            mChatService.stop();
+            mChatService = null;
+        }
+
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.disable();
+        }
+
+        mTwoPlayerGame = false;
+    }
+
+    private void sendMessage(String message) {
+
+        // Check that we're actually connected before trying anything
+        if (mChatService.getState() != com.shirbi.catandice.BluetoothChatService.STATE_CONNECTED) {
+            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            byte[] send = message.getBytes();
+            mChatService.write(send);
+
+            //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+            case com.shirbi.catandice.BluetoothChatService.MESSAGE_WRITE:
+                byte[] writeBuf = (byte[]) msg.obj;
+                // construct a string from the buffer
+                String writeMessage = new String(writeBuf);
+                break;
+            case com.shirbi.catandice.BluetoothChatService.MESSAGE_READ:
+                byte[] readBuf = (byte[]) msg.obj;
+                // construct a string from the valid bytes in the buffer
+                String readMessage = new String(readBuf, 0, msg.arg1);
+                ParseMessage(readMessage);
+                break;
+            case com.shirbi.catandice.BluetoothChatService.MESSAGE_DEVICE_NAME:
+                // save the connected device's name
+                mConnectedDeviceName = msg.getData().getString(com.shirbi.catandice.BluetoothChatService.DEVICE_NAME);
+                Toast.makeText(getApplicationContext(), "Connected to "
+                        + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                mTwoPlayerGame = true;
+                break;
+            case com.shirbi.catandice.BluetoothChatService.MESSAGE_TOAST:
+                Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
+                        Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    private void setupChat() {
+        // Initialize the BluetoothChatService to perform bluetooth connections
+        mChatService = new com.shirbi.catandice.BluetoothChatService(this, mHandler);
+
+        // Initialize the buffer for outgoing messages
+        mOutStringBuffer = new StringBuffer("");
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CONNECT_DEVICE:
+                // When DeviceListActivity returns with a device to connect
+                if (resultCode == Activity.RESULT_OK) {
+                    // Get the device MAC address
+                    String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                    // Get the BluetoothDevice object
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                    // Attempt to connect to the device
+
+                    if (mChatService == null) {
+                        setupChat();
+                    }
+
+                    mChatService.connect(device);
+                }
+                break;
+            case REQUEST_ENABLE_BT:
+                // When the request to enable Bluetooth returns
+                if (resultCode == Activity.RESULT_OK) {
+                    // Bluetooth is now enabled, so set up a chat session
+                    RunConnectActivity();
+                } else {
+                    // User did not enable Bluetooth or an error occured
+                    Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_DISCOVERABLE:
+                if (resultCode != Activity.RESULT_CANCELED) {
+                    // Bluetooth is now enabled, so set up a chat session
+                    if (mChatService == null) {
+                        setupChat();
+                        mChatService.start();
+                    }
+                } else {
+                    // User did not enable Bluetooth or an error occured
+                    Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    private void ParseMessage(String message) {
+        String[] strArray = message.split(",");
+
+        int messageType = Integer.parseInt(strArray[0]);
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+        switch (messageType) {
+            // TODO: Handle messages
+            case BLUETOOTH_MESSAGES.START_GAME:
+                break;
+
+            case BLUETOOTH_MESSAGES.DISCONNECT:
+                disconnect(false);
+                break;
+        }
+    }
+
+    // The Handler that gets information back from the BluetoothChatService
+    static class IncomingHandler extends Handler {
+        private final WeakReference<MainActivity> m_activity;
+
+        IncomingHandler(MainActivity activity) {
+            m_activity = new WeakReference<MainActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = m_activity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
+        }
+    }
+
+    class BLUETOOTH_MESSAGES {
+        static final int START_GAME = 0;
+        static final int DISCONNECT = 1;
     }
 }

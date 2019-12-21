@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="button_scan">Scan Devices</string>
+    <string name="title_other_devices">Other Devices</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="connect">Connect</string>
+    <string name="discoverable">Discoverable</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="select_device">Select a Device</string>
+    <string name="none_found">None found</string>
+    <string name="none_paired">None Paired.</string>
+    <string name="request_permission">Request Permission</string>
+    <string name="scan_bluetooth">Need for scanning bluetooth</string>
+    <string name="scanning">Scanning...</string>
+    <string name="permission_denied">Permission Denied!</string>
+    <string name="bt_not_enabled_leaving">BlueTooth is not enabled.</string>
+    <string name="not_connected">Not connected.</string>
+</resources>

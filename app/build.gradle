@@ -5,7 +5,7 @@ android {
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.shirbi.catandice"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 21
         versionName "1.0"
