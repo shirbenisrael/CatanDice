@@ -64,6 +64,7 @@ public class MainActivity extends Activity {
     private com.shirbi.catandice.BluetoothChatService mChatService = null;
     private IncomingHandler mHandler = new IncomingHandler(this);
     private Boolean mTwoPlayerGame = false;
+    private int m_starting_player;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -861,6 +862,8 @@ public class MainActivity extends Activity {
 
         m_pirate_position = 0;
 
+        m_starting_player = new Random().nextInt(m_num_players) + 1;
+
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetPiratePosition();
@@ -892,8 +895,7 @@ public class MainActivity extends Activity {
                 message_type = getString(R.string.seven_without_robber_string);
                 break;
             case NEW_GAME:
-                int starting_player = new Random().nextInt(m_num_players) + 1;
-                message_type = String.format(getString(R.string.new_game_player_start), starting_player);
+                message_type = String.format(getString(R.string.new_game_player_start), m_starting_player);
                 break;
             case PIRATE_ATTACK:
                 message_type = getString(R.string.pirate_attack);
