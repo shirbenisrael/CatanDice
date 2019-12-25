@@ -864,6 +864,14 @@ public class MainActivity extends Activity {
 
         m_starting_player = new Random().nextInt(m_num_players) + 1;
 
+        if (mTwoPlayerGame) {
+            String message = String.valueOf(BLUETOOTH_MESSAGES.START_GAME) + "," +
+                    String.valueOf(m_game_type.getValue()) + "," + String.valueOf(m_num_players) + "," +
+                    String.valueOf(m_starting_player);
+
+            sendMessage(message);
+        }
+
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetPiratePosition();
