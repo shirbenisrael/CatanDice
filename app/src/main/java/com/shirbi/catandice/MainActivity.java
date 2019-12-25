@@ -853,18 +853,21 @@ public class MainActivity extends Activity {
                 break;
 
             default:
-                throw new RuntimeException("Unknow button ID");
+                throw new RuntimeException("Unknown button ID");
         }
-
-        SetBackGround();
-
-        m_logic.Init(m_num_players, m_game_type);
-
-        m_pirate_position = 0;
 
         m_starting_player = new Random().nextInt(m_num_players) + 1;
 
-        if (mTwoPlayerGame) {
+        StartingNewGame(true);
+    }
+
+    private void StartingNewGame(boolean send_message_to_other_player) {
+        SetBackGround();
+
+        m_logic.Init(m_num_players, m_game_type);
+        m_pirate_position = 0;
+
+        if (mTwoPlayerGame && send_message_to_other_player) {
             String message = String.valueOf(BLUETOOTH_MESSAGES.START_GAME) + "," +
                     String.valueOf(m_game_type.getValue()) + "," + String.valueOf(m_num_players) + "," +
                     String.valueOf(m_starting_player);
@@ -877,7 +880,6 @@ public class MainActivity extends Activity {
         SetPiratePosition();
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
     }
-
 
     private void ShowTurnNumber(int turn_number) {
         TextView turn_number_text_view = (TextView) findViewById(R.id.turn_number_text_view);
@@ -1195,6 +1197,14 @@ public class MainActivity extends Activity {
         switch (messageType) {
             // TODO: Handle messages
             case BLUETOOTH_MESSAGES.START_GAME:
+                int[] intArray = new int[strArray.length];
+                for (int i = 0; i < strArray.length; i++) {
+                    intArray[i] = Integer.parseInt(strArray[i]);
+                }
+                m_game_type = Logic.GameType.values()[intArray[1]];
+                m_num_players = intArray[2];
+                m_starting_player = intArray[3];
+                StartingNewGame(false);
                 break;
 
             case BLUETOOTH_MESSAGES.DISCONNECT:
