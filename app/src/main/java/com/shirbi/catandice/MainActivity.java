@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
     private IncomingHandler mHandler = new IncomingHandler(this);
     private Boolean mTwoPlayerGame = false;
     private int m_starting_player;
+    private Card m_last_card;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -588,12 +589,16 @@ public class MainActivity extends Activity {
     public void onRollRedClick(View view) {
         m_roll_red = true;
         m_roll_yellow = false;
+        Random rand = new Random();
+        m_red_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
         rollDice();
     }
 
     public void onRollYellowClick(View view) {
         m_roll_red = false;
         m_roll_yellow = true;
+        Random rand = new Random();
+        m_yellow_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
         rollDice();
     }
 
@@ -634,6 +639,12 @@ public class MainActivity extends Activity {
     public void onRollClick(View view) {
         m_roll_red = true;
         m_roll_yellow = true;
+        m_last_card = m_logic.GetNewCard(m_is_alchemist_active);
+        if (!m_is_alchemist_active) {
+            m_red_dice = m_last_card.m_red;
+            m_yellow_dice = m_last_card.m_yellow;
+        }
+        m_event_dice = m_last_card.m_event_dice;
         rollDice();
     }
 
@@ -706,43 +717,20 @@ public class MainActivity extends Activity {
             if (m_count_down == 0) {
                 m_timer.cancel();
 
+                SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+
                 if (m_roll_red && m_roll_yellow) {
-                    Card card;
-                    card = m_logic.GetNewCard(m_is_alchemist_active);
-
-                    m_red_dice = card.m_red;
-                    m_yellow_dice = card.m_yellow;
-                    m_event_dice = card.m_event_dice;
-
-                    if (!m_is_alchemist_active) {
-                        SetDicesImagesRolled(card.m_red, card.m_yellow);
-                    }
-                    SetEventDiceImage(card.m_event_dice);
-
+                    SetEventDiceImage(m_event_dice);
                     m_is_alchemist_active = false;
-
-                    ShowMessage(card.m_message, card.m_turn_number);
-
-                    m_pirate_position = card.m_pirate_position;
+                    ShowMessage(m_last_card.m_message, m_last_card.m_turn_number);
+                    m_pirate_position = m_last_card.m_pirate_position;
                     SetPiratePosition();
-
-                    if (card.m_message == Card.MessageWithCard.NO_MESSAGE) {
+                    if (m_last_card.m_message == Card.MessageWithCard.NO_MESSAGE) {
                         SetMainButtonsEnable(true);
                     }
                 } else {
-                    Random rand = new Random();
-                    if (m_roll_red) {
-                        m_red_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
-                    }
-                    if (m_roll_yellow) {
-                        m_yellow_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
-                    }
-                    SetDicesImagesRolled(m_red_dice, m_yellow_dice);
-
                     m_logic.IncreaseTurnNumber();
-
                     ShowMessage(Card.MessageWithCard.NO_MESSAGE, m_logic.GetTurnNumber());
-
                     SetMainButtonsEnable(true);
                 }
 
