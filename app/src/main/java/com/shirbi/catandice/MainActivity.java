@@ -861,18 +861,20 @@ public class MainActivity extends Activity {
         StartingNewGame(true);
     }
 
-    private void StartingNewGame(boolean send_message_to_other_player) {
+    public void SetStartingParameters(Logic.GameType game_type, int num_players, int starting_player) {
+        m_game_type = game_type;
+        m_num_players = num_players;
+        m_starting_player = starting_player;
+    }
+
+    public void StartingNewGame(boolean send_message_to_other_player) {
         SetBackGround();
 
         m_logic.Init(m_num_players, m_game_type);
         m_pirate_position = 0;
 
         if (mTwoPlayerGame && send_message_to_other_player) {
-            String message = String.valueOf(BLUETOOTH_MESSAGES.START_GAME) + "," +
-                    String.valueOf(m_game_type.getValue()) + "," + String.valueOf(m_num_players) + "," +
-                    String.valueOf(m_starting_player);
-
-            sendMessage(message);
+            BluetoothMessageHandler.SendStartingGameParameters(m_game_type, m_num_players, m_starting_player, this);
         }
 
         SetEventDiceVisibility();
@@ -1071,7 +1073,7 @@ public class MainActivity extends Activity {
         disconnect(true);
     }
 
-    private void disconnect(boolean send_message) {
+    public void disconnect(boolean send_message) {
         if (!mTwoPlayerGame) {
             return;
         }
@@ -1079,8 +1081,7 @@ public class MainActivity extends Activity {
         if (mChatService != null) {
 
             if (send_message) {
-                String message = String.valueOf(BLUETOOTH_MESSAGES.DISCONNECT);
-                sendMessage(message);
+                BluetoothMessageHandler.SendDisconnectMessage(this);
             }
 
             mChatService.stop();
@@ -1094,7 +1095,7 @@ public class MainActivity extends Activity {
         mTwoPlayerGame = false;
     }
 
-    private void sendMessage(String message) {
+    public void sendMessage(String message) {
 
         // Check that we're actually connected before trying anything
         if (mChatService.getState() != com.shirbi.catandice.BluetoothChatService.STATE_CONNECTED) {
@@ -1121,7 +1122,7 @@ public class MainActivity extends Activity {
                 byte[] readBuf = (byte[]) msg.obj;
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf, 0, msg.arg1);
-                ParseMessage(readMessage);
+                BluetoothMessageHandler.ParseMessage(readMessage, this);
                 break;
             case com.shirbi.catandice.BluetoothChatService.MESSAGE_DEVICE_NAME:
                 // save the connected device's name
@@ -1188,31 +1189,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void ParseMessage(String message) {
-        String[] strArray = message.split(",");
-
-        int messageType = Integer.parseInt(strArray[0]);
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-        switch (messageType) {
-            // TODO: Handle messages
-            case BLUETOOTH_MESSAGES.START_GAME:
-                int[] intArray = new int[strArray.length];
-                for (int i = 0; i < strArray.length; i++) {
-                    intArray[i] = Integer.parseInt(strArray[i]);
-                }
-                m_game_type = Logic.GameType.values()[intArray[1]];
-                m_num_players = intArray[2];
-                m_starting_player = intArray[3];
-                StartingNewGame(false);
-                break;
-
-            case BLUETOOTH_MESSAGES.DISCONNECT:
-                disconnect(false);
-                break;
-        }
-    }
-
     // The Handler that gets information back from the BluetoothChatService
     static class IncomingHandler extends Handler {
         private final WeakReference<MainActivity> m_activity;
@@ -1228,10 +1204,5 @@ public class MainActivity extends Activity {
                 activity.handleMessage(msg);
             }
         }
-    }
-
-    class BLUETOOTH_MESSAGES {
-        static final int START_GAME = 0;
-        static final int DISCONNECT = 1;
     }
 }
