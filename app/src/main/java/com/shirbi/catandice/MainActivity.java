@@ -615,17 +615,26 @@ public class MainActivity extends Activity {
         builder.setItems(new CharSequence[] {"1", "2", "3", "4", "5", "6"},
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if (is_red) {
-                            m_red_dice = which + 1;
-                        } else {
-                            m_yellow_dice = which + 1;
+                        int dice_value = which + 1;
+                        FixDice(dice_value, is_red);
+
+                        if (mTwoPlayerGame) {
+                            BluetoothMessageHandler.SendFixDice(MainActivity.this, is_red, dice_value);
                         }
-                        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
                     }
                 });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void FixDice(int fixed_value, boolean is_red) {
+        if (is_red) {
+            m_red_dice = fixed_value;
+        } else {
+            m_yellow_dice = fixed_value;
+        }
+        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
     }
 
     public void onFixRedClick(View view) {
