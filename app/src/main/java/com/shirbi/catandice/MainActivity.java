@@ -591,6 +591,9 @@ public class MainActivity extends Activity {
         m_roll_yellow = false;
         Random rand = new Random();
         m_red_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
+        if (mTwoPlayerGame) {
+            BluetoothMessageHandler.SendRoleOneDice(MainActivity.this, true, m_red_dice);
+        }
         rollDice();
     }
 
@@ -599,6 +602,21 @@ public class MainActivity extends Activity {
         m_roll_yellow = true;
         Random rand = new Random();
         m_yellow_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
+        if (mTwoPlayerGame) {
+            BluetoothMessageHandler.SendRoleOneDice(MainActivity.this, false, m_yellow_dice);
+        }
+        rollDice();
+    }
+
+    // Called as a result of Bluetooth message from other device
+    public void RollOneDice(int dice_value, boolean is_red) {
+        m_roll_red = is_red;
+        m_roll_yellow = !is_red;
+        if (is_red) {
+            m_red_dice = dice_value;
+        } else {
+            m_yellow_dice = dice_value;
+        }
         rollDice();
     }
 
