@@ -981,6 +981,19 @@ public class MainActivity extends Activity {
         setImageButtonEnabled(enableCancelLastMove, R.id.cancel_last_move_button, R.drawable.cancel_last_move);
     }
 
+    public void CancelLastMove(boolean is_send_message) {
+        m_logic.CancelLastMove();
+        SetDicesImagesRolled(1,1);
+        SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
+        m_pirate_position = m_logic.GetPiratePosition();
+        SetPiratePosition();
+        SetMainButtonsEnable(false);
+        if (is_send_message) {
+            BluetoothMessageHandler.SendCancelLastMove(this);
+        }
+        ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
+    }
+
     public void onCancelLastMoveClick(View view) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -991,13 +1004,7 @@ public class MainActivity extends Activity {
         builder.setTitle(R.string.cancel_last_move);
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                m_logic.CancelLastMove();
-                SetDicesImagesRolled(1,1);
-                SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
-                m_pirate_position = m_logic.GetPiratePosition();
-                SetPiratePosition();
-                SetMainButtonsEnable(false);
-                ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
+                CancelLastMove(true);
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

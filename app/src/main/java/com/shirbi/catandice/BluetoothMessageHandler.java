@@ -57,6 +57,10 @@ public class BluetoothMessageHandler {
                 Card card = new Card(intArray, 2);
                 activity.rollAllDice(card, intArray[1] == 1);
                 break;
+
+            case BLUETOOTH_MESSAGES.CANCEL_LSAT_MOVE:
+                activity.CancelLastMove(false);
+                break;
         }
     }
 
@@ -92,6 +96,11 @@ public class BluetoothMessageHandler {
         activity.sendMessage(message);
     }
 
+    static void SendCancelLastMove(MainActivity activity) {
+        String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.CANCEL_LSAT_MOVE);
+        activity.sendMessage(message);
+    }
+
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
         static final int DISCONNECT = 1;
@@ -99,5 +108,6 @@ public class BluetoothMessageHandler {
         static final int FIX_YELLOW_DICE = 3;
         static final int ROLL_ONE_DICE = 4;
         static final int ROLL_ALL_DICE = 5;
+        static final int CANCEL_LSAT_MOVE = 6;
     }
 }
