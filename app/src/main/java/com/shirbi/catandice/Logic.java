@@ -65,6 +65,22 @@ public class Logic {
         }
     }
 
+    // Called from outside to update state after message from bluetooth
+    public void SetCard(Card card) {
+        m_last_move = new Move();
+        m_last_move.pirate_moved = (card.m_event_dice == Card.EventDice.PIRATE_SHIP);
+        int histogramIndex = CardToIndex(card);
+        m_histogram[histogramIndex]++;
+        m_last_move.histogram_cell_increase = histogramIndex;
+        m_last_move.cell_increase = true;
+        m_current_turn_number++;
+        m_pirate_position = card.m_pirate_position;
+
+        if (m_pirate_position == Card.MAX_PIRATE_POSITIONS-1) {
+            m_is_pirate_arrive = true;
+        }
+    }
+
     public Card GetNewCard(boolean is_alchemist) {
         int i;
         Card cardToReturn;
@@ -166,6 +182,10 @@ public class Logic {
         cardToReturn.m_pirate_position = m_pirate_position;
 
         return cardToReturn;
+    }
+
+    private int CardToIndex(Card card) {
+        return (card.m_red -1) * Card.MAX_NUMBER_ON_DICE + (card.m_yellow -1);
     }
 
     private Card IndexToCard(int i) {

@@ -51,6 +51,12 @@ public class BluetoothMessageHandler {
                 intArray = ParseAsInts(strArray);
                 activity.RollOneDice(intArray[1], intArray[2] != 0);
                 break;
+
+            case BLUETOOTH_MESSAGES.ROLL_ALL_DICE:
+                intArray = ParseAsInts(strArray);
+                Card card = new Card(intArray, 1);
+                activity.rollAllDice(card);
+                break;
         }
     }
 
@@ -75,6 +81,11 @@ public class BluetoothMessageHandler {
         activity.sendMessage(message);
     }
 
+    static void SendRoleAllDice(MainActivity activity, Card card) {
+        String message = String.valueOf(BLUETOOTH_MESSAGES.ROLL_ALL_DICE) + "," + card.ToString();
+        activity.sendMessage(message);
+    }
+
     static void SendDisconnectMessage(MainActivity activity) {
         String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.DISCONNECT);
         activity.sendMessage(message);
@@ -86,5 +97,6 @@ public class BluetoothMessageHandler {
         static final int FIX_RED_DICE = 2;
         static final int FIX_YELLOW_DICE = 3;
         static final int ROLL_ONE_DICE = 4;
+        static final int ROLL_ALL_DICE = 5;
     }
 }

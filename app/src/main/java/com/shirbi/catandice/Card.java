@@ -37,14 +37,23 @@ public class Card {
     }
 
     public enum MessageWithCard {
-        NO_MESSAGE,
-        SEVEN_WITHOUT_ROBBER,
-        SEVEN_WITH_ROBBER,
-        NEW_GAME,
-        PIRATE_ATTACK,
-        PIRATE_ATTACK_ROBBER_ATTACK,
-        PIRATE_ATTACK_ROBBER_IS_SLEEPING,
-        LAST_MOVE_CANCELED
+        NO_MESSAGE(0),
+        SEVEN_WITHOUT_ROBBER(1),
+        SEVEN_WITH_ROBBER(2),
+        NEW_GAME(3),
+        PIRATE_ATTACK(4),
+        PIRATE_ATTACK_ROBBER_ATTACK(5),
+        PIRATE_ATTACK_ROBBER_IS_SLEEPING(6),
+        LAST_MOVE_CANCELED(7);
+
+        private int value;
+        private MessageWithCard(int value){
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     public Card(int red, int yellow, MessageWithCard message) {
@@ -56,6 +65,25 @@ public class Card {
         m_pirate_position = 0;
     }
 
+    public String ToString() {
+        String string = String.valueOf(m_red) + "," +
+                String.valueOf(m_yellow) + "," +
+                String.valueOf(m_message.getValue()) + "," +
+                String.valueOf(m_turn_number) + "," +
+                String.valueOf(m_event_dice.getValue()) + "," +
+                String.valueOf(m_pirate_position) + ",";
+
+        return string;
+    }
+
+    public Card(int[] intArray, int startIndex) {
+        m_red = intArray[startIndex + 0];
+        m_yellow = intArray[startIndex + 1];
+        m_message = MessageWithCard.values()[intArray[startIndex + 2]];
+        m_turn_number = intArray[startIndex + 3];
+        m_event_dice = EventDice.values()[intArray[startIndex + 4]];
+        m_pirate_position = intArray[startIndex + 5];
+    }
 }
 
 

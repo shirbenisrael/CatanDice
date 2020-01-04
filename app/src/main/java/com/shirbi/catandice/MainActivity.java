@@ -672,6 +672,23 @@ public class MainActivity extends Activity {
             m_yellow_dice = m_last_card.m_yellow;
         }
         m_event_dice = m_last_card.m_event_dice;
+
+        if (mTwoPlayerGame) {
+            BluetoothMessageHandler.SendRoleAllDice(this, m_last_card);
+        }
+        rollDice();
+    }
+
+    // Called as a result of Bluetooth message from other device
+    public void rollAllDice(Card card) {
+        m_roll_red = true;
+        m_roll_yellow = true;
+        m_last_card = card;
+        m_red_dice = m_last_card.m_red;
+        m_yellow_dice = m_last_card.m_yellow;
+        m_event_dice = m_last_card.m_event_dice;
+        m_logic.SetCard(card);
+
         rollDice();
     }
 
