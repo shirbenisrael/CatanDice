@@ -54,8 +54,8 @@ public class BluetoothMessageHandler {
 
             case BLUETOOTH_MESSAGES.ROLL_ALL_DICE:
                 intArray = ParseAsInts(strArray);
-                Card card = new Card(intArray, 1);
-                activity.rollAllDice(card);
+                Card card = new Card(intArray, 2);
+                activity.rollAllDice(card, intArray[1] == 1);
                 break;
         }
     }
@@ -81,8 +81,9 @@ public class BluetoothMessageHandler {
         activity.sendMessage(message);
     }
 
-    static void SendRoleAllDice(MainActivity activity, Card card) {
-        String message = String.valueOf(BLUETOOTH_MESSAGES.ROLL_ALL_DICE) + "," + card.ToString();
+    static void SendRoleAllDice(MainActivity activity, Card card, boolean is_alchemist_active) {
+        String message = String.valueOf(BLUETOOTH_MESSAGES.ROLL_ALL_DICE) + "," +
+                String.valueOf(is_alchemist_active ? 1 : 0) + "," + card.ToString();
         activity.sendMessage(message);
     }
 
