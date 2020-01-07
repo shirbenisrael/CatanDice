@@ -807,6 +807,14 @@ public class MainActivity extends Activity {
         ShowState(ShownState.HISTOGRAM);
     }
 
+    // Called as a result of Bluetooth message from other device
+    public void SetFairDice(boolean is_fair) {
+        m_is_fair_dice = is_fair;
+
+        CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
+        enable_fair_dice_check_box.setChecked(m_is_fair_dice);
+    }
+
     public void onBackFromSettingClick(View view) {
         CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
         m_is_sound_enable = enable_sound_check_box.isChecked();
@@ -818,6 +826,10 @@ public class MainActivity extends Activity {
 
         CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
         m_is_shake_enable = enable_shake_check_box.isChecked();
+
+        if (mTwoPlayerGame) {
+            BluetoothMessageHandler.SendSetFairDice(this, m_is_fair_dice);
+        }
 
         ShowState(ShownState.GAME);
     }

@@ -61,6 +61,11 @@ public class BluetoothMessageHandler {
             case BLUETOOTH_MESSAGES.CANCEL_LSAT_MOVE:
                 activity.CancelLastMove(false);
                 break;
+
+            case BLUETOOTH_MESSAGES.SET_FAIR_DICE:
+                intArray = ParseAsInts(strArray);
+                activity.SetFairDice( intArray[1] == 1);
+                break;
         }
     }
 
@@ -101,6 +106,12 @@ public class BluetoothMessageHandler {
         activity.sendMessage(message);
     }
 
+    static void SendSetFairDice(MainActivity activity, boolean is_fair) {
+        String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.SET_FAIR_DICE) + "," +
+                String.valueOf(is_fair ? 1 : 0);
+        activity.sendMessage(message);
+    }
+
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
         static final int DISCONNECT = 1;
@@ -109,5 +120,6 @@ public class BluetoothMessageHandler {
         static final int ROLL_ONE_DICE = 4;
         static final int ROLL_ALL_DICE = 5;
         static final int CANCEL_LSAT_MOVE = 6;
+        static final int SET_FAIR_DICE = 7;
     }
 }
