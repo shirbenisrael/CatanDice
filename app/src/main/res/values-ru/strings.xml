@@ -36,4 +36,7 @@
     <string name="fix_red">Исправить красный</string>
     <string name="roll_red">Ролл красный</string>
     <string name="roll_yellow">Свернуть желтый</string>
+    <string name="send_state_button">Отправить состояние</string>
+    <string name="send_state_title">Отправить состояние?</string>
+    <string name="send_state_message">Хотите отправить текущее состояние на сопряженное устройство?</string>
 </resources>

@@ -807,6 +807,58 @@ public class MainActivity extends Activity {
         ShowState(ShownState.HISTOGRAM);
     }
 
+    public void onSendFullStateButtonClick(View view) {
+        if (mTwoPlayerGame) {
+            ShowSendStateDialog();
+        }
+    }
+    public void ShowSendStateDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(getString(R.string.send_state_title));
+        builder.setMessage(getString(R.string.send_state_message));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                SendFullState();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
+
+    private void SendFullState() {
+        BluetoothMessageHandler.SendFullState(this, m_logic.ToString(),
+                m_red_dice, m_yellow_dice, m_event_dice);
+    }
+
+    public void SetFullState(int red_dice, int yellow_dice, Card.EventDice event_dice, int intArray[], int startIndex) {
+        int nextIndex = m_logic.UpdateFromIntArray(intArray, startIndex);
+        m_game_type = m_logic.GetGameType();
+        m_pirate_position = m_logic.GetPiratePosition();
+        m_num_players = m_logic.GetNumPlayers();
+        m_red_dice = red_dice;
+        m_yellow_dice = yellow_dice;
+        m_event_dice = event_dice;
+
+        SetBackGround();
+        SetEventDiceVisibility();
+        SetOneDiceOperationVisibility();
+        SetPiratePosition();
+        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        SetEventDiceImage(m_event_dice);
+        ShowTurnNumber(m_logic.GetTurnNumber());
+        SetMainButtonsEnable(true);
+    }
+
     // Called as a result of Bluetooth message from other device
     public void SetFairDice(boolean is_fair) {
         m_is_fair_dice = is_fair;
@@ -1184,6 +1236,7 @@ public class MainActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "Connected to "
                         + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                 mTwoPlayerGame = true;
+                ShowSendStateDialog();
                 break;
             case com.shirbi.catandice.BluetoothChatService.MESSAGE_TOAST:
                 Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),

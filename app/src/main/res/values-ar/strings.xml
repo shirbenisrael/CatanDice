@@ -36,4 +36,7 @@
     <string name="fix_red">إصلاح الأحم</string>
     <string name="roll_red">لفة الأحمر</string>
     <string name="roll_yellow">لفة الأصفر</string>
+    <string name="send_state_message">هل ترغب في إرسال الحالة الحالية إلى الجهاز المقترن؟</string>
+    <string name="send_state_title">إرسال الدولة?</string>
+    <string name="send_state_button">إرسال الدولة</string>
 </resources>

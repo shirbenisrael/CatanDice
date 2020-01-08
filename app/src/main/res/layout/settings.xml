@@ -43,6 +43,13 @@
             android:text="@string/disconnect" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/sendFullStateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onSendFullStateButtonClick"
+        android:text="@string/send_state_button" />
+
     <CheckBox
         android:id="@+id/enable_shake_checkbox"
         android:layout_width="wrap_content"

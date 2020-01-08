@@ -292,5 +292,67 @@ public class Logic {
 
         m_last_move = null;
     }
+
+    // used to send to other device by bluetooth.
+    public String ToString() {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < m_histogram.length; i++) {
+            str.append(m_histogram[i]).append(",");
+        }
+
+        str.append(
+                String.valueOf(m_num_players) + "," +
+                String.valueOf(m_current_turn_number) + "," +
+                String.valueOf(m_pirate_position) + "," +
+                String.valueOf(m_is_pirate_arrive ? 1 : 0) + "," +
+                String.valueOf(m_is_enable_fair_dice ? 1 : 0) + "," +
+                String.valueOf(m_game_type.getValue()) + ",");
+
+        if (m_last_move != null) {
+            str.append("1").append(",");
+            str.append(m_last_move.histogram_cell_increase).append(",");
+            str.append(m_last_move.pirate_moved ? 1 : 0).append(",");
+            str.append(m_last_move.cell_increase ? 1 : 0);
+        } else {
+            str.append("0");
+        }
+
+        String string = str.toString();
+
+        return string;
+    }
+
+    // used to get from other device by bluetooth.
+    public int UpdateFromIntArray(int[] intArray, int startIndex) {
+        for (int i = 0; i < m_histogram.length; i++) {
+            m_histogram[i] = intArray[i + startIndex];
+        }
+
+        startIndex += m_histogram.length;
+
+        m_num_players = intArray[startIndex++];
+        m_current_turn_number = intArray[startIndex++];
+        m_pirate_position = intArray[startIndex++];
+        m_is_pirate_arrive = intArray[startIndex++] == 1;
+        m_is_enable_fair_dice = intArray[startIndex++] == 1;
+        m_game_type = GameType.values()[intArray[startIndex++]];
+
+        if (intArray[startIndex++] == 1) {
+            m_last_move = new Move();
+            m_last_move.histogram_cell_increase = intArray[startIndex++];
+            m_last_move.pirate_moved = (intArray[startIndex++] == 1);
+            m_last_move.cell_increase = (intArray[startIndex++] == 1);
+        } else {
+            m_last_move = null;
+        }
+
+        return startIndex;
+    }
+
+    public GameType GetGameType() { return m_game_type; }
+
+    public int GetNumPlayers() { return m_num_players; }
+
+
 }
 

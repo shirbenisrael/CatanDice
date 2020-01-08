@@ -36,4 +36,7 @@
     <string name="fix_red">Roulez le rouge</string>
     <string name="roll_red">Fixez le rouge</string>
     <string name="roll_yellow">Fixez le jaune</string>
+    <string name="send_state_button">État d\'envoi</string>
+    <string name="send_state_title">État d\'envoi?</string>
+    <string name="send_state_message">Souhaitez-vous envoyer l\'état actuel à l\'appareil couplé?</string>
 </resources>

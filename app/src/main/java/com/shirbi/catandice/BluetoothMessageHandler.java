@@ -66,6 +66,15 @@ public class BluetoothMessageHandler {
                 intArray = ParseAsInts(strArray);
                 activity.SetFairDice( intArray[1] == 1);
                 break;
+
+            case BLUETOOTH_MESSAGES.FULL_STATE:
+                intArray = ParseAsInts(strArray);
+                activity.SetFullState(
+                        intArray[1],
+                        intArray[2],
+                        Card.EventDice.values()[intArray[3]],
+                        intArray, 4);
+                break;
         }
     }
 
@@ -112,6 +121,15 @@ public class BluetoothMessageHandler {
         activity.sendMessage(message);
     }
 
+    static void SendFullState(MainActivity activity, String logic_state, int red_dice, int yellow_dice,
+                              Card.EventDice event_dice) {
+        String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.FULL_STATE) + "," +
+                String.valueOf(red_dice) + "," + String.valueOf(yellow_dice)  + "," +
+                String.valueOf(event_dice.getValue()) + "," + logic_state;
+
+            activity.sendMessage(message);
+    }
+
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
         static final int DISCONNECT = 1;
@@ -121,5 +139,6 @@ public class BluetoothMessageHandler {
         static final int ROLL_ALL_DICE = 5;
         static final int CANCEL_LSAT_MOVE = 6;
         static final int SET_FAIR_DICE = 7;
+        static final int FULL_STATE = 8;
     }
 }

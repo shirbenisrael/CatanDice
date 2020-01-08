@@ -36,4 +36,7 @@
     <string name="roll_red">Rodar el rojo</string>
     <string name="fix_red">Arreglar el rojo</string>
     <string name="fix_yellow">Arreglar el amarillo</string>
+    <string name="send_state_message">¿Desea enviar el estado actual al dispositivo emparejado?</string>
+    <string name="send_state_button">Enviar estado</string>
+    <string name="send_state_title">Enviar estado?</string>
 </resources>

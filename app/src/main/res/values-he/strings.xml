@@ -37,4 +37,7 @@
     <string name="fix_yellow">קבע צהובה</string>
     <string name="roll_red">הטל אדומה</string>
     <string name="roll_yellow">הטל צהובה</string>
+    <string name="send_state_button">שליחת מצב</string>
+    <string name="send_state_title">שליחת מצב?</string>
+    <string name="send_state_message">האם ברצונך לשלוח את המצב הנוכחי למכשיר המחובר?</string>
 </resources>
