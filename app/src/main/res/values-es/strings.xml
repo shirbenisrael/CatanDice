@@ -39,4 +39,19 @@
     <string name="send_state_message">¿Desea enviar el estado actual al dispositivo emparejado?</string>
     <string name="send_state_button">Enviar estado</string>
     <string name="send_state_title">Enviar estado?</string>
+    <string name="bt_not_enabled_leaving">Bluetooth no está habilitado.</string>
+    <string name="button_scan">Dispositivos de escaneo</string>
+    <string name="connect">Conectar</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="discoverable">Reconocible</string>
+    <string name="none_found">Nada encontrado</string>
+    <string name="none_paired">Ninguno emparejado</string>
+    <string name="not_connected">No conectado.</string>
+    <string name="permission_denied">¡Permiso denegado!</string>
+    <string name="request_permission">Solicitar permiso</string>
+    <string name="scan_bluetooth">Necesidad de escanear bluetooth</string>
+    <string name="scanning">Exploración...</string>
+    <string name="select_device">Seleccione un dispositivo</string>
+    <string name="title_other_devices">Otros dispositivos</string>
+    <string name="title_paired_devices">Dispositivos emparejados</string>
 </resources>
