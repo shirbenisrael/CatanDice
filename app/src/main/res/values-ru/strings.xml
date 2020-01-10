@@ -39,4 +39,19 @@
     <string name="send_state_button">Отправить состояние</string>
     <string name="send_state_title">Отправить состояние?</string>
     <string name="send_state_message">Хотите отправить текущее состояние на сопряженное устройство?</string>
+    <string name="bt_not_enabled_leaving">блютус не включен.</string>
+    <string name="button_scan">Сканирование устройств</string>
+    <string name="connect">подключения</string>
+    <string name="disconnect">Отключить</string>
+    <string name="discoverable">Видимый</string>
+    <string name="none_found">Не найдено</string>
+    <string name="none_paired">Нет в паре.</string>
+    <string name="not_connected">Не подключен.</string>
+    <string name="permission_denied">В доступе отказано!</string>
+    <string name="request_permission">Просить разрешения</string>
+    <string name="scan_bluetooth">Нужно для сканирования блютус</string>
+    <string name="scanning">Сканирование ...</string>
+    <string name="select_device">Выберите устройство</string>
+    <string name="title_other_devices">Другие устройства</string>
+    <string name="title_paired_devices">Сопряженные устройства</string>
 </resources>
