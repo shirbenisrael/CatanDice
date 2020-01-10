@@ -39,4 +39,19 @@
     <string name="send_state_button">État d\'envoi</string>
     <string name="send_state_title">État d\'envoi?</string>
     <string name="send_state_message">Souhaitez-vous envoyer l\'état actuel à l\'appareil couplé?</string>
+    <string name="bt_not_enabled_leaving">Bluetooth n\'est pas activé.</string>
+    <string name="button_scan">Périphériques de numérisation</string>
+    <string name="connect">Relier</string>
+    <string name="disconnect">Déconnecter</string>
+    <string name="discoverable">Découvrable</string>
+    <string name="none_found">Personne n\'est trouve</string>
+    <string name="none_paired">Aucun jumelé.</string>
+    <string name="not_connected">Pas connecté.</string>
+    <string name="permission_denied">Permission refusée!</string>
+    <string name="request_permission">Demander la permission</string>
+    <string name="scan_bluetooth">Besoin de numérisation Bluetooth</string>
+    <string name="scanning">Balayage...</string>
+    <string name="select_device">Sélectionnez un appareil</string>
+    <string name="title_other_devices">Autres appareils</string>
+    <string name="title_paired_devices">Appareils jumelés</string>
 </resources>
