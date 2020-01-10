@@ -361,6 +361,7 @@ public class MainActivity extends Activity {
         SetEventDiceImage(m_event_dice);
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
+        SetTwoPlayerGame(false);
 
         LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
         LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
@@ -1198,7 +1199,17 @@ public class MainActivity extends Activity {
             mBluetoothAdapter.disable();
         }
 
-        mTwoPlayerGame = false;
+        SetTwoPlayerGame(false);
+    }
+
+    public void SetTwoPlayerGame(boolean is_two_player_game) {
+        mTwoPlayerGame = is_two_player_game;
+
+        findViewById(R.id.disconnectButton).setEnabled(mTwoPlayerGame);
+        findViewById(R.id.sendFullStateButton).setEnabled(mTwoPlayerGame);
+
+        findViewById(R.id.connectButton).setEnabled(!mTwoPlayerGame);
+        findViewById(R.id.discoverableButton).setEnabled(!mTwoPlayerGame);
     }
 
     public void sendMessage(String message) {
@@ -1235,7 +1246,7 @@ public class MainActivity extends Activity {
                 mConnectedDeviceName = msg.getData().getString(com.shirbi.catandice.BluetoothChatService.DEVICE_NAME);
                 Toast.makeText(getApplicationContext(), "Connected to "
                         + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                mTwoPlayerGame = true;
+                SetTwoPlayerGame(true);
                 ShowSendStateDialog();
                 break;
             case com.shirbi.catandice.BluetoothChatService.MESSAGE_TOAST:
