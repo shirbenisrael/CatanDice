@@ -40,4 +40,19 @@
     <string name="send_state_button">שליחת מצב</string>
     <string name="send_state_title">שליחת מצב?</string>
     <string name="send_state_message">האם ברצונך לשלוח את המצב הנוכחי למכשיר המחובר?</string>
+    <string name="bt_not_enabled_leaving">בלוטות כבוי</string>
+    <string name="button_scan">סריקת התקנים</string>
+    <string name="connect">התחבר</string>
+    <string name="disconnect">התנתק</string>
+    <string name="discoverable">גלוי</string>
+    <string name="none_found">כלום לא נמצא</string>
+    <string name="none_paired">אף התקן לא צומד</string>
+    <string name="not_connected">לא מחובר</string>
+    <string name="permission_denied">אין הרשאה!</string>
+    <string name="request_permission">בקשת הרשאה</string>
+    <string name="scan_bluetooth">דרושה לצורך סריקת בלוטות</string>
+    <string name="scanning">סורק...</string>
+    <string name="select_device">בחר התקן</string>
+    <string name="title_other_devices">התקנים אחרים</string>
+    <string name="title_paired_devices">התקנים מצומדים</string>
 </resources>

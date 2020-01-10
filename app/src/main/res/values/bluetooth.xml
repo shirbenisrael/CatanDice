@@ -3,7 +3,7 @@
     <string name="title_paired_devices">Paired Devices</string>
     <string name="button_scan">Scan Devices</string>
     <string name="title_other_devices">Other Devices</string>
-    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth" translatable="false">Bluetooth</string>
     <string name="connect">Connect</string>
     <string name="discoverable">Discoverable</string>
     <string name="disconnect">Disconnect</string>
