@@ -39,4 +39,19 @@
     <string name="send_state_message">هل ترغب في إرسال الحالة الحالية إلى الجهاز المقترن؟</string>
     <string name="send_state_title">إرسال الدولة?</string>
     <string name="send_state_button">إرسال الدولة</string>
+    <string name="bt_not_enabled_leaving">لم يتم تمكين البلوتوث.</string>
+    <string name="button_scan">أجهزة المسح الضوئي</string>
+    <string name="connect">الاتصال</string>
+    <string name="disconnect">قطع الاتصال</string>
+    <string name="discoverable">اكتشافها</string>
+    <string name="none_found">لا شيء وجد</string>
+    <string name="none_paired">لا شيء يقترن.</string>
+    <string name="not_connected">غير متصل.</string>
+    <string name="permission_denied">طلب الاذن مرفوض!</string>
+    <string name="request_permission">طلب إذن</string>
+    <string name="scan_bluetooth">تحتاج لمسح بلوتوث</string>
+    <string name="scanning">يتم المسح...</string>
+    <string name="select_device">اختر جهازا</string>
+    <string name="title_other_devices">أجهزة أخرى</string>
+    <string name="title_paired_devices">الأجهزة المقترنة</string>
 </resources>
