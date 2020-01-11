@@ -53,8 +53,6 @@ public class MainActivity extends Activity {
     private Point m_size;
     private boolean m_is_alchemist_active = false;
     private ShakeDetector m_shakeDetector;
-    private SensorManager m_sensorManager;
-    private Sensor m_accelerometer;
     private boolean m_roll_red, m_roll_yellow;
     private BluetoothAdapter mBluetoothAdapter = null;
     // Name of the connected device
@@ -319,6 +317,24 @@ public class MainActivity extends Activity {
     };
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        SensorManager sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.unregisterListener(m_shakeDetector);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SensorManager sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(m_shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -329,9 +345,7 @@ public class MainActivity extends Activity {
         m_logic = new Logic(m_num_players, m_game_type);
         m_shakeDetector = new ShakeDetector();
         m_shakeDetector.setOnShakeListener(m_shakeListener);
-        m_sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        m_accelerometer = m_sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        m_sensorManager.registerListener(m_shakeDetector, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         RestoreState();
