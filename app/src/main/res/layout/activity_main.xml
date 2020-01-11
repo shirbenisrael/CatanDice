@@ -345,6 +345,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onSelectGameTypeClick"
+                android:background="#0000"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/regular_game"
                 android:text="@string/game_type_regular" />
 
@@ -353,6 +355,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onSelectGameTypeClick"
+                android:background="#0000"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/cities_and_knights"
                 android:text="@string/game_type_cities_and_knights" />
 
@@ -361,6 +365,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onSelectGameTypeClick"
+                android:background="#0000"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/simple_dice"
                 android:text="@string/game_type_simple_dice" />
 
