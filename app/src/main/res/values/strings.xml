@@ -42,7 +42,7 @@
     <string name="game_type_simple_dice">Simple Dice</string>
     <string name="alchemist">Alchemist</string>
     <string name="cancel_last_move">Cancel Last Roll?</string>
-    <string name="last_move_canceled">Last Roll Canceled?</string>
+    <string name="last_move_canceled">Last Roll Canceled</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="shake_to_roll_dice">Shake To Roll Dice</string>

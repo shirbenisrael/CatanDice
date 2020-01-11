@@ -16,7 +16,7 @@
     <string name="game_type_cities_and_knights">Villes et chevaliers</string>
     <string name="game_type_regular">Jeu régulier</string>
     <string name="game_type_simple_dice">Dés simples</string>
-    <string name="last_move_canceled">Dernier rouleau annulé?</string>
+    <string name="last_move_canceled">Dernier rouleau annulé</string>
     <string name="new_game_player_start">Nouveau jeu - le joueur %1$d commence!</string>
     <string name="new_game_string">Nouveau jeu</string>
     <string name="num_players_string">Nombre de joueurs:</string>
