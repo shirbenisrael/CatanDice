@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -283,24 +285,18 @@ public class MainActivity extends Activity {
     }
 
     private void arrange_buttons() {
-        int Ids[] =
-                {R.id.new_game_button, R.id.show_histogram_button, R.id.setting_button, R.id.alchemist_button};
+        View roll_button = findViewById(R.id.roll_button);
+        roll_button.getLayoutParams().width = m_size.x * 5 /6;
+        roll_button.getLayoutParams().height = m_size.x * 45 / 100;
 
-        int width = m_size.x / Ids.length;
-        for (int i = 0; i < Ids.length; i++) {
-            set_square_size(Ids[i], width);
-        }
+        View menu_button = findViewById(R.id.menu_button);
+        menu_button.getLayoutParams().width = m_size.x / 6;
+        menu_button.getLayoutParams().height = m_size.x / 6;
+        ((LinearLayout.LayoutParams)(menu_button.getLayoutParams())).setMargins(
+                0,m_size.x * 32 / 100,m_size.x * 5 / 100,0);
 
-        Ids = new int[] {R.id.roll_button, R.id.cancel_last_move_button};
-        width = m_size.x / Ids.length;
-        for (int i = 0; i < Ids.length; i++) {
-            View view = findViewById(Ids[i]);
-            view.getLayoutParams().width = width;
-            view.getLayoutParams().height = width / 2;
-        }
-
-        Ids = new int[] {R.id.roll_red_button, R.id.roll_yellow_button, R.id.fix_red_button, R.id.fix_yellow_button};
-        width = m_size.x / 3;
+        int[] Ids = new int[] {R.id.roll_red_button, R.id.roll_yellow_button, R.id.fix_red_button, R.id.fix_yellow_button};
+        int width = m_size.x / 3;
         for (int id : Ids) {
             View view = findViewById(id);
             view.getLayoutParams().width = width;
@@ -527,16 +523,13 @@ public class MainActivity extends Activity {
     public void SetEventDiceVisibility() {
         View event_dice_result = findViewById(R.id.event_dice_result);
         View layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
-        View alchemist_button = findViewById(R.id.alchemist_button);
 
         if (m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
             event_dice_result.setVisibility(View.VISIBLE);
             layout_for_pirate_ship.setVisibility(View.VISIBLE);
-            alchemist_button.setVisibility(View.VISIBLE);
         } else {
             event_dice_result.setVisibility(View.INVISIBLE);
             layout_for_pirate_ship.setVisibility(View.INVISIBLE);
-            alchemist_button.setVisibility(View.GONE);
         }
     }
 
@@ -1047,17 +1040,11 @@ public class MainActivity extends Activity {
 
     private void SetMainButtonsEnable(boolean isEnable) {
         findViewById(R.id.roll_button).setEnabled(isEnable);
-        findViewById(R.id.alchemist_button).setEnabled(isEnable);
-        findViewById(R.id.setting_button).setEnabled(isEnable);
+        findViewById(R.id.menu_button).setEnabled(isEnable);
         findViewById(R.id.roll_red_button).setEnabled(isEnable);
         findViewById(R.id.roll_yellow_button).setEnabled(isEnable);
         findViewById(R.id.fix_red_button).setEnabled(isEnable);
         findViewById(R.id.fix_yellow_button).setEnabled(isEnable);
-
-        boolean enableCancelLastMove = isEnable && m_logic.CanCancelLastMove();
-        setImageButtonEnabled(isEnable, R.id.new_game_button, R.drawable.restart_icon);
-        setImageButtonEnabled(isEnable, R.id.show_histogram_button, R.drawable.histogram_icon);
-        setImageButtonEnabled(enableCancelLastMove, R.id.cancel_last_move_button, R.drawable.cancel_last_move);
     }
 
     public void CancelLastMove(boolean is_send_message) {
@@ -1072,6 +1059,81 @@ public class MainActivity extends Activity {
         }
         ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
     }
+
+    public interface Worker {
+        void onClick(View view);
+    }
+
+    public void onMenuButtonClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(getString(R.string.menu_title_string));
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+
+        final List<Worker> listWorkers = new ArrayList<Worker>();
+        List<String> listItems = new ArrayList<String>();
+
+        listWorkers.add(new Worker() {
+            @Override
+            public void onClick(View view) {
+                onSettingClick(view);
+            }
+        });
+        listItems.add(getString(R.string.setting_string));
+
+        listWorkers.add(new Worker() {
+            @Override
+            public void onClick(View view) {
+                onNewGameClick(view);
+            }
+        });
+        listItems.add(getString(R.string.new_game_string));
+
+        listWorkers.add(new Worker() {
+            @Override
+            public void onClick(View view) {
+                onShowHistogramClick(view);
+            }
+        });
+        listItems.add(getString(R.string.show_histogram));
+
+        if (m_logic.CanCancelLastMove()) {
+            listWorkers.add(new Worker() {
+                @Override
+                public void onClick(View view) {
+                    onCancelLastMoveClick(view);
+                }
+            });
+            listItems.add(getString(R.string.cancel_last_move_in_menu));
+        }
+
+        if (m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
+            listWorkers.add(new Worker() {
+                @Override
+                public void onClick(View view) {
+                    onAlchemistClick(view);
+                }
+            });
+            listItems.add(getString(R.string.alchemist));
+        }
+
+        CharSequence charSequences[] = listItems.toArray(new CharSequence[listItems.size()]);
+
+        builder.setItems(charSequences,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        listWorkers.get(which).onClick(null);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     public void onCancelLastMoveClick(View view) {
         AlertDialog.Builder builder;

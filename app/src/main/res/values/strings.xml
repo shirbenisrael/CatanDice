@@ -21,6 +21,7 @@
     <string name="fix_red">Fix Red</string>
     <string name="fix_yellow">Fix Yellow</string>
     <string name="setting_string">Setting</string>
+    <string name="menu_title_string">Options</string>
     <string name="new_game_string">New Game</string>
     <string name="exit_app">Exit Application?</string>
     <string name="show_histogram">Show Histogram</string>
@@ -41,6 +42,7 @@
     <string name="game_type_cities_and_knights">Cities &amp; Knight</string>
     <string name="game_type_simple_dice">Simple Dice</string>
     <string name="alchemist">Alchemist</string>
+    <string name="cancel_last_move_in_menu">Cancel Last Roll</string>
     <string name="cancel_last_move">Cancel Last Roll?</string>
     <string name="last_move_canceled">Last Roll Canceled</string>
     <string name="confirm">Confirm</string>

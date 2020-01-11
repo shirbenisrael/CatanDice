@@ -187,72 +187,49 @@
                 android:textColor="@color/message_color"
                 android:gravity="center_horizontal" />
 
-            <!-- layout for buttons -->
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/setting_button"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="onSettingClick"
-                    android:text="@string/setting_string" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/roll_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:onClick="onRollClick"
+                        android:src="@drawable/roll_dice_button"
+                        android:background="#0000"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:text="@string/roll_string" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|bottom"
+                    android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/show_histogram_button"
+                    android:id="@+id/menu_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onShowHistogramClick"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/histogram_icon"
-                    android:text="@string/show_histogram" />
+                    android:onClick="onMenuButtonClick"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/menu_icon"
+                    android:background="#0000"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:text="@string/menu_title_string" />
 
-                <ImageButton
-                    android:id="@+id/new_game_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onNewGameClick"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/restart_icon"
-                    android:text="@string/new_game_string" />
+                </LinearLayout>
 
-                <Button
-                    android:id="@+id/alchemist_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onAlchemistClick"
-                    android:text="@string/alchemist" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <Button
-                    android:id="@+id/roll_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onRollClick"
-                    android:text="@string/roll_string" />
-
-                <ImageButton
-                    android:id="@+id/cancel_last_move_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onCancelLastMoveClick"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/cancel_last_move"
-                    android:text="@string/new_game_string" />
-
-            </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 

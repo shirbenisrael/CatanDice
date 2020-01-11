@@ -54,4 +54,6 @@
     <string name="select_device">Sélectionnez un appareil</string>
     <string name="title_other_devices">Autres appareils</string>
     <string name="title_paired_devices">Appareils jumelés</string>
+    <string name="menu_title_string">Les options</string>
+    <string name="cancel_last_move_in_menu">Annuler le dernier rouleau</string>
 </resources>
