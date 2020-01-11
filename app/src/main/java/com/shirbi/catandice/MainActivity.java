@@ -1067,7 +1067,7 @@ public class MainActivity extends Activity {
         m_pirate_position = m_logic.GetPiratePosition();
         SetPiratePosition();
         SetMainButtonsEnable(false);
-        if (is_send_message) {
+        if (mTwoPlayerGame && is_send_message) {
             BluetoothMessageHandler.SendCancelLastMove(this);
         }
         ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
