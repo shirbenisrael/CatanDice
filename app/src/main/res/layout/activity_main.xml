@@ -348,7 +348,7 @@
 
         </LinearLayout>
 
-        <!-- Nem game layout -->
+        <!-- New game layout -->
         <LinearLayout
             android:id="@+id/game_type_layout"
             android:layout_width="match_parent"
@@ -396,6 +396,7 @@
 
         </LinearLayout>
 
+        <!-- Num player game layout -->
         <LinearLayout
             android:id="@+id/num_players_layout"
             android:layout_width="match_parent"
