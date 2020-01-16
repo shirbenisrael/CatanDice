@@ -42,6 +42,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static android.os.SystemClock.elapsedRealtime;
 import static com.shirbi.catandice.BluetoothChatService.TOAST;
 
 public class MainActivity extends Activity {
@@ -78,6 +79,7 @@ public class MainActivity extends Activity {
     private boolean m_is_sound_enable;
     private boolean m_is_fair_dice;
     private boolean m_is_shake_enable;
+    private long m_last_roll_time_ms = 0;
 
     private enum ShownState {
         GAME,
@@ -90,6 +92,7 @@ public class MainActivity extends Activity {
 
     private ShownState m_shown_state;
 
+    public static final long MILLISECONDS_BETWEEN_ROLLS = 3000;
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
     public static final int DEFAULT_NUMBER_ON_DICE;
     public static final Logic.GameType DEFAULT_GAME_TYPE;
@@ -672,6 +675,12 @@ public class MainActivity extends Activity {
     }
 
     public void onRollClick(View view) {
+        long new_time_stamp = elapsedRealtime();
+        if (new_time_stamp - m_last_roll_time_ms <= MILLISECONDS_BETWEEN_ROLLS) {
+            return;
+        }
+
+        m_last_roll_time_ms = new_time_stamp;
         m_roll_red = true;
         m_roll_yellow = true;
         m_last_card = m_logic.GetNewCard(m_is_alchemist_active);
