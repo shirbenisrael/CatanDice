@@ -67,6 +67,7 @@ public class MainActivity extends Activity {
     private Boolean mTwoPlayerGame = false;
     private int m_starting_player;
     private Card m_last_card;
+    private Card m_previous_card;
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -683,6 +684,7 @@ public class MainActivity extends Activity {
         m_last_roll_time_ms = new_time_stamp;
         m_roll_red = true;
         m_roll_yellow = true;
+        m_previous_card = m_last_card;
         m_last_card = m_logic.GetNewCard(m_is_alchemist_active);
         if (!m_is_alchemist_active) {
             m_red_dice = m_last_card.m_red;
@@ -701,6 +703,7 @@ public class MainActivity extends Activity {
         m_is_alchemist_active = is_alchemist_active;
         m_roll_red = true;
         m_roll_yellow = true;
+        m_previous_card = m_last_card;
         m_last_card = card;
         if (!m_is_alchemist_active) {
             m_red_dice = m_last_card.m_red;
@@ -1058,7 +1061,11 @@ public class MainActivity extends Activity {
 
     public void CancelLastMove(boolean is_send_message) {
         m_logic.CancelLastMove();
-        SetDicesImagesRolled(1,1);
+        if (m_previous_card != null) {
+            SetDicesImagesRolled(m_previous_card.m_red, m_previous_card.m_yellow);
+        } else {
+            SetDicesImagesRolled(1, 1);
+        }
         SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
         m_pirate_position = m_logic.GetPiratePosition();
         SetPiratePosition();
