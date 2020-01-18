@@ -57,4 +57,6 @@
     <string name="title_paired_devices">התקנים מצומדים</string>
     <string name="menu_title_string">אפשרויות</string>
     <string name="cancel_last_move_in_menu">בטל הטלה אחרונה</string>
+    <string name="sum_string">סכום</string>
+    <string name="combination_string">צירוף</string>
 </resources>

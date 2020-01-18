@@ -56,4 +56,6 @@
     <string name="title_paired_devices">الأجهزة المقترنة</string>
     <string name="menu_title_string">خيارات</string>
     <string name="cancel_last_move_in_menu">إلغاء آخر لفة</string>
+    <string name="combination_string">مزيج</string>
+    <string name="sum_string">مجموع</string>
 </resources>

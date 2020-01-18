@@ -228,6 +228,17 @@ public class Logic {
         return histogramToReturn;
     }
 
+    public int[][] GetCombinationHistogram() {
+        int combinationHistogram[][] = new int[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
+
+        for(int i = 0; i < m_histogram.length; i++) {
+            Card card = IndexToCard(i);
+            combinationHistogram[card.m_red - 1][card.m_yellow - 1] = m_histogram[i];
+        }
+
+        return combinationHistogram;
+    }
+
     public int GetTurnNumber() {return m_current_turn_number;}
 
     public void IncreaseTurnNumber() { m_current_turn_number++; }

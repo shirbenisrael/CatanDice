@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -32,6 +33,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +50,7 @@ import static com.shirbi.catandice.BluetoothChatService.TOAST;
 
 public class MainActivity extends Activity {
     private TextView m_histogram_counters[]; /* histograms values */
+    private TextView m_histogram_combination_counters[][];
     private ImageView m_histogram_images[]; /* histogram bars. */
     private TextView m_histogram_text[]; /* static numbers under the histogram , 2,... 12 */
     private ImageView m_pirate_positions_images[];
@@ -353,6 +357,7 @@ public class MainActivity extends Activity {
         int num_bars = Card.MAX_NUMBER_ON_DICE * 2 - 1;
 
         m_histogram_counters = new TextView[num_bars];
+        m_histogram_combination_counters = new TextView[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
         m_histogram_images = new ImageView[num_bars];
         m_histogram_text = new TextView[num_bars];
         m_pirate_positions_images = new ImageView[Card.MAX_PIRATE_POSITIONS];
@@ -464,6 +469,53 @@ public class MainActivity extends Activity {
             m_histogram_counters[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
         }
 
+        int cell_count = Card.MAX_NUMBER_ON_DICE + 1;
+        TableLayout histogram_table_layout = findViewById(R.id.combination_table);
+        TableRow newRow = new TableRow(this);
+        TextView textView = new TextView(this);
+        newRow.addView(textView);
+        int cell_size = histogram_window_width / cell_count;
+        textView.getLayoutParams().width = cell_size;
+        textView.getLayoutParams().height = cell_size;
+        textView.setGravity(Gravity.CENTER);
+
+        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
+            textView = new TextView(this);
+            newRow.addView(textView);
+            textView.setText(String.valueOf(i + 1));
+            textView.setTextColor(Color.RED);
+            textView.getLayoutParams().width = cell_size;
+            textView.getLayoutParams().height = cell_size;
+            textView.setGravity(Gravity.CENTER);
+        }
+        histogram_table_layout.addView(newRow);
+
+        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
+            newRow = new TableRow(this);
+            textView = new TextView(this);
+            newRow.addView(textView);
+            textView.setText(String.valueOf(i + 1));
+            textView.setTextColor(Color.YELLOW);
+            textView.getLayoutParams().width = cell_size;
+            textView.getLayoutParams().height = cell_size;
+            textView.setGravity(Gravity.CENTER);
+
+            for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
+                textView = new TextView(this);
+                newRow.addView(textView);
+                m_histogram_combination_counters[j][i] = textView;
+                textView.setTextColor(Color.GREEN);
+                textView.getLayoutParams().width = histogram_window_width / cell_count;
+                textView.getLayoutParams().height = histogram_window_width / cell_count;
+                textView.setGravity(Gravity.CENTER);
+                textView.setTypeface(null, Typeface.BOLD);
+                textView.setTextSize(20);
+            }
+            histogram_table_layout.addView(newRow);
+        }
+
+        histogram_table_layout.setPadding(0,0,0, cell_size * 3 / 2);
+
         arrange_buttons();
 
         CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
@@ -512,6 +564,27 @@ public class MainActivity extends Activity {
             m_histogram_images[i].getLayoutParams().height = height;
             m_histogram_counters[i].setText(String.valueOf(histogram[i]));
             m_histogram_images[i].requestLayout();
+        }
+
+        int combination_histogram[][] = m_logic.GetCombinationHistogram();
+        int max_appeared_combination = 0;
+
+        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
+            for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
+                max_appeared_combination = Math.max(max_appeared_combination, combination_histogram[i][j]);
+            }
+        }
+
+        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
+            for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
+                TextView textView = m_histogram_combination_counters[i][j];
+                int value = combination_histogram[i][j];
+                int background_color = (255 * value) / max_appeared_combination;
+
+                textView.setText(String.valueOf(value));
+                textView.setBackgroundColor(0xFF000000 + background_color +
+                        (background_color << 8) + (background_color << 16));
+            }
         }
 
         findViewById(R.id.histogram_background_layout).setVisibility(View.VISIBLE);
@@ -904,6 +977,22 @@ public class MainActivity extends Activity {
         }
 
         ShowState(ShownState.GAME);
+    }
+
+    public void onSumButtonClick(View view) {
+        findViewById(R.id.histogram_images_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.histogram_text_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.combination_table).setVisibility(View.GONE);
+        findViewById(R.id.sum_button).setEnabled(false);
+        findViewById(R.id.combination_button).setEnabled(true);
+    }
+
+    public void onCombinationButtonClick(View view) {
+        findViewById(R.id.histogram_images_layout).setVisibility(View.GONE);
+        findViewById(R.id.histogram_text_layout).setVisibility(View.GONE);
+        findViewById(R.id.combination_table).setVisibility(View.VISIBLE);
+        findViewById(R.id.sum_button).setEnabled(true);
+        findViewById(R.id.combination_button).setEnabled(false);
     }
 
     public void onBackFromHistogramClick(View view) {

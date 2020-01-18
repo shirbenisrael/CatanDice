@@ -315,13 +315,45 @@
                     android:orientation="horizontal"
                     android:visibility="visible"></LinearLayout>
 
-                <Button
-                    android:id="@+id/back_from_histogram_button"
-                    android:layout_width="wrap_content"
+                <TableLayout
+                    android:id = "@+id/combination_table"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="onBackFromHistogramClick"
-                    android:text="@string/back_string" />
+                    android:visibility="gone"
+                    android:layout_weight="0">
+                </TableLayout>
 
+                <LinearLayout
+                    android:id="@+id/histogram_buttons_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/back_from_histogram_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onBackFromHistogramClick"
+                        android:text="@string/back_string" />
+
+                    <Button
+                        android:id="@+id/sum_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onSumButtonClick"
+                        android:enabled="false"
+                        android:text="@string/sum_string" />
+
+                    <Button
+                        android:id="@+id/combination_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onCombinationButtonClick"
+                        android:text="@string/combination_string" />
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
