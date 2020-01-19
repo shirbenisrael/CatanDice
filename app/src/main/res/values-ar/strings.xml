@@ -58,4 +58,5 @@
     <string name="cancel_last_move_in_menu">إلغاء آخر لفة</string>
     <string name="combination_string">مزيج</string>
     <string name="sum_string">مجموع</string>
+    <string name="prevent_accidental_roll">منع لفة عرضي</string>
 </resources>

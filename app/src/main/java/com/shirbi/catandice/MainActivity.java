@@ -84,6 +84,7 @@ public class MainActivity extends Activity {
     private boolean m_is_sound_enable;
     private boolean m_is_fair_dice;
     private boolean m_is_shake_enable;
+    private boolean m_is_prevent_accidental_roll;
     private long m_last_roll_time_ms = 0;
 
     private enum ShownState {
@@ -235,6 +236,7 @@ public class MainActivity extends Activity {
         editor.putBoolean(getString(R.string.m_is_sound_enable), m_is_sound_enable);
         editor.putBoolean(getString(R.string.m_is_fair_dice), m_is_fair_dice);
         editor.putBoolean(getString(R.string.m_is_shake_enable), m_is_shake_enable);
+        editor.putBoolean(getString(R.string.m_is_prevent_accidental_roll), m_is_prevent_accidental_roll);
 
         m_logic.StoreState(this, editor);
         editor.commit();
@@ -257,6 +259,7 @@ public class MainActivity extends Activity {
         m_is_sound_enable = sharedPref.getBoolean(getString(R.string.m_is_sound_enable), true);
         m_is_fair_dice = sharedPref.getBoolean(getString(R.string.m_is_fair_dice), true);
         m_is_shake_enable = sharedPref.getBoolean(getString(R.string.m_is_shake_enable), true);
+        m_is_prevent_accidental_roll = sharedPref.getBoolean(getString(R.string.m_is_prevent_accidental_roll), false);
 
         m_logic.RestoreState(this, sharedPref);
 
@@ -527,6 +530,9 @@ public class MainActivity extends Activity {
         CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
         enable_shake_check_box.setChecked(m_is_shake_enable);
 
+        CheckBox prevent_accidental_roll_checkbox_check_box = (CheckBox) findViewById(R.id.prevent_accidental_roll_checkbox);
+        prevent_accidental_roll_checkbox_check_box.setChecked(m_is_prevent_accidental_roll);
+
         SetBackGround();
 
         ShowState(ShownState.GAME);
@@ -750,8 +756,10 @@ public class MainActivity extends Activity {
 
     public void onRollClick(View view) {
         long new_time_stamp = elapsedRealtime();
-        if (new_time_stamp - m_last_roll_time_ms <= MILLISECONDS_BETWEEN_ROLLS) {
-            return;
+        if (m_is_prevent_accidental_roll) {
+            if (new_time_stamp - m_last_roll_time_ms <= MILLISECONDS_BETWEEN_ROLLS) {
+                return;
+            }
         }
 
         m_last_roll_time_ms = new_time_stamp;
@@ -971,6 +979,9 @@ public class MainActivity extends Activity {
 
         CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
         m_is_shake_enable = enable_shake_check_box.isChecked();
+
+        CheckBox prevent_accidental_roll_check_box = (CheckBox) findViewById(R.id.prevent_accidental_roll_checkbox);
+        m_is_prevent_accidental_roll = prevent_accidental_roll_check_box.isChecked();
 
         if (mTwoPlayerGame) {
             BluetoothMessageHandler.SendSetFairDice(this, m_is_fair_dice);

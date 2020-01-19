@@ -58,4 +58,5 @@
     <string name="cancel_last_move_in_menu">Annuler le dernier rouleau</string>
     <string name="sum_string">Somme</string>
     <string name="combination_string">Combinaison</string>
+    <string name="prevent_accidental_roll">Empêcher le roulis accidentel</string>
 </resources>

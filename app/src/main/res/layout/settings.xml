@@ -71,6 +71,12 @@
     </LinearLayout>
 
     <CheckBox
+        android:id="@+id/prevent_accidental_roll_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/prevent_accidental_roll" />
+
+    <CheckBox
         android:id="@+id/enable_shake_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

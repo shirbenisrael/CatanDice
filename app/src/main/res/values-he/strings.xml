@@ -59,4 +59,5 @@
     <string name="cancel_last_move_in_menu">בטל הטלה אחרונה</string>
     <string name="combination_string">צירוף</string>
     <string name="sum_string">סכום</string>
+    <string name="prevent_accidental_roll">מניעת הטלה מקרית</string>
 </resources>
