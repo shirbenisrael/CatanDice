@@ -59,4 +59,6 @@
     <string name="combination_string">مزيج</string>
     <string name="sum_string">مجموع</string>
     <string name="prevent_accidental_roll">منع لفة عرضي</string>
+    <string name="prevent_accidental_roll_title">منع لفة عرضي</string>
+    <string name="prevent_accidental_roll_message">يجب أن تنتظر 3 ثوان بين اثنين من لفات متتابعة.</string>
 </resources>

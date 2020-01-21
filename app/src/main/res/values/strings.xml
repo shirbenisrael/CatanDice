@@ -55,6 +55,8 @@
     <string name="question_mark" translatable="false">?</string>
     <string name="fair_dice_title">Fair Dice</string>
     <string name="fair_dice_help_message">Reduce the chance of a pair of dice result that already appeared to appear until all other pairs appeared too.</string>
+    <string name="prevent_accidental_roll_title">Prevent Accidental Roll</string>
+    <string name="prevent_accidental_roll_message">Must wait 3 seconds between two sequential rolls.</string>
     <string name="rate_app">Rate App</string>
     <string name="please_rate">Did you like the app? Please rate us</string>
     <string name="send_state_title">Send State?</string>

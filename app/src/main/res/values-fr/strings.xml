@@ -59,4 +59,6 @@
     <string name="sum_string">Somme</string>
     <string name="combination_string">Combinaison</string>
     <string name="prevent_accidental_roll">Empêcher le roulis accidentel</string>
+    <string name="prevent_accidental_roll_message">Doit attendre 3 secondes entre deux rouleaux séquentiels.</string>
+    <string name="prevent_accidental_roll_title">Empêcher le roulis accidentel</string>
 </resources>

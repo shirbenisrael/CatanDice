@@ -59,4 +59,6 @@
     <string name="sum_string">Suma</string>
     <string name="combination_string">Combinación</string>
     <string name="prevent_accidental_roll">Prevenir el balanceo accidental</string>
+    <string name="prevent_accidental_roll_message">Debe esperar 3 segundos entre dos tiradas secuenciales.</string>
+    <string name="prevent_accidental_roll_title">Prevenir el rodaje accidental</string>
 </resources>

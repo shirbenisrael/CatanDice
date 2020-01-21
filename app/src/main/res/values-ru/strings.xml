@@ -59,4 +59,6 @@
     <string name="combination_string">комбинирование</string>
     <string name="sum_string">сумма</string>
     <string name="prevent_accidental_roll">Предотвратить случайный бросок</string>
+    <string name="prevent_accidental_roll_title">Предотвратить случайный бросок</string>
+    <string name="prevent_accidental_roll_message">Нужно подождать 3 секунды между двумя последовательными бросками.</string>
 </resources>

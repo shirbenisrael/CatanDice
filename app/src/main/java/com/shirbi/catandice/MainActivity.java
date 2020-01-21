@@ -1327,6 +1327,12 @@ public class MainActivity extends Activity {
         ShowAlertDialogMessage(message, title);
     }
 
+    public void onHelpPreventAccidentalRollClick(View view) {
+        String message = getString(R.string.prevent_accidental_roll_message);
+        String title = getString(R.string.prevent_accidental_roll_title);
+        ShowAlertDialogMessage(message, title);
+    }
+
     public void onRateAppClick(View view) {
         final String appPackageName = getPackageName();
 
