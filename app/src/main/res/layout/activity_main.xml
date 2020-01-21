@@ -381,6 +381,7 @@
                 android:background="#0000"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/regular_game"
+                android:paddingVertical="@dimen/game_type_vertical_padding"
                 android:text="@string/game_type_regular" />
 
             <ImageButton
@@ -391,6 +392,7 @@
                 android:background="#0000"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/cities_and_knights"
+                android:paddingVertical="@dimen/game_type_vertical_padding"
                 android:text="@string/game_type_cities_and_knights" />
 
             <ImageButton
@@ -401,6 +403,7 @@
                 android:background="#0000"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/simple_dice"
+                android:paddingVertical="@dimen/game_type_vertical_padding"
                 android:text="@string/game_type_simple_dice" />
 
             <Button
