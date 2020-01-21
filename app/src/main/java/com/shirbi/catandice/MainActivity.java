@@ -966,6 +966,7 @@ public class MainActivity extends Activity {
 
         CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
         enable_fair_dice_check_box.setChecked(m_is_fair_dice);
+        m_logic.SetEnableFairDice(m_is_fair_dice);
     }
 
     public void onBackFromSettingClick(View view) {
