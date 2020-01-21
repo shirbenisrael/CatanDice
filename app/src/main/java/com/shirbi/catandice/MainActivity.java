@@ -1055,6 +1055,10 @@ public class MainActivity extends Activity {
 
     public void onSelectNumPlayersClick(View view) {
         switch (view.getId()) {
+            case R.id.button_2_players:
+                m_num_players = 2;
+                break;
+
             case R.id.button_3_players:
                 m_num_players = 3;
                 break;

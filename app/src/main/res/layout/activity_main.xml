@@ -431,6 +431,13 @@
                 android:text="@string/num_players_string" />
 
             <Button
+                android:id="@+id/button_2_players"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSelectNumPlayersClick"
+                android:text="2" />
+
+            <Button
                 android:id="@+id/button_3_players"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
