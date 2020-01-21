@@ -1,7 +1,5 @@
 package com.shirbi.catandice;
 
-import android.widget.Toast;
-
 public class BluetoothMessageHandler {
     private  static int[] ParseAsInts(String[] strArray) {
         int[] intArray = new int[strArray.length];
@@ -18,7 +16,7 @@ public class BluetoothMessageHandler {
         int[] intArray;
 
         int messageType = Integer.parseInt(strArray[0]);
-        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
         switch (messageType) {
             // TODO: Handle messages
