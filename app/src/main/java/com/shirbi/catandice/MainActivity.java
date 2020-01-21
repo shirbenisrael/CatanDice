@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
     private Card.EventDice m_event_dice;
     private int m_pirate_position;
     private boolean m_is_sound_enable;
-    private boolean m_is_fair_dice;
+    private boolean m_is_fair_dice = true;
     private boolean m_is_shake_enable;
     private boolean m_is_prevent_accidental_roll;
     private long m_last_roll_time_ms = 0;
@@ -349,7 +349,7 @@ public class MainActivity extends Activity {
         m_num_players = DEFAULT_NUMBER_OF_PLAYERS;
         m_game_type = DEFAULT_GAME_TYPE;
 
-        m_logic = new Logic(m_num_players, m_game_type);
+        m_logic = new Logic(m_num_players, m_game_type, m_is_fair_dice);
         m_shakeDetector = new ShakeDetector();
         m_shakeDetector.setOnShakeListener(m_shakeListener);
 
@@ -1094,7 +1094,7 @@ public class MainActivity extends Activity {
     public void StartingNewGame(boolean send_message_to_other_player) {
         SetBackGround();
 
-        m_logic.Init(m_num_players, m_game_type);
+        m_logic.Init(m_num_players, m_game_type, m_is_fair_dice);
         m_pirate_position = 0;
 
         if (mTwoPlayerGame && send_message_to_other_player) {

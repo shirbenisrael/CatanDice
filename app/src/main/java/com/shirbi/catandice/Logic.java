@@ -50,9 +50,9 @@ public class Logic {
         }
     }
 
-    public Logic(int num_players, GameType game_type) {
+    public Logic(int num_players, GameType game_type, Boolean is_fair_dice) {
         m_histogram = new int[Card.MAX_NUMBER_ON_DICE * Card.MAX_NUMBER_ON_DICE];
-        Init(num_players, game_type);
+        Init(num_players, game_type, is_fair_dice);
     }
 
     private void AddPirateToCardMessage(Card cardToReturn) {
@@ -197,7 +197,7 @@ public class Logic {
         return cardToReturn;
     }
 
-    public void Init(int num_players, GameType game_type) {
+    public void Init(int num_players, GameType game_type, Boolean is_fair_dice) {
         for(int i=0;i<m_histogram.length;i++) {
             m_histogram[i] = 0;
         }
@@ -211,7 +211,7 @@ public class Logic {
         m_num_players = num_players;
         m_game_type = game_type;
         m_is_pirate_arrive = false;
-        m_is_enable_fair_dice = true;
+        m_is_enable_fair_dice = is_fair_dice;
     }
 
     public void SetEnableFairDice(boolean is_enable) {
