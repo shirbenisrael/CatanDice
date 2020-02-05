@@ -20,6 +20,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -40,8 +41,10 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,7 +59,6 @@ public class MainActivity extends Activity {
     private ImageView m_pirate_positions_images[];
     private Timer m_timer; /* time for rolling animation */
     private int m_count_down;
-    private MediaPlayer m_media_player;
     private Point m_size;
     private boolean m_is_alchemist_active = false;
     private ShakeDetector m_shakeDetector;
@@ -72,6 +74,9 @@ public class MainActivity extends Activity {
     private int m_starting_player;
     private Card m_last_card;
     private Card m_previous_card;
+    private CountDownTimer m_count_down_timer;
+    private int[] m_count_down_timer_seconds_values = {15, 30, 45, 60, 90, 120, 180};
+    private CharSequence[] m_count_down_timer_seconds_strings = { "0:15", "0:30", "0:45", "1:00", "1:30", "2:00", "3:00" };
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -86,6 +91,8 @@ public class MainActivity extends Activity {
     private boolean m_is_shake_enable;
     private boolean m_is_prevent_accidental_roll;
     private long m_last_roll_time_ms = 0;
+    private int m_count_down_timer_selection;
+    private boolean m_is_timer_enable;
 
     private enum ShownState {
         GAME,
@@ -100,6 +107,7 @@ public class MainActivity extends Activity {
 
     public static final long MILLISECONDS_BETWEEN_ROLLS = 3000;
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
+    public static final int DEFAULT_TIMER_SELECTION = 5;
     public static final int DEFAULT_NUMBER_ON_DICE;
     public static final Logic.GameType DEFAULT_GAME_TYPE;
     public static final int NUM_SHAKES_TO_ROLL_DICE;
@@ -233,6 +241,8 @@ public class MainActivity extends Activity {
         editor.putInt(getString(R.string.m_event_dice), m_event_dice.getValue());
         editor.putInt(getString(R.string.m_game_type), m_game_type.getValue());
         editor.putInt(getString(R.string.m_pirate_position), m_pirate_position);
+        editor.putInt(getString(R.string.m_count_down_timer_selection), m_count_down_timer_selection);
+        editor.putBoolean(getString(R.string.m_is_timer_enable), m_is_timer_enable);
         editor.putBoolean(getString(R.string.m_is_sound_enable), m_is_sound_enable);
         editor.putBoolean(getString(R.string.m_is_fair_dice), m_is_fair_dice);
         editor.putBoolean(getString(R.string.m_is_shake_enable), m_is_shake_enable);
@@ -249,6 +259,8 @@ public class MainActivity extends Activity {
         m_red_dice = sharedPref.getInt(getString(R.string.m_red_dice), DEFAULT_NUMBER_ON_DICE);
         m_yellow_dice = sharedPref.getInt(getString(R.string.m_yellow_dice), DEFAULT_NUMBER_ON_DICE);
         m_pirate_position = sharedPref.getInt(getString(R.string.m_pirate_position), Logic.DEFAULT_PIRATE_POSITION);
+        m_count_down_timer_selection = sharedPref.getInt(getString(R.string.m_count_down_timer_selection), DEFAULT_TIMER_SELECTION);
+        m_is_timer_enable = sharedPref.getBoolean(getString(R.string.m_is_timer_enable), false);
 
         int event_num = sharedPref.getInt(getString(R.string.m_event_dice), DEFAULT_NUMBER_ON_DICE);
         m_event_dice = Card.EventDice.values()[event_num];
@@ -521,17 +533,11 @@ public class MainActivity extends Activity {
 
         arrange_buttons();
 
-        CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
-        enable_sound_check_box.setChecked(m_is_sound_enable);
-
-        CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
-        enable_fair_dice_check_box.setChecked(m_is_fair_dice);
-
-        CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
-        enable_shake_check_box.setChecked(m_is_shake_enable);
-
-        CheckBox prevent_accidental_roll_checkbox_check_box = (CheckBox) findViewById(R.id.prevent_accidental_roll_checkbox);
-        prevent_accidental_roll_checkbox_check_box.setChecked(m_is_prevent_accidental_roll);
+        enableCheckBox(R.id.enable_sound_checkbox, m_is_sound_enable);
+        enableCheckBox(R.id.enable_fair_dice_checkbox, m_is_fair_dice);
+        enableCheckBox(R.id.enable_shake_checkbox, m_is_shake_enable);
+        enableCheckBox(R.id.prevent_accidental_roll_checkbox, m_is_prevent_accidental_roll);
+        enableCheckBox(R.id.enable_turn_timer_checkbox, m_is_timer_enable);
 
         SetBackGround();
 
@@ -540,6 +546,12 @@ public class MainActivity extends Activity {
         ShowTurnNumber(m_logic.GetTurnNumber());
 
         SetMainButtonsEnable(true);
+
+        selectCountDownTimerValue(m_count_down_timer_selection);
+    }
+
+    private void enableCheckBox(int id, boolean is_enable) {
+        ((CheckBox)findViewById(id)).setChecked(is_enable);
     }
 
     private void ShowHistogram() {
@@ -808,14 +820,13 @@ public class MainActivity extends Activity {
                 R.raw.dices5
         };
 
-        m_media_player = MediaPlayer.create(getApplicationContext(),
-                dices_sound_ids[new Random().nextInt(dices_sound_ids.length)]);
-
         if (m_is_sound_enable) {
-            m_media_player.start();
+            PlaySound(dices_sound_ids[new Random().nextInt(dices_sound_ids.length)]);
         }
 
         SetMainButtonsEnable(false);
+
+        stopCountDownTimer();
 
         m_timer.schedule(new TimerTask() {
             @Override
@@ -846,6 +857,28 @@ public class MainActivity extends Activity {
         }
 
         main_layout.setBackgroundResource(resource);
+    }
+
+    // Set of all media players which are currently working. Used to prevent garbage collector from
+    // clean them and stop the sounds.
+    private Set<MediaPlayer> m_media_players = new HashSet<MediaPlayer>();
+
+    public void PlaySound(int sound_id) {
+        if (!m_is_sound_enable) {
+            return;
+        }
+
+        MediaPlayer media_player;
+        media_player = MediaPlayer.create(this, sound_id);
+        m_media_players.add(media_player);
+        media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+                m_media_players.remove(mp);
+            }
+        });
+        media_player.start();
     }
 
     private void TimerMethod() {
@@ -882,7 +915,7 @@ public class MainActivity extends Activity {
                     SetMainButtonsEnable(true);
                 }
 
-                m_media_player.release();
+                startCountDownTimer();
             } else {
                 Random rand = new Random();
                 if (!m_is_alchemist_active) {
@@ -983,6 +1016,12 @@ public class MainActivity extends Activity {
 
         CheckBox prevent_accidental_roll_check_box = (CheckBox) findViewById(R.id.prevent_accidental_roll_checkbox);
         m_is_prevent_accidental_roll = prevent_accidental_roll_check_box.isChecked();
+
+        CheckBox enable_timer = findViewById(R.id.enable_turn_timer_checkbox);
+        m_is_timer_enable = enable_timer.isChecked();
+        if (!m_is_timer_enable) {
+            stopCountDownTimer();
+        }
 
         if (mTwoPlayerGame) {
             BluetoothMessageHandler.SendSetFairDice(this, m_is_fair_dice);
@@ -1104,6 +1143,7 @@ public class MainActivity extends Activity {
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetPiratePosition();
+        stopCountDownTimer();
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
     }
 
@@ -1338,6 +1378,85 @@ public class MainActivity extends Activity {
         final String appPackageName = getPackageName();
 
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+    }
+
+    private void selectCountDownTimerValue(int index) {
+        Button turn_timer_values_button = (Button)findViewById(R.id.turn_timer_values_button);
+
+        m_count_down_timer_selection = index;
+        turn_timer_values_button.setText(m_count_down_timer_seconds_strings[index]);
+    }
+
+    public void onTurnTimerValuesButtonClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(getString(R.string.select_turn_time_title));
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+
+        builder.setItems(m_count_down_timer_seconds_strings,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectCountDownTimerValue(which);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void SetCountDownTimerVisible(boolean is_visible) {
+        TextView textView = findViewById(R.id.count_down_timer_text_view);
+        textView.setVisibility(is_visible ? View.VISIBLE : View.GONE);
+    }
+
+    private void stopCountDownTimer() {
+        if (m_count_down_timer != null) {
+            m_count_down_timer.cancel();
+            m_count_down_timer = null;
+        }
+
+        SetCountDownTimerVisible(false);
+    }
+
+    private void startCountDownTimer() {
+        if (!m_is_timer_enable) {
+            return;
+        }
+
+        SetCountDownTimerVisible(true);
+
+        int seconds = m_count_down_timer_seconds_values[m_count_down_timer_selection];
+
+        m_count_down_timer = new CountDownTimer(1000 * seconds, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TextView textView = findViewById(R.id.count_down_timer_text_view);
+                int total_seconds = (int) (millisUntilFinished / 1000);
+                int minutes = total_seconds / 60;
+                int seconds = total_seconds % 60;
+
+                if (seconds < 10) {
+                    textView.setText(minutes + ":0" + seconds);
+                } else {
+                    textView.setText(minutes + ":" + seconds);
+                }
+
+                if (minutes == 0 && (seconds < 10)) {
+                    PlaySound((seconds > 0) ? R.raw.second_passed : R.raw.timeout);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                stopCountDownTimer();
+            }
+        };
+
+        m_count_down_timer.start();
     }
 
     private Boolean VerifyBlueToothEnabled() {

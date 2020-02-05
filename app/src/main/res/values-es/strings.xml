@@ -61,4 +61,6 @@
     <string name="prevent_accidental_roll">Prevenir el balanceo accidental</string>
     <string name="prevent_accidental_roll_message">Debe esperar 3 segundos entre dos tiradas secuenciales.</string>
     <string name="prevent_accidental_roll_title">Prevenir el rodaje accidental</string>
+    <string name="select_turn_time_title">Seleccionar tiempo de giro</string>
+    <string name="enable_turn_timer">Activar temporizador de giro</string>
 </resources>

@@ -62,4 +62,6 @@
     <string name="prevent_accidental_roll">מניעת הטלה מקרית</string>
     <string name="prevent_accidental_roll_message">המתן 3 שניות בין שתי הטלות רצופות</string>
     <string name="prevent_accidental_roll_title">מנע הטלה מקרית</string>
+    <string name="enable_turn_timer">שעון עצר לתור</string>
+    <string name="select_turn_time_title">בחירת זמן לתור</string>
 </resources>

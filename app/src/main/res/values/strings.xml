@@ -8,8 +8,10 @@
     <string name="m_current_turn_number" translatable="false">m_current_turn_number</string>
     <string name="m_game_type" translatable="false">m_game_type</string>
     <string name="m_pirate_position" translatable="false">m_pirate_position</string>
+    <string name="m_count_down_timer_selection" translatable="false">m_count_down_timer_selection</string>
     <string name="m_is_pirate_arrive" translatable="false">m_is_pirate_arrive</string>
     <string name="m_is_sound_enable" translatable="false">m_is_sound_enable</string>
+    <string name="m_is_timer_enable" translatable="false">m_is_timer_enable</string>
     <string name="m_is_fair_dice" translatable="false">m_is_fair_dice</string>
     <string name="m_is_shake_enable" translatable="false">m_is_shake_enable</string>
     <string name="m_is_prevent_accidental_roll" translatable="false">m_is_prevent_accidental_roll</string>
@@ -57,6 +59,8 @@
     <string name="fair_dice_help_message">Reduce the chance of a pair of dice result that already appeared to appear until all other pairs appeared too.</string>
     <string name="prevent_accidental_roll_title">Prevent Accidental Roll</string>
     <string name="prevent_accidental_roll_message">Must wait 3 seconds between two sequential rolls.</string>
+    <string name="enable_turn_timer">Enable Turn Timer</string>
+    <string name="select_turn_time_title">Select Turn Time</string>
     <string name="rate_app">Rate App</string>
     <string name="please_rate">Did you like the app? Please rate us and write a review.</string>
     <string name="send_state_title">Send State?</string>

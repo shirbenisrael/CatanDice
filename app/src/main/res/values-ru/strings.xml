@@ -61,4 +61,6 @@
     <string name="prevent_accidental_roll">Предотвратить случайный бросок</string>
     <string name="prevent_accidental_roll_title">Предотвратить случайный бросок</string>
     <string name="prevent_accidental_roll_message">Нужно подождать 3 секунды между двумя последовательными бросками.</string>
+    <string name="enable_turn_timer">Включить таймер поворота</string>
+    <string name="select_turn_time_title">Выберите время поворота</string>
 </resources>
