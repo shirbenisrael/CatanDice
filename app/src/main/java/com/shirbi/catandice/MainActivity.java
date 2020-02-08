@@ -593,6 +593,10 @@ public class MainActivity extends Activity {
             }
         }
 
+        if (max_appeared_combination == 0) {
+            max_appeared_combination = 1;
+        }
+
         for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
             for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
                 TextView textView = m_histogram_combination_counters[i][j];
