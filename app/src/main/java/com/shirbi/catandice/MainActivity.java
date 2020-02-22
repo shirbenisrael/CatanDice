@@ -1215,6 +1215,8 @@ public class MainActivity extends Activity {
         } else {
             SetDicesImagesRolled(1, 1);
         }
+        m_last_card = m_previous_card;
+
         SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
         m_pirate_position = m_logic.GetPiratePosition();
         SetPiratePosition();
