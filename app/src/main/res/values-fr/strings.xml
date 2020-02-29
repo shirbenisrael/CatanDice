@@ -63,4 +63,5 @@
     <string name="prevent_accidental_roll_title">Empêcher le roulis accidentel</string>
     <string name="select_turn_time_title">Sélectionnez le temps de rotation</string>
     <string name="enable_turn_timer">Activer Turn Timer</string>
+    <string name="one_dice_string">Unique</string>
 </resources>

@@ -315,7 +315,23 @@
                 android:visibility="visible">
 
                 <LinearLayout
-                    android:id="@+id/histogram_images_layout"
+                    android:id="@+id/one_dice_histogram_images_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:visibility="gone"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/one_dice_histogram_text_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:visibility="gone"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sum_histogram_images_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
@@ -323,7 +339,7 @@
                     android:visibility="visible"></LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/histogram_text_layout"
+                    android:id="@+id/sum_histogram_text_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
@@ -338,6 +354,7 @@
                     android:layout_weight="0">
                 </TableLayout>
 
+                <!-- Histogram buttons -->
                 <LinearLayout
                     android:id="@+id/histogram_buttons_layout"
                     android:layout_width="match_parent"
@@ -360,6 +377,14 @@
                         android:onClick="onSumButtonClick"
                         android:enabled="false"
                         android:text="@string/sum_string" />
+
+                    <Button
+                        android:id="@+id/one_dice_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onOneDiceButtonClick"
+                        android:enabled="true"
+                        android:text="@string/one_dice_string" />
 
                     <Button
                         android:id="@+id/combination_button"

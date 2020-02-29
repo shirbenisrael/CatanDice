@@ -218,6 +218,17 @@ public class Logic {
         m_is_enable_fair_dice = is_enable;
     }
 
+    public int[] GetOneDiceHistogram() {
+        int histogramToReturn[] = new int[Card.MAX_NUMBER_ON_DICE];
+
+        for(int i=0;i<m_histogram.length;i++) {
+            Card card = IndexToCard(i);
+            histogramToReturn[card.m_red -1] += m_histogram[i];
+            histogramToReturn[card.m_yellow - 1] += m_histogram[i];
+        }
+        return histogramToReturn;
+    }
+
     public int[] GetSumHistogram() {
         int histogramToReturn[] = new int[Card.MAX_NUMBER_ON_DICE * 2 -1];
 

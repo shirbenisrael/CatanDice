@@ -27,7 +27,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -52,10 +51,9 @@ import static android.os.SystemClock.elapsedRealtime;
 import static com.shirbi.catandice.BluetoothChatService.TOAST;
 
 public class MainActivity extends Activity {
-    private TextView m_histogram_counters[]; /* histograms values */
     private TextView m_histogram_combination_counters[][];
-    private ImageView m_histogram_images[]; /* histogram bars. */
-    private TextView m_histogram_text[]; /* static numbers under the histogram , 2,... 12 */
+    private Histogram m_sum_histogram;
+    private Histogram m_one_dice_histogram;
     private ImageView m_pirate_positions_images[];
     private Timer m_timer; /* time for rolling animation */
     private int m_count_down;
@@ -371,10 +369,7 @@ public class MainActivity extends Activity {
 
         int num_bars = Card.MAX_NUMBER_ON_DICE * 2 - 1;
 
-        m_histogram_counters = new TextView[num_bars];
         m_histogram_combination_counters = new TextView[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
-        m_histogram_images = new ImageView[num_bars];
-        m_histogram_text = new TextView[num_bars];
         m_pirate_positions_images = new ImageView[Card.MAX_PIRATE_POSITIONS];
 
         m_size = GetWindowSize();
@@ -396,9 +391,6 @@ public class MainActivity extends Activity {
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetTwoPlayerGame(false);
-
-        LinearLayout histogram_images_layout = (LinearLayout) findViewById(R.id.histogram_images_layout);
-        LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
 
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
         LinearLayout layout_for_pirate_ship = (LinearLayout) findViewById(R.id.layout_for_pirate_ship);
@@ -448,41 +440,23 @@ public class MainActivity extends Activity {
 
         SetPiratePosition();
 
-        for (int i = 0; i < m_histogram_images.length; i++) {
-            LinearLayout layout_for_bar_and_counter = new LinearLayout(getApplicationContext());
-            layout_for_bar_and_counter.setOrientation(LinearLayout.VERTICAL);
-            layout_for_bar_and_counter.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        int main_histogram_height = main_histogram_layout.getLayoutParams().height;
 
-            m_histogram_counters[i] = new TextView(this);
-            m_histogram_images[i] = new ImageView(this);
-            m_histogram_text[i] = new TextView(this);
+        m_sum_histogram = new Histogram(this,
+                histogram_window_width,
+                histogram_window_height,
+                main_histogram_height,
+                (LinearLayout)findViewById(R.id.sum_histogram_images_layout),
+                (LinearLayout)findViewById(R.id.sum_histogram_text_layout),
+                2, 12);
 
-            int color = (i % 2) * 100 + 100;
-            int bar_color = Color.rgb(0, color, 0);
-
-            m_histogram_images[i].setBackgroundColor(bar_color);
-
-            m_histogram_text[i].setTextColor(bar_color);
-            m_histogram_text[i].setGravity(Gravity.CENTER);
-
-            m_histogram_counters[i].setTextColor(bar_color);
-            m_histogram_counters[i].setGravity(Gravity.CENTER);
-
-            histogram_images_layout.addView(layout_for_bar_and_counter);
-            layout_for_bar_and_counter.addView(m_histogram_counters[i]);
-            layout_for_bar_and_counter.addView(m_histogram_images[i]);
-            layout_for_bar_and_counter.setGravity(Gravity.CENTER_HORIZONTAL);
-
-            m_histogram_images[i].getLayoutParams().width = histogram_window_width / (m_histogram_images.length * 3);
-            m_histogram_images[i].getLayoutParams().height = 20;
-
-            histogram_text_layout.addView(m_histogram_text[i]);
-
-            m_histogram_text[i].setText(String.valueOf(i + 2));
-            m_histogram_text[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
-
-            m_histogram_counters[i].getLayoutParams().width = histogram_window_width / m_histogram_images.length;
-        }
+        m_one_dice_histogram = new Histogram(this,
+                histogram_window_width,
+                histogram_window_height,
+                main_histogram_height,
+                (LinearLayout)findViewById(R.id.one_dice_histogram_images_layout),
+                (LinearLayout)findViewById(R.id.one_dice_histogram_text_layout),
+                1, 6);
 
         int cell_count = Card.MAX_NUMBER_ON_DICE + 1;
         TableLayout histogram_table_layout = findViewById(R.id.combination_table);
@@ -558,31 +532,14 @@ public class MainActivity extends Activity {
 
         SetMainButtonsEnable(false);
 
-        int[] histogram = m_logic.GetSumHistogram();
+        int[] sum_histogram = m_logic.GetSumHistogram();
+        m_sum_histogram.ShowHistogram(sum_histogram);
+
+        int[] one_dice_histogram = m_logic.GetOneDiceHistogram();
+        m_one_dice_histogram.ShowHistogram(one_dice_histogram);
 
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
-        LinearLayout histogram_text_layout = (LinearLayout) findViewById(R.id.histogram_text_layout);
         Button back_from_histogram_button = (Button) findViewById(R.id.back_from_histogram_button);
-
-        int max_bar_height = main_histogram_layout.getLayoutParams().height;
-        max_bar_height = (max_bar_height * 7) / 10;
-
-        int max_histogram_value = 1;
-
-        for (int i = 0; i < m_histogram_images.length; i++) {
-            max_histogram_value = Math.max(max_histogram_value, histogram[i]);
-        }
-
-        if (max_histogram_value == 1) {
-            max_bar_height = max_bar_height / 2;
-        }
-
-        for (int i = 0; i < m_histogram_images.length; i++) {
-            int height = histogram[i] * max_bar_height / max_histogram_value;
-            m_histogram_images[i].getLayoutParams().height = height;
-            m_histogram_counters[i].setText(String.valueOf(histogram[i]));
-            m_histogram_images[i].requestLayout();
-        }
 
         int combination_histogram[][] = m_logic.GetCombinationHistogram();
         int max_appeared_combination = 0;
@@ -1035,17 +992,28 @@ public class MainActivity extends Activity {
     }
 
     public void onSumButtonClick(View view) {
-        findViewById(R.id.histogram_images_layout).setVisibility(View.VISIBLE);
-        findViewById(R.id.histogram_text_layout).setVisibility(View.VISIBLE);
+        m_one_dice_histogram.SetVisibility(View.GONE);
+        m_sum_histogram.SetVisibility(View.VISIBLE);
         findViewById(R.id.combination_table).setVisibility(View.GONE);
+        findViewById(R.id.one_dice_button).setEnabled(true);
         findViewById(R.id.sum_button).setEnabled(false);
         findViewById(R.id.combination_button).setEnabled(true);
     }
 
+    public void onOneDiceButtonClick(View view) {
+        m_one_dice_histogram.SetVisibility(View.VISIBLE);
+        m_sum_histogram.SetVisibility(View.GONE);
+        findViewById(R.id.combination_table).setVisibility(View.GONE);
+        findViewById(R.id.one_dice_button).setEnabled(false);
+        findViewById(R.id.sum_button).setEnabled(true);
+        findViewById(R.id.combination_button).setEnabled(true);
+    }
+
     public void onCombinationButtonClick(View view) {
-        findViewById(R.id.histogram_images_layout).setVisibility(View.GONE);
-        findViewById(R.id.histogram_text_layout).setVisibility(View.GONE);
+        m_one_dice_histogram.SetVisibility(View.GONE);
+        m_sum_histogram.SetVisibility(View.GONE);
         findViewById(R.id.combination_table).setVisibility(View.VISIBLE);
+        findViewById(R.id.one_dice_button).setEnabled(true);
         findViewById(R.id.sum_button).setEnabled(true);
         findViewById(R.id.combination_button).setEnabled(false);
     }

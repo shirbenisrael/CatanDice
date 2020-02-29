@@ -63,4 +63,5 @@
     <string name="prevent_accidental_roll_message">Нужно подождать 3 секунды между двумя последовательными бросками.</string>
     <string name="enable_turn_timer">Включить таймер поворота</string>
     <string name="select_turn_time_title">Выберите время поворота</string>
+    <string name="one_dice_string">уникальный</string>
 </resources>
