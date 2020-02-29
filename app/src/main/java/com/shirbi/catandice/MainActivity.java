@@ -51,10 +51,10 @@ import static android.os.SystemClock.elapsedRealtime;
 import static com.shirbi.catandice.BluetoothChatService.TOAST;
 
 public class MainActivity extends Activity {
-    private TextView m_histogram_combination_counters[][];
+    private TextView[][] m_histogram_combination_counters;
     private Histogram m_sum_histogram;
     private Histogram m_one_dice_histogram;
-    private ImageView m_pirate_positions_images[];
+    private ImageView[] m_pirate_positions_images;
     private Timer m_timer; /* time for rolling animation */
     private int m_count_down;
     private Point m_size;
@@ -62,10 +62,6 @@ public class MainActivity extends Activity {
     private ShakeDetector m_shakeDetector;
     private boolean m_roll_red, m_roll_yellow;
     private BluetoothAdapter mBluetoothAdapter = null;
-    // Name of the connected device
-    private String mConnectedDeviceName = null;
-    // String buffer for outgoing messages
-    private StringBuffer mOutStringBuffer;
     private com.shirbi.catandice.BluetoothChatService mChatService = null;
     private IncomingHandler mHandler = new IncomingHandler(this);
     private Boolean mTwoPlayerGame = false;
@@ -125,7 +121,7 @@ public class MainActivity extends Activity {
     private void ShowState(ShownState new_state) {
         m_shown_state = new_state;
 
-        int all_layout[] = {
+        int[] all_layout = {
                 R.id.layout_for_dices,
                 R.id.game_type_layout,
                 R.id.num_players_layout,
@@ -133,14 +129,14 @@ public class MainActivity extends Activity {
                 R.id.histogram_background_layout,
                 R.id.messages_relative_layout};
 
-        int layouts_for_game[] = {R.id.layout_for_dices};
-        int layouts_for_game_type[] = {R.id.game_type_layout};
-        int layouts_for_num_players[] = {R.id.num_players_layout};
-        int layouts_for_settings[] = {R.id.setting_layout};
-        int layouts_for_histogram[] = {R.id.layout_for_dices, R.id.histogram_background_layout};
-        int layouts_for_message[] = {R.id.layout_for_dices, R.id.messages_relative_layout};
+        int[] layouts_for_game = {R.id.layout_for_dices};
+        int[] layouts_for_game_type = {R.id.game_type_layout};
+        int[] layouts_for_num_players = {R.id.num_players_layout};
+        int[] layouts_for_settings = {R.id.setting_layout};
+        int[] layouts_for_histogram = {R.id.layout_for_dices, R.id.histogram_background_layout};
+        int[] layouts_for_message = {R.id.layout_for_dices, R.id.messages_relative_layout};
 
-        int layouts_to_show[] = {0};
+        int[] layouts_to_show = {0};
 
         switch (m_shown_state) {
             case GAME:
@@ -165,12 +161,12 @@ public class MainActivity extends Activity {
                 break;
         }
 
-        for (int i = 0; i < all_layout.length; i++) {
-            View layout = findViewById(all_layout[i]);
+        for (int i : all_layout) {
+            View layout = findViewById(i);
             layout.setVisibility(View.INVISIBLE);
 
-            for (int j = 0; j < layouts_to_show.length; j++) {
-                if (all_layout[i] == layouts_to_show[j]) {
+            for (int j : layouts_to_show) {
+                if (i == j) {
                     layout.setVisibility(View.VISIBLE);
                     break;
                 }
@@ -247,7 +243,7 @@ public class MainActivity extends Activity {
         editor.putBoolean(getString(R.string.m_is_prevent_accidental_roll), m_is_prevent_accidental_roll);
 
         m_logic.StoreState(this, editor);
-        editor.commit();
+        editor.apply();
     }
 
     private void RestoreState() {
@@ -397,12 +393,16 @@ public class MainActivity extends Activity {
 
         RelativeLayout messages_relative_layout = (RelativeLayout) findViewById(R.id.messages_relative_layout);
         LinearLayout messages_background_layout = (LinearLayout) findViewById(R.id.messages_background_layout);
+
+        //noinspection - Square so width = height
         int total_dice_height = m_size.x;
+
         RelativeLayout.LayoutParams params =
                 new RelativeLayout.LayoutParams(m_size.x, m_size.y);
         params.leftMargin = m_size.x / 10;
         params.topMargin = total_dice_height;
         params.rightMargin = params.leftMargin;
+        //noinspection - Square so left = bottom
         params.bottomMargin = params.leftMargin;
         messages_relative_layout.removeView(messages_background_layout);
         messages_relative_layout.addView(messages_background_layout, params);
@@ -541,7 +541,7 @@ public class MainActivity extends Activity {
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
         Button back_from_histogram_button = (Button) findViewById(R.id.back_from_histogram_button);
 
-        int combination_histogram[][] = m_logic.GetCombinationHistogram();
+        int[][]combination_histogram = m_logic.GetCombinationHistogram();
         int max_appeared_combination = 0;
 
         for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
@@ -618,7 +618,6 @@ public class MainActivity extends Activity {
                 event_dice_result.setImageResource(R.drawable.yellow_city);
                 break;
             case GREEN_CITY:
-                _CITY:
                 event_dice_result.setImageResource(R.drawable.green_city);
                 break;
             case BLUE_CITY:
@@ -639,12 +638,12 @@ public class MainActivity extends Activity {
 
     public void SetDicesImages(int red_dice_number, int yellow_dice_number,
                                ImageView red_dice_result_image, ImageView yellow_dice_result_image) {
-        int red_images[] =
+        int[] red_images =
                 {R.drawable.red_1, R.drawable.red_2, R.drawable.red_3, R.drawable.red_4, R.drawable.red_5, R.drawable.red_6};
 
         red_dice_result_image.setImageResource(red_images[red_dice_number - 1]);
 
-        int yellow_images[] =
+        int[] yellow_images =
                 {R.drawable.yellow_1, R.drawable.yellow_2, R.drawable.yellow_3, R.drawable.yellow_4, R.drawable.yellow_5, R.drawable.yellow_6};
 
         yellow_dice_result_image.setImageResource(yellow_images[yellow_dice_number - 1]);
@@ -685,7 +684,12 @@ public class MainActivity extends Activity {
     }
 
     public void fixOneDice(int title_id, final boolean is_red) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        AlertDialog.Builder builder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
         builder.setTitle(getString(title_id));
 
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -773,7 +777,7 @@ public class MainActivity extends Activity {
         m_count_down = 10;
         m_timer = new Timer();
 
-        int dices_sound_ids[] = {
+        int[] dices_sound_ids = {
                 R.raw.dices1,
                 R.raw.dices2,
                 R.raw.dices3,
@@ -809,7 +813,6 @@ public class MainActivity extends Activity {
                 break;
 
             case GAME_TYPE_REGULAR:
-                resource = R.drawable.regular_game_bg;
                 break;
 
             case GAME_TYPE_SIMPLE_DICE:
@@ -935,7 +938,7 @@ public class MainActivity extends Activity {
                 m_red_dice, m_yellow_dice, m_event_dice);
     }
 
-    public void SetFullState(int red_dice, int yellow_dice, Card.EventDice event_dice, int intArray[], int startIndex) {
+    public void SetFullState(int red_dice, int yellow_dice, Card.EventDice event_dice, int[] intArray, int startIndex) {
         int nextIndex = m_logic.UpdateFromIntArray(intArray, startIndex);
         m_game_type = m_logic.GetGameType();
         m_pirate_position = m_logic.GetPiratePosition();
@@ -1157,7 +1160,6 @@ public class MainActivity extends Activity {
             case LAST_MOVE_CANCELED:
                 message_type = getString(R.string.last_move_canceled);
                 break;
-            case NO_MESSAGE:
             default:
                 break;
         }
@@ -1200,7 +1202,12 @@ public class MainActivity extends Activity {
     }
 
     public void onMenuButtonClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        AlertDialog.Builder builder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
         builder.setTitle(getString(R.string.menu_title_string));
 
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -1539,9 +1546,9 @@ public class MainActivity extends Activity {
                 break;
             case com.shirbi.catandice.BluetoothChatService.MESSAGE_DEVICE_NAME:
                 // save the connected device's name
-                mConnectedDeviceName = msg.getData().getString(com.shirbi.catandice.BluetoothChatService.DEVICE_NAME);
+                String connectedDeviceName = msg.getData().getString(com.shirbi.catandice.BluetoothChatService.DEVICE_NAME);
                 Toast.makeText(getApplicationContext(), "Connected to "
-                        + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        + connectedDeviceName, Toast.LENGTH_SHORT).show();
                 SetTwoPlayerGame(true);
                 ShowSendStateDialog();
                 break;
@@ -1557,7 +1564,6 @@ public class MainActivity extends Activity {
         mChatService = new com.shirbi.catandice.BluetoothChatService(this, mHandler);
 
         // Initialize the buffer for outgoing messages
-        mOutStringBuffer = new StringBuffer("");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
