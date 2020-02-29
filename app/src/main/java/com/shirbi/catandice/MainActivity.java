@@ -336,6 +336,8 @@ public class MainActivity extends Activity {
         SensorManager sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.unregisterListener(m_shakeDetector);
+
+        stopCountDownTimer();
     }
 
     @Override
