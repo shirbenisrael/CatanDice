@@ -32,7 +32,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -94,7 +93,6 @@ public class MainActivity extends Activity {
         SELECT_NUM_PLAYERS,
         SETTING,
         HISTOGRAM,
-        MESSAGE,
     }
 
     private ShownState m_shown_state;
@@ -126,15 +124,13 @@ public class MainActivity extends Activity {
                 R.id.game_type_layout,
                 R.id.num_players_layout,
                 R.id.setting_layout,
-                R.id.histogram_background_layout,
-                R.id.messages_relative_layout};
+                R.id.histogram_background_layout};
 
         int[] layouts_for_game = {R.id.layout_for_dices};
         int[] layouts_for_game_type = {R.id.game_type_layout};
         int[] layouts_for_num_players = {R.id.num_players_layout};
         int[] layouts_for_settings = {R.id.setting_layout};
         int[] layouts_for_histogram = {R.id.layout_for_dices, R.id.histogram_background_layout};
-        int[] layouts_for_message = {R.id.layout_for_dices, R.id.messages_relative_layout};
 
         int[] layouts_to_show = {0};
 
@@ -153,9 +149,6 @@ public class MainActivity extends Activity {
                 break;
             case HISTOGRAM:
                 layouts_to_show = layouts_for_histogram;
-                break;
-            case MESSAGE:
-                layouts_to_show = layouts_for_message;
                 break;
             default:
                 break;
@@ -218,10 +211,6 @@ public class MainActivity extends Activity {
 
             case HISTOGRAM:
                 onBackFromHistogramClick(null);
-                break;
-
-            case MESSAGE:
-                onBackFromMessageClick(null);
                 break;
         }
     }
@@ -393,21 +382,8 @@ public class MainActivity extends Activity {
         LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
         LinearLayout layout_for_pirate_ship = (LinearLayout) findViewById(R.id.layout_for_pirate_ship);
 
-        RelativeLayout messages_relative_layout = (RelativeLayout) findViewById(R.id.messages_relative_layout);
-        LinearLayout messages_background_layout = (LinearLayout) findViewById(R.id.messages_background_layout);
-
         //noinspection - Square so width = height
         int total_dice_height = m_size.x;
-
-        RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(m_size.x, m_size.y);
-        params.leftMargin = m_size.x / 10;
-        params.topMargin = total_dice_height;
-        params.rightMargin = params.leftMargin;
-        //noinspection - Square so left = bottom
-        params.bottomMargin = params.leftMargin;
-        messages_relative_layout.removeView(messages_background_layout);
-        messages_relative_layout.addView(messages_background_layout, params);
 
         int histogram_window_width = m_size.x * 9 / 10;
         int histogram_window_height = m_size.y * 4 / 5;
@@ -872,14 +848,12 @@ public class MainActivity extends Activity {
                     ShowMessage(m_last_card.m_message, m_last_card.m_turn_number);
                     m_pirate_position = m_last_card.m_pirate_position;
                     SetPiratePosition();
-                    if (m_last_card.m_message == Card.MessageWithCard.NO_MESSAGE) {
-                        SetMainButtonsEnable(true);
-                    }
                 } else {
                     m_logic.IncreaseTurnNumber();
                     ShowMessage(Card.MessageWithCard.NO_MESSAGE, m_logic.GetTurnNumber());
-                    SetMainButtonsEnable(true);
                 }
+
+                SetMainButtonsEnable(true);
 
                 startCountDownTimer();
             } else {
@@ -1028,11 +1002,6 @@ public class MainActivity extends Activity {
         SetMainButtonsEnable(true);
     }
 
-    public void onBackFromMessageClick(View view) {
-        ShowState(ShownState.GAME);
-        SetMainButtonsEnable(true);
-    }
-
     public void onBackFromNumPlayersClick(View view) {
         ShowState(ShownState.GAME);
     }
@@ -1121,6 +1090,8 @@ public class MainActivity extends Activity {
         SetOneDiceOperationVisibility();
         SetPiratePosition();
         stopCountDownTimer();
+
+        ShowState(ShownState.GAME);
         ShowMessage(Card.MessageWithCard.NEW_GAME, 0);
     }
 
@@ -1166,9 +1137,7 @@ public class MainActivity extends Activity {
                 break;
         }
 
-        TextView large_message_view = (TextView) findViewById(R.id.large_message_view);
-        large_message_view.setText(message_type);
-        ShowState(ShownState.MESSAGE);
+        ShowAlertDialogMessage(message_type, "");
     }
 
     private void SetMainButtonsEnable(boolean isEnable) {
@@ -1192,7 +1161,6 @@ public class MainActivity extends Activity {
         SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
         m_pirate_position = m_logic.GetPiratePosition();
         SetPiratePosition();
-        SetMainButtonsEnable(false);
         if (mTwoPlayerGame && is_send_message) {
             BluetoothMessageHandler.SendCancelLastMove(this);
         }
@@ -1335,6 +1303,7 @@ public class MainActivity extends Activity {
         } else {
             builder = new AlertDialog.Builder(this);
         }
+
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
@@ -1342,7 +1311,19 @@ public class MainActivity extends Activity {
             }
         });
         //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
-        builder.show();
+
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        dialog.getWindow().getAttributes();
+        TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+        textView.setTextSize(getResources().getDimension(R.dimen.info_message_size) /
+                             getResources().getDisplayMetrics().density);
+
+        Button btn1 = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btn1.setTextSize(getResources().getDimension(R.dimen.info_message_confirm_button_size) /
+                         getResources().getDisplayMetrics().density);
     }
 
     public void onHelpFairDiceClick(View view) {

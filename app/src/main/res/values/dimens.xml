@@ -6,4 +6,7 @@
     <dimen name="game_type_vertical_padding">8dp</dimen>
 
     <dimen name="timer_size">150dp</dimen>
+
+    <dimen name="info_message_size">20dp</dimen>
+    <dimen name="info_message_confirm_button_size">20dp</dimen>
 </resources>
