@@ -1,6 +1,6 @@
 package com.shirbi.catandice;
 
-public class BluetoothMessageHandler {
+class BluetoothMessageHandler {
     private  static int[] ParseAsInts(String[] strArray) {
         int[] intArray = new int[strArray.length];
 

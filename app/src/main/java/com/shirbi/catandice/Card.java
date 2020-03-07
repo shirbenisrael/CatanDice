@@ -3,17 +3,17 @@ package com.shirbi.catandice;
 /**
  * Created by shirbi on 20/08/2017.
  */
-public class Card {
-    public int m_red;
-    public int m_yellow;
-    public int m_turn_number;
-    public MessageWithCard m_message;
-    public EventDice m_event_dice;
-    public int m_pirate_position;
+class Card {
+    int m_red;
+    int m_yellow;
+    int m_turn_number;
+    MessageWithCard m_message;
+    EventDice m_event_dice;
+    int m_pirate_position;
 
-    public static final int MAX_NUMBER_ON_DICE;
-    public static final int MAX_EVENTS_ON_EVENT_DICE;
-    public static final int MAX_PIRATE_POSITIONS = 8;
+    static final int MAX_NUMBER_ON_DICE;
+    static final int MAX_EVENTS_ON_EVENT_DICE;
+    static final int MAX_PIRATE_POSITIONS = 8;
 
     static {
         MAX_NUMBER_ON_DICE = 6;
@@ -26,7 +26,7 @@ public class Card {
         BLUE_CITY(2),
         GREEN_CITY(3);
 
-        private int value;
+        private final int value;
         EventDice(int value){
             this.value = value;
         }
@@ -46,17 +46,17 @@ public class Card {
         PIRATE_ATTACK_ROBBER_IS_SLEEPING(6),
         LAST_MOVE_CANCELED(7);
 
-        private int value;
+        private final int value;
         MessageWithCard(int value){
             this.value = value;
         }
 
-        public int getValue() {
+        int getValue() {
             return value;
         }
     }
 
-    public Card(int red, int yellow, MessageWithCard message) {
+    Card(int red, int yellow, MessageWithCard message) {
         m_red = red;
         m_yellow = yellow;
         m_message = message;
@@ -65,7 +65,7 @@ public class Card {
         m_pirate_position = 0;
     }
 
-    public String ToString() {
+    String ToString() {
         String string = m_red + "," +
                 m_yellow + "," +
                 m_message.getValue() + "," +

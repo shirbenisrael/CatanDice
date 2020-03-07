@@ -9,12 +9,12 @@ import java.util.StringTokenizer;
 /**
  * Created by shirbi on 20/08/2017.
  */
-public class Logic {
+class Logic {
 
     private class Move {
-        public int histogram_cell_increase;
-        public boolean pirate_moved;
-        public boolean cell_increase;
+        int histogram_cell_increase;
+        boolean pirate_moved;
+        boolean cell_increase;
     }
 
     private Random rand;
@@ -27,8 +27,8 @@ public class Logic {
     private Move m_last_move;
     private boolean m_is_enable_fair_dice;
 
-    static final int LOG_OF_FAIRNESS_FACTOR;
-    public static final int DEFAULT_PIRATE_POSITION;
+    private static final int LOG_OF_FAIRNESS_FACTOR;
+    static final int DEFAULT_PIRATE_POSITION;
 
     static {
         LOG_OF_FAIRNESS_FACTOR = 4;
@@ -40,7 +40,7 @@ public class Logic {
         GAME_TYPE_CITIES_AND_KNIGHT(1),
         GAME_TYPE_SIMPLE_DICE(2);
 
-        private int value;
+        private final int value;
         GameType(int value){
             this.value = value;
         }
@@ -192,12 +192,10 @@ public class Logic {
         int redNumber = (i / Card.MAX_NUMBER_ON_DICE) + 1;
         int yellowNumber = (i % Card.MAX_NUMBER_ON_DICE) + 1;
 
-        Card cardToReturn = new Card(redNumber, yellowNumber, Card.MessageWithCard.NO_MESSAGE);
-
-        return cardToReturn;
+        return new Card(redNumber, yellowNumber, Card.MessageWithCard.NO_MESSAGE);
     }
 
-    public void Init(int num_players, GameType game_type, Boolean is_fair_dice) {
+    void Init(int num_players, GameType game_type, Boolean is_fair_dice) {
         for(int i=0;i<m_histogram.length;i++) {
             m_histogram[i] = 0;
         }
@@ -214,11 +212,11 @@ public class Logic {
         m_is_enable_fair_dice = is_fair_dice;
     }
 
-    public void SetEnableFairDice(boolean is_enable) {
+    void SetEnableFairDice(boolean is_enable) {
         m_is_enable_fair_dice = is_enable;
     }
 
-    public int[] GetOneDiceHistogram() {
+    int[] GetOneDiceHistogram() {
         int[] histogramToReturn = new int[Card.MAX_NUMBER_ON_DICE];
 
         for(int i=0;i<m_histogram.length;i++) {
@@ -229,7 +227,7 @@ public class Logic {
         return histogramToReturn;
     }
 
-    public int[] GetSumHistogram() {
+    int[] GetSumHistogram() {
         int[] histogramToReturn = new int[Card.MAX_NUMBER_ON_DICE * 2 - 1];
 
         for(int i=0;i<m_histogram.length;i++) {
@@ -239,7 +237,7 @@ public class Logic {
         return histogramToReturn;
     }
 
-    public int[][] GetCombinationHistogram() {
+    int[][] GetCombinationHistogram() {
         int[][] combinationHistogram = new int[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
 
         for(int i = 0; i < m_histogram.length; i++) {
@@ -250,11 +248,11 @@ public class Logic {
         return combinationHistogram;
     }
 
-    public int GetTurnNumber() {return m_current_turn_number;}
+    int GetTurnNumber() {return m_current_turn_number;}
 
-    public void IncreaseTurnNumber() { m_current_turn_number++; }
+    void IncreaseTurnNumber() { m_current_turn_number++; }
 
-    public void StoreState(Context context, SharedPreferences.Editor editor) {
+    void StoreState(Context context, SharedPreferences.Editor editor) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < m_histogram.length; i++) {
             str.append(m_histogram[i]).append(",");
@@ -264,7 +262,7 @@ public class Logic {
         editor.putBoolean(context.getString(R.string.m_is_pirate_arrive), m_is_pirate_arrive);
     }
 
-    public void RestoreState(Context context, SharedPreferences sharedPref) {
+    void RestoreState(Context context, SharedPreferences sharedPref) {
         m_num_players = sharedPref.getInt(context.getString(R.string.m_num_players), MainActivity.DEFAULT_NUMBER_OF_PLAYERS);
         m_current_turn_number = sharedPref.getInt(context.getString(R.string.m_current_turn_number), 0);
         m_pirate_position = sharedPref.getInt(context.getString(R.string.m_pirate_position), DEFAULT_PIRATE_POSITION);
@@ -282,15 +280,15 @@ public class Logic {
         }
     }
 
-    public boolean CanCancelLastMove() {
+    boolean CanCancelLastMove() {
         return (m_last_move != null);
     }
 
-    public int GetPiratePosition() {
+    int GetPiratePosition() {
         return m_pirate_position;
     }
 
-    public void CancelLastMove() {
+    void CancelLastMove() {
         if (m_current_turn_number == 0) {
             return;
         }
@@ -316,7 +314,7 @@ public class Logic {
     }
 
     // used to send to other device by bluetooth.
-    public String ToString() {
+    String ToString() {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < m_histogram.length; i++) {
             str.append(m_histogram[i]).append(",");
@@ -339,13 +337,11 @@ public class Logic {
             str.append("0");
         }
 
-        String string = str.toString();
-
-        return string;
+        return str.toString();
     }
 
     // used to get from other device by bluetooth.
-    public int UpdateFromIntArray(int[] intArray, int startIndex) {
+    int UpdateFromIntArray(int[] intArray, int startIndex) {
         for (int i = 0; i < m_histogram.length; i++) {
             m_histogram[i] = intArray[i + startIndex];
         }
@@ -371,9 +367,9 @@ public class Logic {
         return startIndex;
     }
 
-    public GameType GetGameType() { return m_game_type; }
+    GameType GetGameType() { return m_game_type; }
 
-    public int GetNumPlayers() { return m_num_players; }
+    int GetNumPlayers() { return m_num_players; }
 
 
 }

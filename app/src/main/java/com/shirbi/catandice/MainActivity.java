@@ -63,14 +63,14 @@ public class MainActivity extends Activity {
     private boolean m_roll_red, m_roll_yellow;
     private BluetoothAdapter mBluetoothAdapter = null;
     private com.shirbi.catandice.BluetoothChatService mChatService = null;
-    private IncomingHandler mHandler = new IncomingHandler(this);
+    private final IncomingHandler mHandler = new IncomingHandler(this);
     private Boolean mTwoPlayerGame = false;
     private int m_starting_player;
     private Card m_last_card;
     private Card m_previous_card;
     private CountDownTimer m_count_down_timer;
-    private int[] m_count_down_timer_seconds_values = {15, 30, 45, 60, 90, 120, 180};
-    private CharSequence[] m_count_down_timer_seconds_strings = { "0:15", "0:30", "0:45", "1:00", "1:30", "2:00", "3:00" };
+    private final int[] m_count_down_timer_seconds_values = {15, 30, 45, 60, 90, 120, 180};
+    private final CharSequence[] m_count_down_timer_seconds_strings = { "0:15", "0:30", "0:45", "1:00", "1:30", "2:00", "3:00" };
 
     /* Need to store */
     private Logic.GameType m_game_type;
@@ -98,12 +98,12 @@ public class MainActivity extends Activity {
 
     private ShownState m_shown_state;
 
-    public static final long MILLISECONDS_BETWEEN_ROLLS = 3000;
+    private static final long MILLISECONDS_BETWEEN_ROLLS = 3000;
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
-    public static final int DEFAULT_TIMER_SELECTION = 5;
-    public static final int DEFAULT_NUMBER_ON_DICE;
-    public static final Logic.GameType DEFAULT_GAME_TYPE;
-    public static final int NUM_SHAKES_TO_ROLL_DICE;
+    private static final int DEFAULT_TIMER_SELECTION = 5;
+    private static final int DEFAULT_NUMBER_ON_DICE;
+    private static final Logic.GameType DEFAULT_GAME_TYPE;
+    private static final int NUM_SHAKES_TO_ROLL_DICE;
 
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
@@ -168,11 +168,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void Exit() {
+    private void Exit() {
         super.onBackPressed();
     }
 
-    public void showExitDialog() {
+    private void showExitDialog() {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -311,7 +311,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private ShakeDetector.OnShakeListener m_shakeListener = new ShakeDetector.OnShakeListener() {
+    private final ShakeDetector.OnShakeListener m_shakeListener = new ShakeDetector.OnShakeListener() {
         public void onShake(int count) {
             if (findViewById(R.id.roll_button).isEnabled() && (count >= NUM_SHAKES_TO_ROLL_DICE) && m_is_shake_enable) {
                 onRollClick(null);
@@ -423,7 +423,6 @@ public class MainActivity extends Activity {
 
         m_sum_histogram = new Histogram(this,
                 histogram_window_width,
-                histogram_window_height,
                 main_histogram_height,
                 (LinearLayout)findViewById(R.id.sum_histogram_images_layout),
                 (LinearLayout)findViewById(R.id.sum_histogram_text_layout),
@@ -431,7 +430,6 @@ public class MainActivity extends Activity {
 
         m_one_dice_histogram = new Histogram(this,
                 histogram_window_width,
-                histogram_window_height,
                 main_histogram_height,
                 (LinearLayout)findViewById(R.id.one_dice_histogram_images_layout),
                 (LinearLayout)findViewById(R.id.one_dice_histogram_text_layout),
@@ -517,9 +515,6 @@ public class MainActivity extends Activity {
         int[] one_dice_histogram = m_logic.GetOneDiceHistogram();
         m_one_dice_histogram.ShowHistogram(one_dice_histogram);
 
-        LinearLayout main_histogram_layout = findViewById(R.id.histogram_layout);
-        Button back_from_histogram_button = findViewById(R.id.back_from_histogram_button);
-
         int[][]combination_histogram = m_logic.GetCombinationHistogram();
         int max_appeared_combination = 0;
 
@@ -555,7 +550,7 @@ public class MainActivity extends Activity {
         return size;
     }
 
-    public void SetEventDiceVisibility() {
+    private void SetEventDiceVisibility() {
         View event_dice_result = findViewById(R.id.event_dice_result);
         View layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
 
@@ -577,7 +572,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void SetPiratePosition() {
+    private void SetPiratePosition() {
         for (int i = m_pirate_position + 1; i < Card.MAX_PIRATE_POSITIONS; i++) {
             m_pirate_positions_images[i].setImageAlpha(0);
         }
@@ -589,7 +584,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public void SetEventDiceImage(Card.EventDice eventDice) {
+    private void SetEventDiceImage(Card.EventDice eventDice) {
         ImageView event_dice_result = findViewById(R.id.event_dice_result);
 
         switch (eventDice) {
@@ -608,15 +603,15 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
+    private void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
         ImageView red_dice_result_image = findViewById(R.id.red_dice_result);
         ImageView yellow_dice_result_image = findViewById(R.id.yellow_dice_result);
 
         SetDicesImages(red_dice_number, yellow_dice_number, red_dice_result_image, yellow_dice_result_image);
     }
 
-    public void SetDicesImages(int red_dice_number, int yellow_dice_number,
-                               ImageView red_dice_result_image, ImageView yellow_dice_result_image) {
+    private void SetDicesImages(int red_dice_number, int yellow_dice_number,
+                                ImageView red_dice_result_image, ImageView yellow_dice_result_image) {
         int[] red_images =
                 {R.drawable.red_1, R.drawable.red_2, R.drawable.red_3, R.drawable.red_4, R.drawable.red_5, R.drawable.red_6};
 
@@ -662,7 +657,7 @@ public class MainActivity extends Activity {
         rollDice();
     }
 
-    public void fixOneDice(int title_id, final boolean is_red) {
+    private void fixOneDice(int title_id, final boolean is_red) {
         AlertDialog.Builder builder = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -821,9 +816,9 @@ public class MainActivity extends Activity {
 
     // Set of all media players which are currently working. Used to prevent garbage collector from
     // clean them and stop the sounds.
-    private Set<MediaPlayer> m_media_players = new HashSet<MediaPlayer>();
+    private final Set<MediaPlayer> m_media_players = new HashSet<MediaPlayer>();
 
-    public void PlaySound(int sound_id) {
+    private void PlaySound(int sound_id) {
         if (!m_is_sound_enable) {
             return;
         }
@@ -850,7 +845,7 @@ public class MainActivity extends Activity {
         this.runOnUiThread(m_timer_tick);
     }
 
-    private Runnable m_timer_tick = new Runnable() {
+    private final Runnable m_timer_tick = new Runnable() {
         public void run() {
             //This method runs in the same thread as the UI.
             m_count_down--;
@@ -889,11 +884,11 @@ public class MainActivity extends Activity {
         }
     };
 
-    public void onSettingClick(View view) {
+    private void onSettingClick(View view) {
         ShowState(ShownState.SETTING);
     }
 
-    public void onShowHistogramClick(View view) {
+    private void onShowHistogramClick(View view) {
         SetMainButtonsEnable(false);
         ShowHistogram();
         ShowState(ShownState.HISTOGRAM);
@@ -904,7 +899,7 @@ public class MainActivity extends Activity {
             ShowSendStateDialog();
         }
     }
-    public void ShowSendStateDialog() {
+    private void ShowSendStateDialog() {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -1024,7 +1019,7 @@ public class MainActivity extends Activity {
         ShowState(ShownState.GAME);
     }
 
-    public void SetGameType(View view) {
+    private void SetGameType(View view) {
         switch (view.getId()) {
             case R.id.button_regular_game:
                 m_game_type = Logic.GameType.GAME_TYPE_REGULAR;
@@ -1043,11 +1038,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onNewGameClick(View view) {
+    private void onNewGameClick(View view) {
         ShowState(ShownState.SELECT_GAME_TYPE);
     }
 
-    public void onAlchemistClick(View view) {
+    private void onAlchemistClick(View view) {
         m_is_alchemist_active = true;
         onRollClick(view);
     }
@@ -1120,7 +1115,7 @@ public class MainActivity extends Activity {
         turn_number_text_view.setText(turn_number_message);
     }
 
-    public void ShowMessage(Card.MessageWithCard messageType, int turn_number) {
+    private void ShowMessage(Card.MessageWithCard messageType, int turn_number) {
         ShowTurnNumber(turn_number);
 
         if (messageType == Card.MessageWithCard.NO_MESSAGE) {
@@ -1183,7 +1178,7 @@ public class MainActivity extends Activity {
         ShowMessage(Card.MessageWithCard.LAST_MOVE_CANCELED, m_logic.GetTurnNumber());
     }
 
-    public interface Worker {
+    interface Worker {
         void onClick(View view);
     }
 
@@ -1263,7 +1258,7 @@ public class MainActivity extends Activity {
     }
 
 
-    public void onCancelLastMoveClick(View view) {
+    private void onCancelLastMoveClick(View view) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -1295,7 +1290,7 @@ public class MainActivity extends Activity {
         item.setImageDrawable(icon);
     }
 
-    public static Drawable convertDrawableToGrayScale(Drawable drawable) {
+    private static Drawable convertDrawableToGrayScale(Drawable drawable) {
         if (drawable == null) {
             return null;
         }
@@ -1388,7 +1383,7 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
-    public void SetCountDownTimerVisible(boolean is_visible) {
+    private void SetCountDownTimerVisible(boolean is_visible) {
         if (is_visible) {
             GetCountDownTextView().setVisibility(View.VISIBLE);
         } else {
@@ -1513,7 +1508,7 @@ public class MainActivity extends Activity {
         SetTwoPlayerGame(false);
     }
 
-    public void SetTwoPlayerGame(boolean is_two_player_game) {
+    private void SetTwoPlayerGame(boolean is_two_player_game) {
         mTwoPlayerGame = is_two_player_game;
 
         findViewById(R.id.disconnectButton).setEnabled(mTwoPlayerGame);
@@ -1539,7 +1534,7 @@ public class MainActivity extends Activity {
             //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
-    public void handleMessage(Message msg) {
+    private void handleMessage(Message msg) {
         switch (msg.what) {
             case com.shirbi.catandice.BluetoothChatService.MESSAGE_WRITE:
                 byte[] writeBuf = (byte[]) msg.obj;

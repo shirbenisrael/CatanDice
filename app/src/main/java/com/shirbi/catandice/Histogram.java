@@ -7,19 +7,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class Histogram {
+class Histogram {
 
-    private TextView[] m_histogram_counters; /* histograms values above bars*/
-    private ImageView[] m_histogram_images; /* histogram bars */
+    private final TextView[] m_histogram_counters; /* histograms values above bars*/
+    private final ImageView[] m_histogram_images; /* histogram bars */
 
-    private LinearLayout m_bar_layout;
-    private LinearLayout m_static_numbers_layout;
+    private final LinearLayout m_bar_layout;
+    private final LinearLayout m_static_numbers_layout;
 
-    private int m_total_window_height;
+    private final int m_total_window_height;
 
     public Histogram(MainActivity activity,
                      int histogram_window_width,
-                     int histogram_window_height,
                      int total_window_height,
                      LinearLayout bar_layout,
                      LinearLayout static_numbers_layout,
@@ -92,8 +91,7 @@ public class Histogram {
         }
 
         for (int i = 0; i < m_histogram_images.length; i++) {
-            int height = histogram[i] * max_bar_height / max_histogram_value;
-            m_histogram_images[i].getLayoutParams().height = height;
+            m_histogram_images[i].getLayoutParams().height = histogram[i] * max_bar_height / max_histogram_value;
             m_histogram_counters[i].setText(String.valueOf(histogram[i]));
             m_histogram_images[i].requestLayout();
         }
