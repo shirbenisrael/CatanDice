@@ -1388,8 +1388,12 @@ public class MainActivity extends Activity {
     }
 
     public void SetCountDownTimerVisible(boolean is_visible) {
-        TextView textView = findViewById(R.id.count_down_timer_text_view);
-        textView.setVisibility(is_visible ? View.VISIBLE : View.GONE);
+        if (is_visible) {
+            GetCountDownTextView().setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.count_down_timer_text_view).setVisibility(View.GONE);
+            findViewById(R.id.count_down_timer_text_view_2).setVisibility(View.INVISIBLE);
+        }
     }
 
     private void stopCountDownTimer() {
@@ -1399,6 +1403,11 @@ public class MainActivity extends Activity {
         }
 
         SetCountDownTimerVisible(false);
+    }
+
+    private TextView GetCountDownTextView() {
+        return (TextView)findViewById(m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT ?
+                R.id.count_down_timer_text_view : R.id.count_down_timer_text_view_2);
     }
 
     private void startCountDownTimer() {
@@ -1413,7 +1422,7 @@ public class MainActivity extends Activity {
         m_count_down_timer = new CountDownTimer(1000 * seconds, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                TextView textView = findViewById(R.id.count_down_timer_text_view);
+                TextView textView = GetCountDownTextView();
                 int total_seconds = (int) (millisUntilFinished / 1000);
                 int minutes = total_seconds / 60;
                 int seconds = total_seconds % 60;
