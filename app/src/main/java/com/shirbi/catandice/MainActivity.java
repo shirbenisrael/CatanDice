@@ -1154,10 +1154,11 @@ public class MainActivity extends Activity {
     }
 
     private void SetMainButtonsEnable(boolean isEnable) {
-        findViewById(R.id.roll_button).setEnabled(isEnable);
-        findViewById(R.id.menu_button).setEnabled(isEnable);
         findViewById(R.id.fix_red_button).setEnabled(isEnable);
         findViewById(R.id.fix_yellow_button).setEnabled(isEnable);
+
+        setImageButtonEnabled(isEnable, R.id.roll_button, R.drawable.roll_dice_button);
+        setImageButtonEnabled(isEnable, R.id.menu_button, R.drawable.menu_icon);
     }
 
     public void CancelLastMove(boolean is_send_message) {
