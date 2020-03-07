@@ -192,7 +192,7 @@ class Logic {
         int redNumber = (i / Card.MAX_NUMBER_ON_DICE) + 1;
         int yellowNumber = (i % Card.MAX_NUMBER_ON_DICE) + 1;
 
-        return new Card(redNumber, yellowNumber, Card.MessageWithCard.NO_MESSAGE);
+        return new Card(redNumber, yellowNumber);
     }
 
     void Init(int num_players, GameType game_type, Boolean is_fair_dice) {

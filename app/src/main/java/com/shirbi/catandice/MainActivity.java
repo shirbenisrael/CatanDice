@@ -1282,7 +1282,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public void setImageButtonEnabled(boolean enabled, int itemId, int iconResId) {
+    private void setImageButtonEnabled(boolean enabled, int itemId, int iconResId) {
         ImageButton item = findViewById(itemId);
         item.setEnabled(enabled);
 
@@ -1565,7 +1565,7 @@ public class MainActivity extends Activity {
 
     private void setupChat() {
         // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new com.shirbi.catandice.BluetoothChatService(this, mHandler);
+        mChatService = new com.shirbi.catandice.BluetoothChatService(mHandler);
 
         // Initialize the buffer for outgoing messages
     }

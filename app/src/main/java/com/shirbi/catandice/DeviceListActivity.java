@@ -29,7 +29,7 @@ import java.util.Set;
 
 public class DeviceListActivity extends Activity {
     // Return Intent extra
-    public static String EXTRA_DEVICE_ADDRESS = "device_address";
+    public static final String EXTRA_DEVICE_ADDRESS = "device_address";
     // Member fields
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter mPairedDevicesArrayAdapter;
@@ -68,7 +68,7 @@ public class DeviceListActivity extends Activity {
         }
     };
     // The on-click listener for paired devices in the ListViews
-    private OnItemClickListener mPairedDeviceClickListener = new OnItemClickListener() {
+    private final OnItemClickListener mPairedDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView av, View v, int arg2, long arg3) {
             // Cancel discovery because it's costly and we're about to connect
             mBtAdapter.cancelDiscovery();
@@ -85,7 +85,7 @@ public class DeviceListActivity extends Activity {
     };
 
     // The on-click listener for non paired devices in the ListViews
-    private OnItemClickListener mNonPairedDeviceClickListener = new OnItemClickListener() {
+    private final OnItemClickListener mNonPairedDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView av, View v, int arg2, long arg3) {
             // Cancel discovery because it's costly and we're about to connect
             mBtAdapter.cancelDiscovery();

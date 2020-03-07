@@ -56,10 +56,10 @@ class Card {
         }
     }
 
-    Card(int red, int yellow, MessageWithCard message) {
+    Card(int red, int yellow) {
         m_red = red;
         m_yellow = yellow;
-        m_message = message;
+        m_message = MessageWithCard.NO_MESSAGE;
         m_turn_number = 0;
         m_event_dice = EventDice.PIRATE_SHIP;
         m_pirate_position = 0;
