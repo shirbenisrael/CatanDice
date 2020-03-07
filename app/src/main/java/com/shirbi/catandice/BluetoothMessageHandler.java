@@ -78,28 +78,28 @@ public class BluetoothMessageHandler {
 
     static void SendStartingGameParameters(Logic.GameType game_type, int num_players, int starting_player,
                                            MainActivity activity) {
-        String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.START_GAME) + "," +
-                String.valueOf(game_type.getValue()) + "," + String.valueOf(num_players) + "," +
-                String.valueOf(starting_player);
+        String message = BLUETOOTH_MESSAGES.START_GAME + "," +
+                game_type.getValue() + "," + num_players + "," +
+                starting_player;
 
         activity.sendMessage(message);
     }
 
     static void SendFixDice(MainActivity activity, boolean is_red, int fixed_value) {
         int id = is_red ? BLUETOOTH_MESSAGES.FIX_RED_DICE : BLUETOOTH_MESSAGES.FIX_YELLOW_DICE;
-        String message = String.valueOf(id) + "," + String.valueOf(fixed_value);
+        String message = id + "," + fixed_value;
         activity.sendMessage(message);
     }
 
     static void SendRoleOneDice(MainActivity activity, boolean is_red, int value_rolled) {
-        String message = String.valueOf(BLUETOOTH_MESSAGES.ROLL_ONE_DICE) + "," + String.valueOf(value_rolled)+ ","
-                + String.valueOf(is_red ? 1 : 0);
+        String message = BLUETOOTH_MESSAGES.ROLL_ONE_DICE + "," + value_rolled + ","
+                + (is_red ? 1 : 0);
         activity.sendMessage(message);
     }
 
     static void SendRoleAllDice(MainActivity activity, Card card, boolean is_alchemist_active) {
-        String message = String.valueOf(BLUETOOTH_MESSAGES.ROLL_ALL_DICE) + "," +
-                String.valueOf(is_alchemist_active ? 1 : 0) + "," + card.ToString();
+        String message = BLUETOOTH_MESSAGES.ROLL_ALL_DICE + "," +
+                (is_alchemist_active ? 1 : 0) + "," + card.ToString();
         activity.sendMessage(message);
     }
 
@@ -114,16 +114,16 @@ public class BluetoothMessageHandler {
     }
 
     static void SendSetFairDice(MainActivity activity, boolean is_fair) {
-        String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.SET_FAIR_DICE) + "," +
-                String.valueOf(is_fair ? 1 : 0);
+        String message = BLUETOOTH_MESSAGES.SET_FAIR_DICE + "," +
+                (is_fair ? 1 : 0);
         activity.sendMessage(message);
     }
 
     static void SendFullState(MainActivity activity, String logic_state, int red_dice, int yellow_dice,
                               Card.EventDice event_dice) {
-        String message = String.valueOf(BluetoothMessageHandler.BLUETOOTH_MESSAGES.FULL_STATE) + "," +
-                String.valueOf(red_dice) + "," + String.valueOf(yellow_dice)  + "," +
-                String.valueOf(event_dice.getValue()) + "," + logic_state;
+        String message = BLUETOOTH_MESSAGES.FULL_STATE + "," +
+                red_dice + "," + yellow_dice + "," +
+                event_dice.getValue() + "," + logic_state;
 
             activity.sendMessage(message);
     }

@@ -108,7 +108,7 @@ public class DeviceListActivity extends Activity {
         // Set result CANCELED in case the user backs out
         setResult(Activity.RESULT_CANCELED);
         // Initialize the button to perform device discovery
-        Button scanButton = (Button) findViewById(R.id.button_scan);
+        Button scanButton = findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 doDiscovery();
@@ -120,11 +120,11 @@ public class DeviceListActivity extends Activity {
         mPairedDevicesArrayAdapter = new ArrayAdapter(this, R.layout.new_devices);
         mNewDevicesArrayAdapter = new ArrayAdapter(this, R.layout.new_devices);
         // Find and set up the ListView for paired devices
-        ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
+        ListView pairedListView = findViewById(R.id.paired_devices);
         pairedListView.setAdapter(mPairedDevicesArrayAdapter);
         pairedListView.setOnItemClickListener(mPairedDeviceClickListener);
         // Find and set up the ListView for newly discovered devices
-        ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
+        ListView newDevicesListView = findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
         newDevicesListView.setOnItemClickListener(mNonPairedDeviceClickListener);
         // Register for broadcasts when a device is discovered
@@ -216,7 +216,7 @@ public class DeviceListActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
-            String permissions[],
+            String[] permissions,
             int[] grantResults) {
         switch (requestCode) {
             case REQUEST_ACCESS_COARSE_LOCATION:

@@ -380,8 +380,8 @@ public class MainActivity extends Activity {
         SetOneDiceOperationVisibility();
         SetTwoPlayerGame(false);
 
-        LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
-        LinearLayout layout_for_pirate_ship = (LinearLayout) findViewById(R.id.layout_for_pirate_ship);
+        LinearLayout main_histogram_layout = findViewById(R.id.histogram_layout);
+        LinearLayout layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
 
         //noinspection - Square so width = height
         int total_dice_height = m_size.x;
@@ -517,8 +517,8 @@ public class MainActivity extends Activity {
         int[] one_dice_histogram = m_logic.GetOneDiceHistogram();
         m_one_dice_histogram.ShowHistogram(one_dice_histogram);
 
-        LinearLayout main_histogram_layout = (LinearLayout) findViewById(R.id.histogram_layout);
-        Button back_from_histogram_button = (Button) findViewById(R.id.back_from_histogram_button);
+        LinearLayout main_histogram_layout = findViewById(R.id.histogram_layout);
+        Button back_from_histogram_button = findViewById(R.id.back_from_histogram_button);
 
         int[][]combination_histogram = m_logic.GetCombinationHistogram();
         int max_appeared_combination = 0;
@@ -590,7 +590,7 @@ public class MainActivity extends Activity {
     }
 
     public void SetEventDiceImage(Card.EventDice eventDice) {
-        ImageView event_dice_result = (ImageView) findViewById(R.id.event_dice_result);
+        ImageView event_dice_result = findViewById(R.id.event_dice_result);
 
         switch (eventDice) {
             case YELLOW_CITY:
@@ -609,8 +609,8 @@ public class MainActivity extends Activity {
     }
 
     public void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
-        ImageView red_dice_result_image = (ImageView) findViewById(R.id.red_dice_result);
-        ImageView yellow_dice_result_image = (ImageView) findViewById(R.id.yellow_dice_result);
+        ImageView red_dice_result_image = findViewById(R.id.red_dice_result);
+        ImageView yellow_dice_result_image = findViewById(R.id.yellow_dice_result);
 
         SetDicesImages(red_dice_number, yellow_dice_number, red_dice_result_image, yellow_dice_result_image);
     }
@@ -679,10 +679,11 @@ public class MainActivity extends Activity {
 
         CharSequence[] charSequence = new CharSequence[MAX_NUMBER_ON_DICE + 1];
         for (int i = 0; i < MAX_NUMBER_ON_DICE ; i++) {
-            charSequence[i] = getString(is_red ? R.string.fix_red: R.string.fix_yellow) + " - " +
-                    String.valueOf(i+1);
+            charSequence[i] =
+                    getString(is_red ? R.string.fix_red: R.string.fix_yellow) + " - " +
+                    (i + 1);
         }
-        charSequence[MAX_NUMBER_ON_DICE] = getString(is_red ? R.string.roll_red: R.string.roll_yellow);;
+        charSequence[MAX_NUMBER_ON_DICE] = getString(is_red ? R.string.roll_red: R.string.roll_yellow);
 
         builder.setItems(charSequence,
                 new DialogInterface.OnClickListener() {
@@ -798,7 +799,7 @@ public class MainActivity extends Activity {
     }
 
     private void SetBackGround() {
-        LinearLayout main_layout = (LinearLayout) findViewById(R.id.layout_for_dices);
+        LinearLayout main_layout = findViewById(R.id.layout_for_dices);
 
         int resource = R.drawable.regular_game_bg;
 
@@ -954,24 +955,24 @@ public class MainActivity extends Activity {
     public void SetFairDice(boolean is_fair) {
         m_is_fair_dice = is_fair;
 
-        CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
+        CheckBox enable_fair_dice_check_box = findViewById(R.id.enable_fair_dice_checkbox);
         enable_fair_dice_check_box.setChecked(m_is_fair_dice);
         m_logic.SetEnableFairDice(m_is_fair_dice);
     }
 
     public void onBackFromSettingClick(View view) {
-        CheckBox enable_sound_check_box = (CheckBox) findViewById(R.id.enable_sound_checkbox);
+        CheckBox enable_sound_check_box = findViewById(R.id.enable_sound_checkbox);
         m_is_sound_enable = enable_sound_check_box.isChecked();
 
-        CheckBox enable_fair_dice_check_box = (CheckBox) findViewById(R.id.enable_fair_dice_checkbox);
+        CheckBox enable_fair_dice_check_box = findViewById(R.id.enable_fair_dice_checkbox);
         m_is_fair_dice = enable_fair_dice_check_box.isChecked();
 
         m_logic.SetEnableFairDice(m_is_fair_dice);
 
-        CheckBox enable_shake_check_box = (CheckBox) findViewById(R.id.enable_shake_checkbox);
+        CheckBox enable_shake_check_box = findViewById(R.id.enable_shake_checkbox);
         m_is_shake_enable = enable_shake_check_box.isChecked();
 
-        CheckBox prevent_accidental_roll_check_box = (CheckBox) findViewById(R.id.prevent_accidental_roll_checkbox);
+        CheckBox prevent_accidental_roll_check_box = findViewById(R.id.prevent_accidental_roll_checkbox);
         m_is_prevent_accidental_roll = prevent_accidental_roll_check_box.isChecked();
 
         CheckBox enable_timer = findViewById(R.id.enable_turn_timer_checkbox);
@@ -1113,9 +1114,9 @@ public class MainActivity extends Activity {
     }
 
     private void ShowTurnNumber(int turn_number) {
-        TextView turn_number_text_view = (TextView) findViewById(R.id.turn_number_text_view);
+        TextView turn_number_text_view = findViewById(R.id.turn_number_text_view);
 
-        String turn_number_message = getString(R.string.turn_number) + ": " + Integer.toString(turn_number) + "   ";
+        String turn_number_message = getString(R.string.turn_number) + ": " + turn_number + "   ";
         turn_number_text_view.setText(turn_number_message);
     }
 
@@ -1248,7 +1249,7 @@ public class MainActivity extends Activity {
             listItems.add(getString(R.string.alchemist));
         }
 
-        CharSequence charSequences[] = listItems.toArray(new CharSequence[listItems.size()]);
+        CharSequence[] charSequences = listItems.toArray(new CharSequence[listItems.size()]);
 
         builder.setItems(charSequences,
                 new DialogInterface.OnClickListener() {
@@ -1286,7 +1287,7 @@ public class MainActivity extends Activity {
     }
 
     public void setImageButtonEnabled(boolean enabled, int itemId, int iconResId) {
-        ImageButton item = (ImageButton)findViewById(itemId);
+        ImageButton item = findViewById(itemId);
         item.setEnabled(enabled);
 
         Drawable originalIcon = ContextCompat.getDrawable(this, iconResId);
@@ -1332,7 +1333,7 @@ public class MainActivity extends Activity {
         dialog.show();
 
         dialog.getWindow().getAttributes();
-        TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+        TextView textView = dialog.findViewById(android.R.id.message);
         textView.setTextSize(getResources().getDimension(R.dimen.info_message_size) /
                              getResources().getDisplayMetrics().density);
 
@@ -1360,7 +1361,7 @@ public class MainActivity extends Activity {
     }
 
     private void selectCountDownTimerValue(int index) {
-        Button turn_timer_values_button = (Button)findViewById(R.id.turn_timer_values_button);
+        Button turn_timer_values_button = findViewById(R.id.turn_timer_values_button);
 
         m_count_down_timer_selection = index;
         turn_timer_values_button.setText(m_count_down_timer_seconds_strings[index]);

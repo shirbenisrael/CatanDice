@@ -27,7 +27,7 @@ public class Card {
         GREEN_CITY(3);
 
         private int value;
-        private EventDice(int value){
+        EventDice(int value){
             this.value = value;
         }
 
@@ -47,7 +47,7 @@ public class Card {
         LAST_MOVE_CANCELED(7);
 
         private int value;
-        private MessageWithCard(int value){
+        MessageWithCard(int value){
             this.value = value;
         }
 
@@ -66,12 +66,12 @@ public class Card {
     }
 
     public String ToString() {
-        String string = String.valueOf(m_red) + "," +
-                String.valueOf(m_yellow) + "," +
-                String.valueOf(m_message.getValue()) + "," +
-                String.valueOf(m_turn_number) + "," +
-                String.valueOf(m_event_dice.getValue()) + "," +
-                String.valueOf(m_pirate_position) + ",";
+        String string = m_red + "," +
+                m_yellow + "," +
+                m_message.getValue() + "," +
+                m_turn_number + "," +
+                m_event_dice.getValue() + "," +
+                m_pirate_position + ",";
 
         return string;
     }

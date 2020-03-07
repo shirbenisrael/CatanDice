@@ -18,7 +18,7 @@ public class Logic {
     }
 
     private Random rand;
-    private int m_histogram[];
+    private int[] m_histogram;
     private int m_num_players;
     private int m_current_turn_number;
     private int m_pirate_position;
@@ -41,7 +41,7 @@ public class Logic {
         GAME_TYPE_SIMPLE_DICE(2);
 
         private int value;
-        private GameType(int value){
+        GameType(int value){
             this.value = value;
         }
 
@@ -97,7 +97,7 @@ public class Logic {
                     maxAppear = Math.max(maxAppear, m_histogram[i]);
                 }
 
-                int weights[] = new int[m_histogram.length];
+                int[] weights = new int[m_histogram.length];
                 int sumWeights = 0;
 
                 for (i = 0; i < weights.length; i++) {
@@ -219,7 +219,7 @@ public class Logic {
     }
 
     public int[] GetOneDiceHistogram() {
-        int histogramToReturn[] = new int[Card.MAX_NUMBER_ON_DICE];
+        int[] histogramToReturn = new int[Card.MAX_NUMBER_ON_DICE];
 
         for(int i=0;i<m_histogram.length;i++) {
             Card card = IndexToCard(i);
@@ -230,7 +230,7 @@ public class Logic {
     }
 
     public int[] GetSumHistogram() {
-        int histogramToReturn[] = new int[Card.MAX_NUMBER_ON_DICE * 2 -1];
+        int[] histogramToReturn = new int[Card.MAX_NUMBER_ON_DICE * 2 - 1];
 
         for(int i=0;i<m_histogram.length;i++) {
             Card card = IndexToCard(i);
@@ -240,7 +240,7 @@ public class Logic {
     }
 
     public int[][] GetCombinationHistogram() {
-        int combinationHistogram[][] = new int[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
+        int[][] combinationHistogram = new int[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
 
         for(int i = 0; i < m_histogram.length; i++) {
             Card card = IndexToCard(i);
@@ -323,12 +323,12 @@ public class Logic {
         }
 
         str.append(
-                String.valueOf(m_num_players) + "," +
-                String.valueOf(m_current_turn_number) + "," +
-                String.valueOf(m_pirate_position) + "," +
-                String.valueOf(m_is_pirate_arrive ? 1 : 0) + "," +
-                String.valueOf(m_is_enable_fair_dice ? 1 : 0) + "," +
-                String.valueOf(m_game_type.getValue()) + ",");
+                m_num_players + "," +
+                        m_current_turn_number + "," +
+                        m_pirate_position + "," +
+                        (m_is_pirate_arrive ? 1 : 0) + "," +
+                        (m_is_enable_fair_dice ? 1 : 0) + "," +
+                        m_game_type.getValue() + ",");
 
         if (m_last_move != null) {
             str.append("1").append(",");
