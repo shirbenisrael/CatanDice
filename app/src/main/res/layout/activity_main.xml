@@ -116,7 +116,7 @@
 
                 <!-- layout for cities & knights items -->
                 <LinearLayout
-                    android:id="@+id/layout_for_cities_and_knight_itesm"
+                    android:id="@+id/layout_for_cities_and_knight_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
