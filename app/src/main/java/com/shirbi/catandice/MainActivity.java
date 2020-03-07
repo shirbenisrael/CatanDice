@@ -1039,7 +1039,7 @@ public class MainActivity extends Activity {
                 break;
 
             default:
-                throw new RuntimeException("Unknow button ID");
+                throw new RuntimeException("Unknown button ID");
         }
     }
 
@@ -1598,7 +1598,7 @@ public class MainActivity extends Activity {
                     // Bluetooth is now enabled, so set up a chat session
                     RunConnectActivity();
                 } else {
-                    // User did not enable Bluetooth or an error occured
+                    // User did not enable Bluetooth or an error occurred
                     Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -1610,7 +1610,7 @@ public class MainActivity extends Activity {
                         mChatService.start();
                     }
                 } else {
-                    // User did not enable Bluetooth or an error occured
+                    // User did not enable Bluetooth or an error occurred
                     Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
                 }
                 break;
