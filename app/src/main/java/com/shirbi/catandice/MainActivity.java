@@ -48,6 +48,7 @@ import java.util.TimerTask;
 
 import static android.os.SystemClock.elapsedRealtime;
 import static com.shirbi.catandice.BluetoothChatService.TOAST;
+import static com.shirbi.catandice.Card.MAX_NUMBER_ON_DICE;
 
 public class MainActivity extends Activity {
     private TextView[][] m_histogram_combination_counters;
@@ -301,7 +302,7 @@ public class MainActivity extends Activity {
         ((LinearLayout.LayoutParams)(menu_button.getLayoutParams())).setMargins(
                 0,m_size.x * 32 / 100,m_size.x * 5 / 100,0);
 
-        int[] Ids = new int[] {R.id.roll_red_button, R.id.roll_yellow_button, R.id.fix_red_button, R.id.fix_yellow_button};
+        int[] Ids = new int[] {R.id.fix_red_button, R.id.fix_yellow_button};
         int width = m_size.x / 3;
         for (int id : Ids) {
             View view = findViewById(id);
@@ -354,9 +355,9 @@ public class MainActivity extends Activity {
 
         RestoreState();
 
-        int num_bars = Card.MAX_NUMBER_ON_DICE * 2 - 1;
+        int num_bars = MAX_NUMBER_ON_DICE * 2 - 1;
 
-        m_histogram_combination_counters = new TextView[Card.MAX_NUMBER_ON_DICE][Card.MAX_NUMBER_ON_DICE];
+        m_histogram_combination_counters = new TextView[MAX_NUMBER_ON_DICE][MAX_NUMBER_ON_DICE];
         m_pirate_positions_images = new ImageView[Card.MAX_PIRATE_POSITIONS];
 
         m_size = GetWindowSize();
@@ -436,7 +437,7 @@ public class MainActivity extends Activity {
                 (LinearLayout)findViewById(R.id.one_dice_histogram_text_layout),
                 1, 6);
 
-        int cell_count = Card.MAX_NUMBER_ON_DICE + 1;
+        int cell_count = MAX_NUMBER_ON_DICE + 1;
         TableLayout histogram_table_layout = findViewById(R.id.combination_table);
         TableRow newRow = new TableRow(this);
         TextView textView = new TextView(this);
@@ -446,7 +447,7 @@ public class MainActivity extends Activity {
         textView.getLayoutParams().height = cell_size;
         textView.setGravity(Gravity.CENTER);
 
-        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
+        for (int i = 0; i < MAX_NUMBER_ON_DICE; i++) {
             textView = new TextView(this);
             newRow.addView(textView);
             textView.setText(String.valueOf(i + 1));
@@ -457,7 +458,7 @@ public class MainActivity extends Activity {
         }
         histogram_table_layout.addView(newRow);
 
-        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
+        for (int i = 0; i < MAX_NUMBER_ON_DICE; i++) {
             newRow = new TableRow(this);
             textView = new TextView(this);
             newRow.addView(textView);
@@ -467,7 +468,7 @@ public class MainActivity extends Activity {
             textView.getLayoutParams().height = cell_size;
             textView.setGravity(Gravity.CENTER);
 
-            for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
+            for (int j = 0; j < MAX_NUMBER_ON_DICE; j++) {
                 textView = new TextView(this);
                 newRow.addView(textView);
                 m_histogram_combination_counters[j][i] = textView;
@@ -522,8 +523,8 @@ public class MainActivity extends Activity {
         int[][]combination_histogram = m_logic.GetCombinationHistogram();
         int max_appeared_combination = 0;
 
-        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
-            for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
+        for (int i = 0; i < MAX_NUMBER_ON_DICE; i++) {
+            for (int j = 0; j < MAX_NUMBER_ON_DICE; j++) {
                 max_appeared_combination = Math.max(max_appeared_combination, combination_histogram[i][j]);
             }
         }
@@ -532,8 +533,8 @@ public class MainActivity extends Activity {
             max_appeared_combination = 1;
         }
 
-        for (int i = 0; i < Card.MAX_NUMBER_ON_DICE; i++) {
-            for (int j = 0; j < Card.MAX_NUMBER_ON_DICE; j++) {
+        for (int i = 0; i < MAX_NUMBER_ON_DICE; i++) {
+            for (int j = 0; j < MAX_NUMBER_ON_DICE; j++) {
                 TextView textView = m_histogram_combination_counters[i][j];
                 int value = combination_histogram[i][j];
                 int background_color = (255 * value) / max_appeared_combination;
@@ -627,22 +628,22 @@ public class MainActivity extends Activity {
         yellow_dice_result_image.setImageResource(yellow_images[yellow_dice_number - 1]);
     }
 
-    public void onRollRedClick(View view) {
+    private void onRollRedClick() {
         m_roll_red = true;
         m_roll_yellow = false;
         Random rand = new Random();
-        m_red_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
+        m_red_dice = (rand.nextInt(MAX_NUMBER_ON_DICE) + 1);
         if (mTwoPlayerGame) {
             BluetoothMessageHandler.SendRoleOneDice(MainActivity.this, true, m_red_dice);
         }
         rollDice();
     }
 
-    public void onRollYellowClick(View view) {
+    private void onRollYellowClick() {
         m_roll_red = false;
         m_roll_yellow = true;
         Random rand = new Random();
-        m_yellow_dice = (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1);
+        m_yellow_dice = (rand.nextInt(MAX_NUMBER_ON_DICE) + 1);
         if (mTwoPlayerGame) {
             BluetoothMessageHandler.SendRoleOneDice(MainActivity.this, false, m_yellow_dice);
         }
@@ -676,15 +677,31 @@ public class MainActivity extends Activity {
             }
         });
 
-        builder.setItems(new CharSequence[] {"1", "2", "3", "4", "5", "6"},
+        CharSequence[] charSequence = new CharSequence[MAX_NUMBER_ON_DICE + 1];
+        for (int i = 0; i < MAX_NUMBER_ON_DICE ; i++) {
+            charSequence[i] = getString(is_red ? R.string.fix_red: R.string.fix_yellow) + " - " +
+                    String.valueOf(i+1);
+        }
+        charSequence[MAX_NUMBER_ON_DICE] = getString(is_red ? R.string.roll_red: R.string.roll_yellow);;
+
+        builder.setItems(charSequence,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        int dice_value = which + 1;
-                        FixDice(dice_value, is_red);
+                        if (which < MAX_NUMBER_ON_DICE) {
+                            int dice_value = which + 1;
+                            FixDice(dice_value, is_red);
 
-                        if (mTwoPlayerGame) {
-                            BluetoothMessageHandler.SendFixDice(MainActivity.this, is_red, dice_value);
+                            if (mTwoPlayerGame) {
+                                BluetoothMessageHandler.SendFixDice(MainActivity.this, is_red, dice_value);
+                            }
+                        } else {
+                            if (is_red) {
+                                onRollRedClick();
+                            } else {
+                                onRollYellowClick();
+                            }
                         }
+
                     }
                 });
 
@@ -859,8 +876,8 @@ public class MainActivity extends Activity {
             } else {
                 Random rand = new Random();
                 if (!m_is_alchemist_active) {
-                    int red_to_show = m_roll_red ? (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1) : m_red_dice;
-                    int yellow_to_show = m_roll_yellow ? (rand.nextInt(Card.MAX_NUMBER_ON_DICE) + 1) : m_yellow_dice;
+                    int red_to_show = m_roll_red ? (rand.nextInt(MAX_NUMBER_ON_DICE) + 1) : m_red_dice;
+                    int yellow_to_show = m_roll_yellow ? (rand.nextInt(MAX_NUMBER_ON_DICE) + 1) : m_yellow_dice;
                     SetDicesImagesRolled(red_to_show, yellow_to_show);
                 }
 
@@ -1143,8 +1160,6 @@ public class MainActivity extends Activity {
     private void SetMainButtonsEnable(boolean isEnable) {
         findViewById(R.id.roll_button).setEnabled(isEnable);
         findViewById(R.id.menu_button).setEnabled(isEnable);
-        findViewById(R.id.roll_red_button).setEnabled(isEnable);
-        findViewById(R.id.roll_yellow_button).setEnabled(isEnable);
         findViewById(R.id.fix_red_button).setEnabled(isEnable);
         findViewById(R.id.fix_yellow_button).setEnabled(isEnable);
     }
