@@ -22,13 +22,13 @@
     <string name="num_players_string">عدد اللاعبين:</string>
     <string name="pirate_attack">هجوم القراصنة! الدفاع عن الجزيرة!</string>
     <string name="pirate_attack_seven">هجوم القراصنة! الدفاع عن الجزيرة! هجمات السارق أيضا!</string>
-    <string name="pirate_attack_seven_first">هجوم القراصنة! الدفاع عن الجزيرة! السارق نائم ...!</string>
+    <string name="pirate_attack_seven_first">هجوم القراصنة! الدفاع عن الجزيرة! السارق نائم …!</string>
     <string name="please_rate">هل أعجبك التطبيق؟ ارجوك قم بتقييمنا</string>
     <string name="rate_app">معدل التطبيق</string>
     <string name="roll_string">لفة النرد</string>
     <string name="setting_string">ضبط</string>
     <string name="seven_with_robber_string">توالت سبعة! هجمات السارق!</string>
-    <string name="seven_without_robber_string">سبعة في البداية. السارق نائم ...</string>
+    <string name="seven_without_robber_string">سبعة في البداية. السارق نائم …</string>
     <string name="shake_to_roll_dice">اهتز إلى لفة النرد</string>
     <string name="show_histogram">عرض الرسم البياني</string>
     <string name="turn_number">بدوره الرقم</string>
@@ -50,7 +50,7 @@
     <string name="permission_denied">طلب الاذن مرفوض!</string>
     <string name="request_permission">طلب إذن</string>
     <string name="scan_bluetooth">تحتاج لمسح بلوتوث</string>
-    <string name="scanning">يتم المسح...</string>
+    <string name="scanning">يتم المسح…</string>
     <string name="select_device">اختر جهازا</string>
     <string name="title_other_devices">أجهزة أخرى</string>
     <string name="title_paired_devices">الأجهزة المقترنة</string>

@@ -22,13 +22,13 @@
     <string name="num_players_string">Nombre de joueurs:</string>
     <string name="pirate_attack">Attaque de pirates! Défendez l\'île!</string>
     <string name="pirate_attack_seven">Attaque de pirates! Défendez l\'île! Les attaques de voleurs aussi!</string>
-    <string name="pirate_attack_seven_first">Attaque de pirates! Défendez l\'île! Le voleur dort ...!</string>
+    <string name="pirate_attack_seven_first">Attaque de pirates! Défendez l\'île! Le voleur dort …!</string>
     <string name="please_rate">Vous avez aimé l\'application? Veuillez nous évaluer</string>
     <string name="rate_app">Application de taux</string>
     <string name="roll_string">Roulez les dés</string>
     <string name="setting_string">Réglage</string>
     <string name="turn_number">Numéro de tour</string>
-    <string name="seven_without_robber_string">Sept au début. Le voleur dort ...</string>
+    <string name="seven_without_robber_string">Sept au début. Le voleur dort …</string>
     <string name="seven_with_robber_string">Seven roula! Attaques de voleurs!</string>
     <string name="shake_to_roll_dice">Secouer pour lancer les dés</string>
     <string name="show_histogram">Afficher l\'histogramme</string>
@@ -50,7 +50,7 @@
     <string name="permission_denied">Permission refusée!</string>
     <string name="request_permission">Demander la permission</string>
     <string name="scan_bluetooth">Besoin de numérisation Bluetooth</string>
-    <string name="scanning">Balayage...</string>
+    <string name="scanning">Balayage…</string>
     <string name="select_device">Sélectionnez un appareil</string>
     <string name="title_other_devices">Autres appareils</string>
     <string name="title_paired_devices">Appareils jumelés</string>
