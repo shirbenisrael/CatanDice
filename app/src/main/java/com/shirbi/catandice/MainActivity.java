@@ -46,6 +46,9 @@ import java.util.TimerTask;
 import static android.os.SystemClock.elapsedRealtime;
 import static com.shirbi.catandice.BluetoothChatService.TOAST;
 import static com.shirbi.catandice.Card.MAX_NUMBER_ON_DICE;
+import static com.shirbi.catandice.FrontEndHandler.HistogramType.COMBINATION;
+import static com.shirbi.catandice.FrontEndHandler.HistogramType.SUM;
+import static com.shirbi.catandice.FrontEndHandler.HistogramType.UNIQUE;
 
 public class MainActivity extends Activity {
     FrontEndHandler m_frontend_handler;
@@ -756,27 +759,21 @@ public class MainActivity extends Activity {
         m_one_dice_histogram.SetVisibility(View.GONE);
         m_sum_histogram.SetVisibility(View.VISIBLE);
         findViewById(R.id.combination_table).setVisibility(View.GONE);
-        findViewById(R.id.one_dice_button).setEnabled(true);
-        findViewById(R.id.sum_button).setEnabled(false);
-        findViewById(R.id.combination_button).setEnabled(true);
+        m_frontend_handler.SetHistogramTypeButtons(SUM);
     }
 
     public void onOneDiceButtonClick(View view) {
         m_one_dice_histogram.SetVisibility(View.VISIBLE);
         m_sum_histogram.SetVisibility(View.GONE);
         findViewById(R.id.combination_table).setVisibility(View.GONE);
-        findViewById(R.id.one_dice_button).setEnabled(false);
-        findViewById(R.id.sum_button).setEnabled(true);
-        findViewById(R.id.combination_button).setEnabled(true);
+        m_frontend_handler.SetHistogramTypeButtons(UNIQUE);
     }
 
     public void onCombinationButtonClick(View view) {
         m_one_dice_histogram.SetVisibility(View.GONE);
         m_sum_histogram.SetVisibility(View.GONE);
         findViewById(R.id.combination_table).setVisibility(View.VISIBLE);
-        findViewById(R.id.one_dice_button).setEnabled(true);
-        findViewById(R.id.sum_button).setEnabled(true);
-        findViewById(R.id.combination_button).setEnabled(false);
+        m_frontend_handler.SetHistogramTypeButtons(COMBINATION);
     }
 
     public void onBackFromHistogramClick(View view) {

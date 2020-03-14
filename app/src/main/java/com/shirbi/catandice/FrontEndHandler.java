@@ -289,4 +289,26 @@ final class FrontEndHandler {
 
         main_layout.setBackgroundResource(resource);
     }
+
+    enum HistogramType {
+        SUM(R.id.sum_button),
+        UNIQUE(R.id.one_dice_button),
+        COMBINATION(R.id.combination_button);
+
+        private final int value;
+        HistogramType(int value){
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    void SetHistogramTypeButtons(HistogramType selectedHistogram) {
+        for (HistogramType type: HistogramType.values() ) {
+            boolean enable = type.getValue() != selectedHistogram.getValue();
+            findViewById(type.getValue()).setEnabled(enable);
+        }
+    }
 }
