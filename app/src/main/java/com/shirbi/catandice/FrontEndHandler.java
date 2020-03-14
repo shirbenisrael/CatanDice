@@ -1,6 +1,10 @@
 package com.shirbi.catandice;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,6 +19,10 @@ final class FrontEndHandler {
 
     private <T extends View> T findViewById(@IdRes int id) {
         return m_activity.getWindow().findViewById(id);
+    }
+
+    public final String getString(@StringRes int resId) {
+        return m_activity.getString(resId);
     }
 
     private void SetDicesImages(int red_dice_number, int yellow_dice_number,
@@ -103,5 +111,27 @@ final class FrontEndHandler {
                 }
             }
         }
+    }
+
+    void showExitDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(m_activity);
+        }
+        builder.setTitle(getString(R.string.exit_app));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_activity.Exit();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
     }
 }
