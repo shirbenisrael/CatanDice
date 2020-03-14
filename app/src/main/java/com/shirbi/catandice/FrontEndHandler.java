@@ -9,8 +9,10 @@ import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.view.Display;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 final class FrontEndHandler {
     MainActivity m_activity;
@@ -310,5 +312,35 @@ final class FrontEndHandler {
             boolean enable = type.getValue() != selectedHistogram.getValue();
             findViewById(type.getValue()).setEnabled(enable);
         }
+    }
+
+    void ShowAlertDialogMessage(String message, String title) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(m_activity);
+        }
+
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        dialog.getWindow().getAttributes();
+        TextView textView = dialog.findViewById(android.R.id.message);
+        textView.setTextSize(m_activity.getResources().getDimension(R.dimen.info_message_size) /
+                m_activity.getResources().getDisplayMetrics().density);
+
+        Button btn1 = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btn1.setTextSize(m_activity.getResources().getDimension(R.dimen.info_message_confirm_button_size) /
+                m_activity.getResources().getDisplayMetrics().density);
     }
 }

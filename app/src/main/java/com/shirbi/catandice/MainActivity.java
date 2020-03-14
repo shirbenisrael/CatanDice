@@ -916,7 +916,7 @@ public class MainActivity extends Activity {
                 break;
         }
 
-        ShowAlertDialogMessage(message_type, "");
+        m_frontend_handler.ShowAlertDialogMessage(message_type, "");
     }
 
     private void SetMainButtonsEnable(boolean isEnable) {
@@ -1083,46 +1083,16 @@ public class MainActivity extends Activity {
         return res;
     }
 
-    private void ShowAlertDialogMessage(String message, String title) {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
-
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        dialog.getWindow().getAttributes();
-        TextView textView = dialog.findViewById(android.R.id.message);
-        textView.setTextSize(getResources().getDimension(R.dimen.info_message_size) /
-                             getResources().getDisplayMetrics().density);
-
-        Button btn1 = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        btn1.setTextSize(getResources().getDimension(R.dimen.info_message_confirm_button_size) /
-                         getResources().getDisplayMetrics().density);
-    }
-
     public void onHelpFairDiceClick(View view) {
         String message = getString(R.string.fair_dice_help_message);
         String title = getString(R.string.fair_dice_title);
-        ShowAlertDialogMessage(message, title);
+        m_frontend_handler.ShowAlertDialogMessage(message, title);
     }
 
     public void onHelpPreventAccidentalRollClick(View view) {
         String message = getString(R.string.prevent_accidental_roll_message);
         String title = getString(R.string.prevent_accidental_roll_title);
-        ShowAlertDialogMessage(message, title);
+        m_frontend_handler.ShowAlertDialogMessage(message, title);
     }
 
     public void onRateAppClick(View view) {
