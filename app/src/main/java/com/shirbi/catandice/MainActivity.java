@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -24,13 +23,11 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -55,10 +52,8 @@ public class MainActivity extends Activity {
     private TextView[][] m_histogram_combination_counters;
     private Histogram m_sum_histogram;
     private Histogram m_one_dice_histogram;
-    private ImageView[] m_pirate_positions_images;
     private Timer m_timer; /* time for rolling animation */
     private int m_count_down;
-    private Point m_size;
     private boolean m_is_alchemist_active = false;
     private ShakeDetector m_shakeDetector;
     private boolean m_roll_red, m_roll_yellow;
@@ -201,49 +196,6 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    private void set_square_size_view(View view, int size) {
-        view.getLayoutParams().width = size;
-        view.getLayoutParams().height = size;
-    }
-
-    private void set_square_size(int view_id, int size) {
-        View view = findViewById(view_id);
-        set_square_size_view(view, size);
-    }
-
-    private void set_square_size_with_margin(int view_id,
-                                             int size,
-                                             int top_margin,
-                                             int bottom_margin,
-                                             int left_margin,
-                                             int right_margin) {
-        set_square_size(view_id, size);
-
-        View view = findViewById(view_id);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) view.getLayoutParams();
-        lp.setMargins(left_margin, top_margin, right_margin, bottom_margin);
-    }
-
-    private void arrange_buttons() {
-        View roll_button = findViewById(R.id.roll_button);
-        roll_button.getLayoutParams().width = m_size.x * 5 /6;
-        roll_button.getLayoutParams().height = m_size.x * 45 / 100;
-
-        View menu_button = findViewById(R.id.menu_button);
-        menu_button.getLayoutParams().width = m_size.x / 6;
-        menu_button.getLayoutParams().height = m_size.x / 6;
-        ((LinearLayout.LayoutParams)(menu_button.getLayoutParams())).setMargins(
-                0,m_size.x * 32 / 100,m_size.x * 5 / 100,0);
-
-        int[] Ids = new int[] {R.id.fix_red_button, R.id.fix_yellow_button};
-        int width = m_size.x / 3;
-        for (int id : Ids) {
-            View view = findViewById(id);
-            view.getLayoutParams().width = width;
-            view.getLayoutParams().height = width / 2;
-        }
-    }
-
     private final ShakeDetector.OnShakeListener m_shakeListener = new ShakeDetector.OnShakeListener() {
         public void onShake(int count) {
             if (findViewById(R.id.roll_button).isEnabled() && (count >= NUM_SHAKES_TO_ROLL_DICE) && m_is_shake_enable) {
@@ -292,79 +244,25 @@ public class MainActivity extends Activity {
         int num_bars = MAX_NUMBER_ON_DICE * 2 - 1;
 
         m_histogram_combination_counters = new TextView[MAX_NUMBER_ON_DICE][MAX_NUMBER_ON_DICE];
-        m_pirate_positions_images = new ImageView[Card.MAX_PIRATE_POSITIONS];
-
-        m_size = GetWindowSize();
-
-        int dice_margin = m_size.x / 40;
-        int dice_num_horizontal = 2;
-        int dice_num_margins = dice_num_horizontal + 1;
-        int dice_width = (m_size.x - (dice_num_margins * dice_margin)) / dice_num_horizontal;
-
-        set_square_size_with_margin(R.id.red_dice_result, dice_width, dice_margin,
-                dice_margin / 2, dice_margin, dice_margin / 2);
-        set_square_size_with_margin(R.id.yellow_dice_result, dice_width, dice_margin,
-                dice_margin / 2, dice_margin / 2, dice_margin);
-        set_square_size_with_margin(R.id.event_dice_result, dice_width, dice_margin / 2,
-                dice_margin, dice_margin / 2, dice_margin / 2);
 
         m_frontend_handler.SetDicesImagesRolled(m_red_dice, m_yellow_dice);
         m_frontend_handler.SetEventDiceImage(m_event_dice);
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetTwoPlayerGame(false);
-
-        LinearLayout main_histogram_layout = findViewById(R.id.histogram_layout);
-        LinearLayout layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
-
-        //noinspection - Square so width = height
-        int total_dice_height = m_size.x;
-
-        int histogram_window_width = m_size.x * 9 / 10;
-        int histogram_window_height = m_size.y * 4 / 5;
-
-        main_histogram_layout.getLayoutParams().width = histogram_window_width;
-        main_histogram_layout.getLayoutParams().height = histogram_window_height;
-
-        for (int i = 0; i < Card.MAX_PIRATE_POSITIONS; i++) {
-            m_pirate_positions_images[i] = new ImageView(this);
-            m_pirate_positions_images[i].setImageResource(R.drawable.pirate_ship);
-
-            int position_color;
-
-            switch (i) {
-                case 0:
-                    position_color = Color.GREEN;
-                    break;
-                case Card.MAX_PIRATE_POSITIONS - 1:
-                    position_color = Color.RED;
-                    break;
-                default:
-                    position_color = (i % 2 == 0) ? Color.LTGRAY : Color.GRAY;
-                    break;
-            }
-
-            layout_for_pirate_ship.addView(m_pirate_positions_images[i]);
-
-            set_square_size_view(m_pirate_positions_images[i], m_size.x / Card.MAX_PIRATE_POSITIONS);
-            m_pirate_positions_images[i].setBackgroundColor(position_color);
-            m_pirate_positions_images[i].setImageAlpha(0);
-        }
-
+        
         SetPiratePosition();
 
-        int main_histogram_height = main_histogram_layout.getLayoutParams().height;
-
         m_sum_histogram = new Histogram(this,
-                histogram_window_width,
-                main_histogram_height,
+                m_frontend_handler.GetHistogramWindowWidth(),
+                m_frontend_handler.GetHistogramWindowHeight(),
                 (LinearLayout)findViewById(R.id.sum_histogram_images_layout),
                 (LinearLayout)findViewById(R.id.sum_histogram_text_layout),
                 2, 12);
 
         m_one_dice_histogram = new Histogram(this,
-                histogram_window_width,
-                main_histogram_height,
+                m_frontend_handler.GetHistogramWindowWidth(),
+                m_frontend_handler.GetHistogramWindowHeight(),
                 (LinearLayout)findViewById(R.id.one_dice_histogram_images_layout),
                 (LinearLayout)findViewById(R.id.one_dice_histogram_text_layout),
                 1, 6);
@@ -374,7 +272,7 @@ public class MainActivity extends Activity {
         TableRow newRow = new TableRow(this);
         TextView textView = new TextView(this);
         newRow.addView(textView);
-        int cell_size = histogram_window_width / cell_count;
+        int cell_size = m_frontend_handler.GetHistogramWindowWidth() / cell_count;
         textView.getLayoutParams().width = cell_size;
         textView.getLayoutParams().height = cell_size;
         textView.setGravity(Gravity.CENTER);
@@ -405,8 +303,9 @@ public class MainActivity extends Activity {
                 newRow.addView(textView);
                 m_histogram_combination_counters[j][i] = textView;
                 textView.setTextColor(Color.GREEN);
-                textView.getLayoutParams().width = histogram_window_width / cell_count;
-                textView.getLayoutParams().height = histogram_window_width / cell_count;
+                textView.getLayoutParams().width = m_frontend_handler.GetHistogramWindowWidth() / cell_count;
+                // Not a bug - a square size.
+                textView.getLayoutParams().height = m_frontend_handler.GetHistogramWindowWidth() / cell_count;
                 textView.setGravity(Gravity.CENTER);
                 textView.setTypeface(null, Typeface.BOLD);
                 textView.setTextSize(20);
@@ -415,8 +314,6 @@ public class MainActivity extends Activity {
         }
 
         histogram_table_layout.setPadding(0,0,0, cell_size * 3 / 2);
-
-        arrange_buttons();
 
         enableCheckBox(R.id.enable_sound_checkbox, m_is_sound_enable);
         enableCheckBox(R.id.enable_fair_dice_checkbox, m_is_fair_dice);
@@ -477,13 +374,6 @@ public class MainActivity extends Activity {
         findViewById(R.id.histogram_background_layout).setVisibility(View.VISIBLE);
     }
 
-    private Point GetWindowSize() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size;
-    }
-
     private void SetEventDiceVisibility() {
         View event_dice_result = findViewById(R.id.event_dice_result);
         View layout_for_pirate_ship = findViewById(R.id.layout_for_pirate_ship);
@@ -507,15 +397,7 @@ public class MainActivity extends Activity {
     }
 
     private void SetPiratePosition() {
-        for (int i = m_pirate_position + 1; i < Card.MAX_PIRATE_POSITIONS; i++) {
-            m_pirate_positions_images[i].setImageAlpha(0);
-        }
-
-        for (int i = 0; i <= m_pirate_position; i++) {
-            int alpha = 150 >> (m_pirate_position - i);
-            m_pirate_positions_images[i].setImageAlpha(alpha);
-        }
-
+        m_frontend_handler.SetPiratePosition(m_pirate_position);
     }
 
     private void onRollRedClick() {
