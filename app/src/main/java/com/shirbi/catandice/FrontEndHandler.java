@@ -136,12 +136,8 @@ final class FrontEndHandler {
     }
 
     void showExitDialog() {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(m_activity);
-        }
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
+
         builder.setTitle(getString(R.string.exit_app));
         builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -314,13 +310,16 @@ final class FrontEndHandler {
         }
     }
 
-    void ShowAlertDialogMessage(String message, String title) {
-        AlertDialog.Builder builder;
+    private AlertDialog.Builder CreateAlertDialogBuilder() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
+            return new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
         } else {
-            builder = new AlertDialog.Builder(m_activity);
+            return new AlertDialog.Builder(m_activity);
         }
+    }
+
+    void ShowAlertDialogMessage(String message, String title) {
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
 
         builder.setTitle(title);
         builder.setMessage(message);
