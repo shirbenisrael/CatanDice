@@ -626,6 +626,7 @@ public class MainActivity extends Activity {
     private void onRollRedClick() {
         m_roll_red = true;
         m_roll_yellow = false;
+        m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
         Random rand = new Random();
         m_red_dice = (rand.nextInt(MAX_NUMBER_ON_DICE) + 1);
         if (mTwoPlayerGame) {
@@ -637,6 +638,7 @@ public class MainActivity extends Activity {
     private void onRollYellowClick() {
         m_roll_red = false;
         m_roll_yellow = true;
+        m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
         Random rand = new Random();
         m_yellow_dice = (rand.nextInt(MAX_NUMBER_ON_DICE) + 1);
         if (mTwoPlayerGame) {
@@ -649,6 +651,7 @@ public class MainActivity extends Activity {
     public void RollOneDice(int dice_value, boolean is_red) {
         m_roll_red = is_red;
         m_roll_yellow = !is_red;
+        m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
         if (is_red) {
             m_red_dice = dice_value;
         } else {
@@ -706,6 +709,8 @@ public class MainActivity extends Activity {
     }
 
     public void FixDice(int fixed_value, boolean is_red) {
+        m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
+
         if (is_red) {
             m_red_dice = fixed_value;
         } else {
@@ -733,7 +738,7 @@ public class MainActivity extends Activity {
         m_last_roll_time_ms = new_time_stamp;
         m_roll_red = true;
         m_roll_yellow = true;
-        m_previous_card = m_last_card;
+        m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
         m_last_card = m_logic.GetNewCard(m_is_alchemist_active);
         if (!m_is_alchemist_active) {
             m_red_dice = m_last_card.m_red;
@@ -752,7 +757,7 @@ public class MainActivity extends Activity {
         m_is_alchemist_active = is_alchemist_active;
         m_roll_red = true;
         m_roll_yellow = true;
-        m_previous_card = m_last_card;
+        m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
         m_last_card = card;
         if (!m_is_alchemist_active) {
             m_red_dice = m_last_card.m_red;

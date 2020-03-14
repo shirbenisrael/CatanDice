@@ -65,6 +65,15 @@ class Card {
         m_pirate_position = 0;
     }
 
+    Card(int red, int yellow, EventDice event) {
+        m_red = red;
+        m_yellow = yellow;
+        m_message = MessageWithCard.NO_MESSAGE;
+        m_turn_number = 0;
+        m_event_dice = event;
+        m_pirate_position = 0;
+    }
+
     String ToString() {
         String string = m_red + "," +
                 m_yellow + "," +
