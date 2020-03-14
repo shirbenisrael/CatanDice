@@ -200,7 +200,7 @@ class Logic {
             m_histogram[i] = 0;
         }
 
-        m_last_move = null;
+        DisableCancelLastMove();
 
         rand = new Random();
 
@@ -288,6 +288,10 @@ class Logic {
         return m_pirate_position;
     }
 
+    void DisableCancelLastMove() {
+        m_last_move = null;
+    }
+
     void CancelLastMove() {
         if (m_current_turn_number == 0) {
             return;
@@ -310,7 +314,7 @@ class Logic {
 
         m_current_turn_number--;
 
-        m_last_move = null;
+        DisableCancelLastMove();
     }
 
     // used to send to other device by bluetooth.
@@ -361,7 +365,7 @@ class Logic {
             m_last_move.pirate_moved = (intArray[startIndex++] == 1);
             m_last_move.cell_increase = (intArray[startIndex++] == 1);
         } else {
-            m_last_move = null;
+            DisableCancelLastMove();
         }
 
         return startIndex;

@@ -627,6 +627,7 @@ public class MainActivity extends Activity {
         m_roll_red = true;
         m_roll_yellow = false;
         m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
+        m_logic.DisableCancelLastMove();
         Random rand = new Random();
         m_red_dice = (rand.nextInt(MAX_NUMBER_ON_DICE) + 1);
         if (mTwoPlayerGame) {
@@ -639,6 +640,7 @@ public class MainActivity extends Activity {
         m_roll_red = false;
         m_roll_yellow = true;
         m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
+        m_logic.DisableCancelLastMove();
         Random rand = new Random();
         m_yellow_dice = (rand.nextInt(MAX_NUMBER_ON_DICE) + 1);
         if (mTwoPlayerGame) {
@@ -652,6 +654,7 @@ public class MainActivity extends Activity {
         m_roll_red = is_red;
         m_roll_yellow = !is_red;
         m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
+        m_logic.DisableCancelLastMove();
         if (is_red) {
             m_red_dice = dice_value;
         } else {
@@ -710,6 +713,7 @@ public class MainActivity extends Activity {
 
     public void FixDice(int fixed_value, boolean is_red) {
         m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
+        m_logic.DisableCancelLastMove();
 
         if (is_red) {
             m_red_dice = fixed_value;
@@ -1169,13 +1173,21 @@ public class MainActivity extends Activity {
     public void CancelLastMove(boolean is_send_message) {
         m_logic.CancelLastMove();
         if (m_previous_card != null) {
-            SetDicesImagesRolled(m_previous_card.m_red, m_previous_card.m_yellow);
-            SetEventDiceImage(m_previous_card.m_event_dice);
+            m_red_dice = m_previous_card.m_red;
+            m_yellow_dice = m_previous_card.m_yellow;
+            m_event_dice = m_previous_card.m_event_dice;
         } else {
-            SetDicesImagesRolled(1, 1);
-            SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
+            m_red_dice = 1;
+            m_yellow_dice = 1;
+            m_event_dice = Card.EventDice.PIRATE_SHIP;
         }
+
+        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        SetEventDiceImage(m_event_dice);
+
         m_last_card = m_previous_card;
+        m_previous_card = null;
+        m_logic.DisableCancelLastMove();
 
         m_pirate_position = m_logic.GetPiratePosition();
         SetPiratePosition();
