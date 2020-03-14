@@ -56,12 +56,9 @@
     <string name="title_paired_devices">Dispositivos emparejados</string>
     <string name="menu_title_string">Opciones</string>
     <string name="cancel_last_move_in_menu">Cancelar último rollo</string>
-    <string name="sum_string">Suma</string>
-    <string name="combination_string">Combinación</string>
     <string name="prevent_accidental_roll">Prevenir el balanceo accidental</string>
     <string name="prevent_accidental_roll_message">Debe esperar 3 segundos entre dos tiradas secuenciales.</string>
     <string name="prevent_accidental_roll_title">Prevenir el rodaje accidental</string>
     <string name="select_turn_time_title">Seleccionar tiempo de giro</string>
     <string name="enable_turn_timer">Activar temporizador de giro</string>
-    <string name="one_dice_string">Único</string>
 </resources>

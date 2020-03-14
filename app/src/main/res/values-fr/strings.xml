@@ -56,12 +56,9 @@
     <string name="title_paired_devices">Appareils jumelés</string>
     <string name="menu_title_string">Les options</string>
     <string name="cancel_last_move_in_menu">Annuler le dernier rouleau</string>
-    <string name="sum_string">Somme</string>
-    <string name="combination_string">Combinaison</string>
     <string name="prevent_accidental_roll">Empêcher le roulis accidentel</string>
     <string name="prevent_accidental_roll_message">Doit attendre 3 secondes entre deux rouleaux séquentiels.</string>
     <string name="prevent_accidental_roll_title">Empêcher le roulis accidentel</string>
     <string name="select_turn_time_title">Sélectionnez le temps de rotation</string>
     <string name="enable_turn_timer">Activer Turn Timer</string>
-    <string name="one_dice_string">Unique</string>
 </resources>

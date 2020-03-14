@@ -56,12 +56,9 @@
     <string name="title_paired_devices">Сопряженные устройства</string>
     <string name="menu_title_string">Параметры</string>
     <string name="cancel_last_move_in_menu">Отменить последний бросок</string>
-    <string name="combination_string">комбинирование</string>
-    <string name="sum_string">сумма</string>
     <string name="prevent_accidental_roll">Предотвратить случайный бросок</string>
     <string name="prevent_accidental_roll_title">Предотвратить случайный бросок</string>
     <string name="prevent_accidental_roll_message">Нужно подождать 3 секунды между двумя последовательными бросками.</string>
     <string name="enable_turn_timer">Включить таймер поворота</string>
     <string name="select_turn_time_title">Выберите время поворота</string>
-    <string name="one_dice_string">уникальный</string>
 </resources>
