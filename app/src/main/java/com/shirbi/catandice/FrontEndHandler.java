@@ -55,4 +55,53 @@ final class FrontEndHandler {
                 break;
         }
     }
+
+    void ShowState(MainActivity.ShownState new_state) {
+        int[] all_layout = {
+                R.id.layout_for_dices,
+                R.id.game_type_layout,
+                R.id.num_players_layout,
+                R.id.setting_layout,
+                R.id.histogram_background_layout};
+
+        int[] layouts_for_game = {R.id.layout_for_dices};
+        int[] layouts_for_game_type = {R.id.game_type_layout};
+        int[] layouts_for_num_players = {R.id.num_players_layout};
+        int[] layouts_for_settings = {R.id.setting_layout};
+        int[] layouts_for_histogram = {R.id.layout_for_dices, R.id.histogram_background_layout};
+
+        int[] layouts_to_show = {0};
+
+        switch (new_state) {
+            case GAME:
+                layouts_to_show = layouts_for_game;
+                break;
+            case SELECT_GAME_TYPE:
+                layouts_to_show = layouts_for_game_type;
+                break;
+            case SELECT_NUM_PLAYERS:
+                layouts_to_show = layouts_for_num_players;
+                break;
+            case SETTING:
+                layouts_to_show = layouts_for_settings;
+                break;
+            case HISTOGRAM:
+                layouts_to_show = layouts_for_histogram;
+                break;
+            default:
+                break;
+        }
+
+        for (int i : all_layout) {
+            View layout = findViewById(i);
+            layout.setVisibility(View.INVISIBLE);
+
+            for (int j : layouts_to_show) {
+                if (i == j) {
+                    layout.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+        }
+    }
 }
