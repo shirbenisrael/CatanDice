@@ -51,6 +51,7 @@ import static com.shirbi.catandice.BluetoothChatService.TOAST;
 import static com.shirbi.catandice.Card.MAX_NUMBER_ON_DICE;
 
 public class MainActivity extends Activity {
+    FrontEndHandler m_frontend_handler;
     private TextView[][] m_histogram_combination_counters;
     private Histogram m_sum_histogram;
     private Histogram m_one_dice_histogram;
@@ -342,7 +343,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        m_frontend_handler = new FrontEndHandler(this);
 
         m_num_players = DEFAULT_NUMBER_OF_PLAYERS;
         m_game_type = DEFAULT_GAME_TYPE;
@@ -374,8 +376,8 @@ public class MainActivity extends Activity {
         set_square_size_with_margin(R.id.event_dice_result, dice_width, dice_margin / 2,
                 dice_margin, dice_margin / 2, dice_margin / 2);
 
-        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
-        SetEventDiceImage(m_event_dice);
+        m_frontend_handler.SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        m_frontend_handler.SetEventDiceImage(m_event_dice);
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetTwoPlayerGame(false);
@@ -584,45 +586,6 @@ public class MainActivity extends Activity {
 
     }
 
-    private void SetEventDiceImage(Card.EventDice eventDice) {
-        ImageView event_dice_result = findViewById(R.id.event_dice_result);
-
-        switch (eventDice) {
-            case YELLOW_CITY:
-                event_dice_result.setImageResource(R.drawable.yellow_city);
-                break;
-            case GREEN_CITY:
-                event_dice_result.setImageResource(R.drawable.green_city);
-                break;
-            case BLUE_CITY:
-                event_dice_result.setImageResource(R.drawable.blue_city);
-                break;
-            case PIRATE_SHIP:
-                event_dice_result.setImageResource(R.drawable.pirate_ship);
-                break;
-        }
-    }
-
-    private void SetDicesImagesRolled(int red_dice_number, int yellow_dice_number) {
-        ImageView red_dice_result_image = findViewById(R.id.red_dice_result);
-        ImageView yellow_dice_result_image = findViewById(R.id.yellow_dice_result);
-
-        SetDicesImages(red_dice_number, yellow_dice_number, red_dice_result_image, yellow_dice_result_image);
-    }
-
-    private void SetDicesImages(int red_dice_number, int yellow_dice_number,
-                                ImageView red_dice_result_image, ImageView yellow_dice_result_image) {
-        int[] red_images =
-                {R.drawable.red_1, R.drawable.red_2, R.drawable.red_3, R.drawable.red_4, R.drawable.red_5, R.drawable.red_6};
-
-        red_dice_result_image.setImageResource(red_images[red_dice_number - 1]);
-
-        int[] yellow_images =
-                {R.drawable.yellow_1, R.drawable.yellow_2, R.drawable.yellow_3, R.drawable.yellow_4, R.drawable.yellow_5, R.drawable.yellow_6};
-
-        yellow_dice_result_image.setImageResource(yellow_images[yellow_dice_number - 1]);
-    }
-
     private void onRollRedClick() {
         m_roll_red = true;
         m_roll_yellow = false;
@@ -720,7 +683,7 @@ public class MainActivity extends Activity {
         } else {
             m_yellow_dice = fixed_value;
         }
-        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        m_frontend_handler.SetDicesImagesRolled(m_red_dice, m_yellow_dice);
     }
 
     public void onFixRedClick(View view) {
@@ -862,10 +825,10 @@ public class MainActivity extends Activity {
             if (m_count_down == 0) {
                 m_timer.cancel();
 
-                SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+                m_frontend_handler.SetDicesImagesRolled(m_red_dice, m_yellow_dice);
 
                 if (m_roll_red && m_roll_yellow) {
-                    SetEventDiceImage(m_event_dice);
+                    m_frontend_handler.SetEventDiceImage(m_event_dice);
                     m_is_alchemist_active = false;
                     ShowMessage(m_last_card.m_message, m_last_card.m_turn_number);
                     m_pirate_position = m_last_card.m_pirate_position;
@@ -883,12 +846,12 @@ public class MainActivity extends Activity {
                 if (!m_is_alchemist_active) {
                     int red_to_show = m_roll_red ? (rand.nextInt(MAX_NUMBER_ON_DICE) + 1) : m_red_dice;
                     int yellow_to_show = m_roll_yellow ? (rand.nextInt(MAX_NUMBER_ON_DICE) + 1) : m_yellow_dice;
-                    SetDicesImagesRolled(red_to_show, yellow_to_show);
+                    m_frontend_handler.SetDicesImagesRolled(red_to_show, yellow_to_show);
                 }
 
                 int event_num = rand.nextInt(Card.MAX_EVENTS_ON_EVENT_DICE);
                 Card.EventDice event = Card.EventDice.values()[event_num];
-                SetEventDiceImage(event);
+                m_frontend_handler.SetEventDiceImage(event);
             }
         }
     };
@@ -949,8 +912,8 @@ public class MainActivity extends Activity {
         SetEventDiceVisibility();
         SetOneDiceOperationVisibility();
         SetPiratePosition();
-        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
-        SetEventDiceImage(m_event_dice);
+        m_frontend_handler.SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        m_frontend_handler.SetEventDiceImage(m_event_dice);
         ShowTurnNumber(m_logic.GetTurnNumber());
         SetMainButtonsEnable(true);
     }
@@ -1182,8 +1145,8 @@ public class MainActivity extends Activity {
             m_event_dice = Card.EventDice.PIRATE_SHIP;
         }
 
-        SetDicesImagesRolled(m_red_dice, m_yellow_dice);
-        SetEventDiceImage(m_event_dice);
+        m_frontend_handler.SetDicesImagesRolled(m_red_dice, m_yellow_dice);
+        m_frontend_handler.SetEventDiceImage(m_event_dice);
 
         m_last_card = m_previous_card;
         m_previous_card = null;
