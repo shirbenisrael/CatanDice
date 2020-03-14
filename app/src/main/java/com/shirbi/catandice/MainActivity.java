@@ -1165,12 +1165,13 @@ public class MainActivity extends Activity {
         m_logic.CancelLastMove();
         if (m_previous_card != null) {
             SetDicesImagesRolled(m_previous_card.m_red, m_previous_card.m_yellow);
+            SetEventDiceImage(m_previous_card.m_event_dice);
         } else {
             SetDicesImagesRolled(1, 1);
+            SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
         }
         m_last_card = m_previous_card;
 
-        SetEventDiceImage(Card.EventDice.PIRATE_SHIP);
         m_pirate_position = m_logic.GetPiratePosition();
         SetPiratePosition();
         if (mTwoPlayerGame && is_send_message) {
