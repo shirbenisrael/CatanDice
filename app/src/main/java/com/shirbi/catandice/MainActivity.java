@@ -580,24 +580,7 @@ public class MainActivity extends Activity {
     }
 
     private void SetBackGround() {
-        LinearLayout main_layout = findViewById(R.id.layout_for_dices);
-
-        int resource = R.drawable.regular_game_bg;
-
-        switch (m_game_type) {
-            case GAME_TYPE_CITIES_AND_KNIGHT:
-                resource = R.drawable.cities_and_knights_bg;
-                break;
-
-            case GAME_TYPE_REGULAR:
-                break;
-
-            case GAME_TYPE_SIMPLE_DICE:
-                resource = R.drawable.simple_dice_bg;
-                break;
-        }
-
-        main_layout.setBackgroundResource(resource);
+        m_frontend_handler.SetBackGround(m_game_type);
     }
 
     // Set of all media players which are currently working. Used to prevent garbage collector from
