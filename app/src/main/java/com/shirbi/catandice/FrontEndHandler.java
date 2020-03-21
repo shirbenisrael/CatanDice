@@ -453,4 +453,22 @@ final class FrontEndHandler {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    void ShowCancelLastMoveDialog() {
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
+
+        builder.setTitle(R.string.cancel_last_move);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_activity.CancelLastMove(true);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        builder.setIcon(R.drawable.cancel_last_move);
+        builder.show();
+    }
 }

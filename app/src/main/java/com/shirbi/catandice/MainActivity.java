@@ -943,26 +943,7 @@ public class MainActivity extends Activity {
     }
 
     void onCancelLastMoveClick(View view) {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle(R.string.cancel_last_move);
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                CancelLastMove(true);
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // do nothing
-            }
-        });
-        builder.setIcon(R.drawable.cancel_last_move);
-        builder.show();
-
+        m_frontend_handler.ShowCancelLastMoveDialog();
     }
 
     private void setImageButtonEnabled(boolean enabled, int itemId, int iconResId) {
