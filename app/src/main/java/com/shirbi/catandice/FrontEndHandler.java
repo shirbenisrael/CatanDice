@@ -14,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.shirbi.catandice.MainActivity.ShownState.GAME;
+
 final class FrontEndHandler {
     MainActivity m_activity;
     private Point m_size;
@@ -90,13 +95,11 @@ final class FrontEndHandler {
         int[] all_layout = {
                 R.id.layout_for_dices,
                 R.id.game_type_layout,
-                R.id.num_players_layout,
                 R.id.setting_layout,
                 R.id.histogram_background_layout};
 
         int[] layouts_for_game = {R.id.layout_for_dices};
         int[] layouts_for_game_type = {R.id.game_type_layout};
-        int[] layouts_for_num_players = {R.id.num_players_layout};
         int[] layouts_for_settings = {R.id.setting_layout};
         int[] layouts_for_histogram = {R.id.layout_for_dices, R.id.histogram_background_layout};
 
@@ -108,9 +111,6 @@ final class FrontEndHandler {
                 break;
             case SELECT_GAME_TYPE:
                 layouts_to_show = layouts_for_game_type;
-                break;
-            case SELECT_NUM_PLAYERS:
-                layouts_to_show = layouts_for_num_players;
                 break;
             case SETTING:
                 layouts_to_show = layouts_for_settings;
@@ -341,5 +341,35 @@ final class FrontEndHandler {
         Button btn1 = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btn1.setTextSize(m_activity.getResources().getDimension(R.dimen.info_message_confirm_button_size) /
                 m_activity.getResources().getDisplayMetrics().density);
+    }
+
+    void ShowSelectNumPlayerDialog(final int min, int max) {
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
+
+        builder.setTitle(getString(R.string.num_players_string));
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_activity.ShowState(GAME);
+            }
+        });
+
+        List<String> listItems = new ArrayList<String>();
+
+        for (int i = min; i <= max; i++) {
+            listItems.add(String.valueOf(i));
+        };
+
+        CharSequence[] charSequences = listItems.toArray(new CharSequence[listItems.size()]);
+
+        builder.setItems(charSequences,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        m_activity.selectNumPlayersClick(which + min);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -90,7 +90,6 @@ public class MainActivity extends Activity {
     enum ShownState {
         GAME,
         SELECT_GAME_TYPE,
-        SELECT_NUM_PLAYERS,
         SETTING,
         HISTOGRAM,
     }
@@ -116,7 +115,7 @@ public class MainActivity extends Activity {
         NUM_SHAKES_TO_ROLL_DICE = 2;
     }
 
-    private void ShowState(ShownState new_state) {
+    void ShowState(ShownState new_state) {
         m_shown_state = new_state;
         m_frontend_handler.ShowState(m_shown_state);
     }
@@ -137,7 +136,6 @@ public class MainActivity extends Activity {
                 break;
 
             case SELECT_GAME_TYPE:
-            case SELECT_NUM_PLAYERS:
                 onBackFromNumPlayersClick(null);
                 break;
 
@@ -815,34 +813,15 @@ public class MainActivity extends Activity {
 
     public void onSelectGameTypeClick(View view) {
         SetGameType(view);
-        ShowState(ShownState.SELECT_NUM_PLAYERS);
+        if (m_game_type == Logic.GameType.GAME_TYPE_SIMPLE_DICE) {
+            m_frontend_handler.ShowSelectNumPlayerDialog(2,10);
+        } else {
+            m_frontend_handler.ShowSelectNumPlayerDialog(3,6);
+        }
     }
 
-    public void onSelectNumPlayersClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_2_players:
-                m_num_players = 2;
-                break;
-
-            case R.id.button_3_players:
-                m_num_players = 3;
-                break;
-
-            case R.id.button_4_players:
-                m_num_players = 4;
-                break;
-
-            case R.id.button_5_players:
-                m_num_players = 5;
-                break;
-
-            case R.id.button_6_players:
-                m_num_players = 6;
-                break;
-
-            default:
-                throw new RuntimeException("Unknown button ID");
-        }
+    void selectNumPlayersClick(int num_players) {
+        m_num_players = num_players;
 
         m_starting_player = new Random().nextInt(m_num_players) + 1;
 

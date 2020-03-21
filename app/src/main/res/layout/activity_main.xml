@@ -382,65 +382,6 @@
 
         </LinearLayout>
 
-        <!-- Num player game layout -->
-        <LinearLayout
-            android:id="@+id/num_players_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="invisible">
-
-            <TextView
-                android:id="@+id/num_players_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/num_players_string" />
-
-            <Button
-                android:id="@+id/button_2_players"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onSelectNumPlayersClick"
-                android:text="2" />
-
-            <Button
-                android:id="@+id/button_3_players"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onSelectNumPlayersClick"
-                android:text="3" />
-
-            <Button
-                android:id="@+id/button_4_players"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onSelectNumPlayersClick"
-                android:text="4" />
-
-            <Button
-                android:id="@+id/button_5_players"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onSelectNumPlayersClick"
-                android:text="5" />
-
-            <Button
-                android:id="@+id/button_6_players"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onSelectNumPlayersClick"
-                android:text="6" />
-
-            <Button
-                android:id="@+id/back_from_num_players_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onBackFromNumPlayersClick"
-                android:text="@string/back_string" />
-
-        </LinearLayout>
-
         <include
             android:id="@+id/setting_layout"
             layout="@layout/settings" />
