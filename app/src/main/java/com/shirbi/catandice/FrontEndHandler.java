@@ -372,4 +372,85 @@ final class FrontEndHandler {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    interface Worker {
+        void onClick(View view);
+    }
+
+    public void ShowMenu(boolean with_cancel_last_move, boolean with_alchemist) {
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
+
+        builder.setTitle(getString(R.string.menu_title_string));
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+
+        builder.setPositiveButton(getString(R.string.exit_app), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                showExitDialog();
+            }
+        });
+
+        final List<Worker> listWorkers = new ArrayList<Worker>();
+        List<String> listItems = new ArrayList<String>();
+
+        listWorkers.add(new Worker() {
+            @Override
+            public void onClick(View view) {
+                m_activity.onSettingClick(view);
+            }
+        });
+        listItems.add(getString(R.string.setting_string));
+
+        listWorkers.add(new Worker() {
+            @Override
+            public void onClick(View view) {
+                m_activity.onNewGameClick(view);
+            }
+        });
+        listItems.add(getString(R.string.new_game_string));
+
+        listWorkers.add(new Worker() {
+            @Override
+            public void onClick(View view) {
+                m_activity.onShowHistogramClick(view);
+            }
+        });
+        listItems.add(getString(R.string.show_histogram));
+
+        if (with_cancel_last_move) {
+            listWorkers.add(new Worker() {
+                @Override
+                public void onClick(View view) {
+                    m_activity.onCancelLastMoveClick(view);
+                }
+            });
+            listItems.add(getString(R.string.cancel_last_move_in_menu));
+        }
+
+        if (with_alchemist) {
+            listWorkers.add(new Worker() {
+                @Override
+                public void onClick(View view) {
+                    m_activity.onAlchemistClick(view);
+                }
+            });
+            listItems.add(getString(R.string.alchemist));
+        }
+
+        CharSequence[] charSequences = listItems.toArray(new CharSequence[listItems.size()]);
+
+        builder.setItems(charSequences,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        listWorkers.get(which).onClick(null);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

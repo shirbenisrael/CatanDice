@@ -35,9 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
@@ -654,11 +652,11 @@ public class MainActivity extends Activity {
         }
     };
 
-    private void onSettingClick(View view) {
+    void onSettingClick(View view) {
         ShowState(ShownState.SETTING);
     }
 
-    private void onShowHistogramClick(View view) {
+    void onShowHistogramClick(View view) {
         SetMainButtonsEnable(false);
         ShowHistogram();
         ShowState(ShownState.HISTOGRAM);
@@ -802,11 +800,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void onNewGameClick(View view) {
+    void onNewGameClick(View view) {
         ShowState(ShownState.SELECT_GAME_TYPE);
     }
 
-    private void onAlchemistClick(View view) {
+    void onAlchemistClick(View view) {
         m_is_alchemist_active = true;
         onRollClick(view);
     }
@@ -938,88 +936,13 @@ public class MainActivity extends Activity {
     }
 
     public void onMenuButtonClick(View view) {
-        AlertDialog.Builder builder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle(getString(R.string.menu_title_string));
+        boolean with_cancel_last_move = m_logic.CanCancelLastMove();
+        boolean with_alchemist = m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT;
 
-        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Do nothing
-            }
-        });
-
-        builder.setPositiveButton(getString(R.string.exit_app), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                m_frontend_handler.showExitDialog();
-            }
-        });
-
-        final List<Worker> listWorkers = new ArrayList<Worker>();
-        List<String> listItems = new ArrayList<String>();
-
-        listWorkers.add(new Worker() {
-            @Override
-            public void onClick(View view) {
-                onSettingClick(view);
-            }
-        });
-        listItems.add(getString(R.string.setting_string));
-
-        listWorkers.add(new Worker() {
-            @Override
-            public void onClick(View view) {
-                onNewGameClick(view);
-            }
-        });
-        listItems.add(getString(R.string.new_game_string));
-
-        listWorkers.add(new Worker() {
-            @Override
-            public void onClick(View view) {
-                onShowHistogramClick(view);
-            }
-        });
-        listItems.add(getString(R.string.show_histogram));
-
-        if (m_logic.CanCancelLastMove()) {
-            listWorkers.add(new Worker() {
-                @Override
-                public void onClick(View view) {
-                    onCancelLastMoveClick(view);
-                }
-            });
-            listItems.add(getString(R.string.cancel_last_move_in_menu));
-        }
-
-        if (m_game_type == Logic.GameType.GAME_TYPE_CITIES_AND_KNIGHT) {
-            listWorkers.add(new Worker() {
-                @Override
-                public void onClick(View view) {
-                    onAlchemistClick(view);
-                }
-            });
-            listItems.add(getString(R.string.alchemist));
-        }
-
-        CharSequence[] charSequences = listItems.toArray(new CharSequence[listItems.size()]);
-
-        builder.setItems(charSequences,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        listWorkers.get(which).onClick(null);
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        m_frontend_handler.ShowMenu(with_cancel_last_move, with_alchemist);
     }
 
-
-    private void onCancelLastMoveClick(View view) {
+    void onCancelLastMoveClick(View view) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
