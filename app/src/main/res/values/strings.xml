@@ -26,7 +26,8 @@
     <string name="setting_string">Setting</string>
     <string name="menu_title_string">Options</string>
     <string name="new_game_string">New Game</string>
-    <string name="exit_app">Exit Application?</string>
+    <string name="exit_app_question">Exit Application?</string>
+    <string name="exit_app">Exit Application</string>
     <string name="show_histogram">Show Histogram</string>
     <string name="back_string">Back</string>
     <string name="combination_string" translatable="false">6X6</string>

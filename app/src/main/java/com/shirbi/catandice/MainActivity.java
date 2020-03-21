@@ -952,6 +952,12 @@ public class MainActivity extends Activity {
             }
         });
 
+        builder.setPositiveButton(getString(R.string.exit_app), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_frontend_handler.showExitDialog();
+            }
+        });
+
         final List<Worker> listWorkers = new ArrayList<Worker>();
         List<String> listItems = new ArrayList<String>();
 

@@ -9,7 +9,7 @@
     <string name="continue_string">Продолжать</string>
     <string name="enable_fair_dice">Включить честные кости</string>
     <string name="enable_sound">Включить звук</string>
-    <string name="exit_app">Выход из приложения?</string>
+    <string name="exit_app_question">Выход из приложения?</string>
     <string name="fair_dice_help_message">Уменьшите вероятность появления пары костей, которая уже появилась, пока не появятся все остальные пары.</string>
     <string name="fair_dice_title">Честная игра в кости</string>
     <string name="game_type">Тип игры:</string>
@@ -61,4 +61,5 @@
     <string name="prevent_accidental_roll_message">Нужно подождать 3 секунды между двумя последовательными бросками.</string>
     <string name="enable_turn_timer">Включить таймер поворота</string>
     <string name="select_turn_time_title">Выберите время поворота</string>
+    <string name="exit_app">Выход из приложения</string>
 </resources>

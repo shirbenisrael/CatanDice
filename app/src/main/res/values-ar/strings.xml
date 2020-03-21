@@ -9,7 +9,7 @@
     <string name="continue_string">واصل</string>
     <string name="enable_fair_dice">تمكين النرد عادلة</string>
     <string name="enable_sound">تمكين الصوت</string>
-    <string name="exit_app">الخروج من التطبيق؟</string>
+    <string name="exit_app_question">الخروج من التطبيق؟</string>
     <string name="fair_dice_help_message">قلل من فرصة ظهور زوج من النرد ظهر بالفعل حتى ظهرت جميع الأزواج الأخرى أيضًا.</string>
     <string name="fair_dice_title">النرد عادلة</string>
     <string name="game_type">نوع اللعبة:</string>
@@ -61,4 +61,5 @@
     <string name="prevent_accidental_roll_message">يجب أن تنتظر 3 ثوان بين اثنين من لفات متتابعة.</string>
     <string name="enable_turn_timer">تمكين بدوره الموقت</string>
     <string name="select_turn_time_title">حدد وقت الدوران</string>
+    <string name="exit_app">الخروج من التطبيق</string>
 </resources>

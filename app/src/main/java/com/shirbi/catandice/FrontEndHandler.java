@@ -138,7 +138,7 @@ final class FrontEndHandler {
     void showExitDialog() {
         AlertDialog.Builder builder = CreateAlertDialogBuilder();
 
-        builder.setTitle(getString(R.string.exit_app));
+        builder.setTitle(getString(R.string.exit_app_question));
         builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 m_activity.Exit();

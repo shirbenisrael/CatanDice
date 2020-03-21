@@ -9,7 +9,7 @@
     <string name="continue_string">Continuer</string>
     <string name="enable_fair_dice">Activer les dés équitables</string>
     <string name="enable_sound">Activer le son</string>
-    <string name="exit_app">Quitter l\'application?</string>
+    <string name="exit_app_question">Quitter l\'application?</string>
     <string name="fair_dice_help_message">Réduisez les chances de voir apparaître une paire de dés qui semblait déjà apparaître jusqu\'à ce que toutes les autres paires apparaissent également.</string>
     <string name="fair_dice_title">Juste Dé</string>
     <string name="game_type">Type de jeu:</string>
@@ -61,4 +61,5 @@
     <string name="prevent_accidental_roll_title">Empêcher le roulis accidentel</string>
     <string name="select_turn_time_title">Sélectionnez le temps de rotation</string>
     <string name="enable_turn_timer">Activer Turn Timer</string>
+    <string name="exit_app">Quitter l\'application</string>
 </resources>

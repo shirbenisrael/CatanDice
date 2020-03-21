@@ -27,7 +27,7 @@
     <string name="confirm">אשר</string>
     <string name="cancel">בטל</string>
     <string name="shake_to_roll_dice">ניעור המכשיר להטלת קוביות</string>
-    <string name="exit_app">יציאה מהאפליקציה?</string>
+    <string name="exit_app_question">יציאה מהאפליקציה?</string>
     <string name="game_type_simple_dice">קוביות פשוטות</string>
     <string name="fair_dice_title">קוביות הוגנות</string>
     <string name="fair_dice_help_message">הפחתת הסיכוים של צירוף קוביות שכבר הופיע להופיע שוב לפני צירופים שעוד לא הופיעו</string>
@@ -62,4 +62,5 @@
     <string name="prevent_accidental_roll_title">מנע הטלה מקרית</string>
     <string name="enable_turn_timer">שעון עצר לתור</string>
     <string name="select_turn_time_title">בחירת זמן לתור</string>
+    <string name="exit_app">יציאה מהאפליקציה</string>
 </resources>
