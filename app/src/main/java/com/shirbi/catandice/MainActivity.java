@@ -1014,6 +1014,8 @@ public class MainActivity extends Activity {
                     }
                 });
 
+        builder.setIcon(R.drawable.timer_icon);
+
         AlertDialog dialog = builder.create();
         dialog.show();
     }
