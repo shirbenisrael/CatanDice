@@ -149,7 +149,7 @@ final class FrontEndHandler {
                 // Do nothing
             }
         });
-        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.setIcon(R.drawable.exit_icon);
         builder.show();
     }
 
