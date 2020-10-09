@@ -100,5 +100,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-core-ui:26.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat:26.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.play:core:1.8.0@aar" level="project" />
   </component>
 </module>
