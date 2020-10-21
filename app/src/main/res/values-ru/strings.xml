@@ -62,4 +62,5 @@
     <string name="enable_turn_timer">Включить таймер поворота</string>
     <string name="select_turn_time_title">Выберите время поворота</string>
     <string name="exit_app">Выход из приложения</string>
+    <string name="current_player">Текущий игрок</string>
 </resources>

@@ -66,7 +66,6 @@ public class MainActivity extends Activity {
     private com.shirbi.catandice.BluetoothChatService mChatService = null;
     private final IncomingHandler mHandler = new IncomingHandler(this);
     private Boolean mTwoPlayerGame = false;
-    private int m_starting_player;
     private Card m_last_card;
     private Card m_previous_card;
     private CountDownTimer m_count_down_timer;
@@ -76,6 +75,7 @@ public class MainActivity extends Activity {
     /* Need to store */
     private Logic.GameType m_game_type;
     private int m_num_players;
+    private int m_starting_player;
     private Logic m_logic;
     private int m_red_dice;
     private int m_yellow_dice;
@@ -100,6 +100,7 @@ public class MainActivity extends Activity {
 
     private static final long MILLISECONDS_BETWEEN_ROLLS = 3000;
     public static final int DEFAULT_NUMBER_OF_PLAYERS;
+    public static final int DEFAULT_STARTING_PLAYER = 1;
     private static final int DEFAULT_TIMER_SELECTION = 5;
     private static final int DEFAULT_NUMBER_ON_DICE;
     private static final Logic.GameType DEFAULT_GAME_TYPE;
@@ -151,6 +152,7 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(getString(R.string.m_num_players), m_num_players);
+        editor.putInt(getString(R.string.m_starting_player), m_starting_player);
         editor.putInt(getString(R.string.m_red_dice), m_red_dice);
         editor.putInt(getString(R.string.m_yellow_dice), m_yellow_dice);
         editor.putInt(getString(R.string.m_event_dice), m_event_dice.getValue());
@@ -171,6 +173,7 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
         m_num_players = sharedPref.getInt(getString(R.string.m_num_players), DEFAULT_NUMBER_OF_PLAYERS);
+        m_starting_player = sharedPref.getInt(getString(R.string.m_starting_player), DEFAULT_STARTING_PLAYER);
         m_red_dice = sharedPref.getInt(getString(R.string.m_red_dice), DEFAULT_NUMBER_ON_DICE);
         m_yellow_dice = sharedPref.getInt(getString(R.string.m_yellow_dice), DEFAULT_NUMBER_ON_DICE);
         m_pirate_position = sharedPref.getInt(getString(R.string.m_pirate_position), Logic.DEFAULT_PIRATE_POSITION);
@@ -858,7 +861,18 @@ public class MainActivity extends Activity {
     private void ShowTurnNumber(int turn_number) {
         TextView turn_number_text_view = findViewById(R.id.turn_number_text_view);
 
-        String turn_number_message = getString(R.string.turn_number) + ": " + turn_number + "   ";
+        int player;
+
+        if (turn_number == 0) { // show the starting player - BEFORE turn number was increased.
+            player = m_starting_player;
+        } else { // show the current player: for example, if this is after first roll and
+            // m_starting_player is 1, then turn number is now 1 and we want to show 1.
+            player = (turn_number + m_starting_player - 2) % m_num_players + 1;
+        }
+
+        String turn_number_message = getString(R.string.turn_number) + ": " + turn_number + "  "
+        + getString(R.string.current_player) + ": " + player;
+
         turn_number_text_view.setText(turn_number_message);
     }
 

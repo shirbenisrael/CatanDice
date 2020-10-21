@@ -62,4 +62,5 @@
     <string name="select_turn_time_title">Seleccionar tiempo de giro</string>
     <string name="enable_turn_timer">Activar temporizador de giro</string>
     <string name="exit_app">Salir de la aplicación</string>
+    <string name="current_player">Jugador actual</string>
 </resources>

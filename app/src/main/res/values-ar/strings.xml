@@ -62,4 +62,5 @@
     <string name="enable_turn_timer">تمكين بدوره الموقت</string>
     <string name="select_turn_time_title">حدد وقت الدوران</string>
     <string name="exit_app">الخروج من التطبيق</string>
+    <string name="current_player">اللاعب الحالي</string>
 </resources>

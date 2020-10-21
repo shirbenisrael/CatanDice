@@ -63,4 +63,5 @@
     <string name="enable_turn_timer">שעון עצר לתור</string>
     <string name="select_turn_time_title">בחירת זמן לתור</string>
     <string name="exit_app">יציאה מהאפליקציה</string>
+    <string name="current_player">שחקן נוכחי</string>
 </resources>

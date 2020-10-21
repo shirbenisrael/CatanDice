@@ -1,5 +1,6 @@
 ﻿<resources>
     <string name="m_num_players" translatable="false">m_num_players</string>
+    <string name="m_starting_player" translatable="false">m_starting_player</string>
     <string name="m_red_dice" translatable="false">m_red_dice</string>
     <string name="m_yellow_dice" translatable="false">m_yellow_dice</string>
     <string name="m_event_dice" translatable="false">m_event_dice</string>
@@ -42,6 +43,7 @@
     <string name="continue_string">Continue</string>
     <string name="new_game_player_start">New game - player %1$d starts!</string>
     <string name="turn_number">Turn number</string>
+    <string name="current_player">Current player</string>
     <string name="enable_sound">Enable sound</string>
     <string name="enable_fair_dice">Enable fair dice</string>
     <string name="game_type">Game Type:</string>

@@ -62,4 +62,5 @@
     <string name="select_turn_time_title">Sélectionnez le temps de rotation</string>
     <string name="enable_turn_timer">Activer Turn Timer</string>
     <string name="exit_app">Quitter l\'application</string>
+    <string name="current_player">Joueur actuel</string>
 </resources>
