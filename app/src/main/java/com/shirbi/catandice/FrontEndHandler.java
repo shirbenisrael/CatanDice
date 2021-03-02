@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.shirbi.catandice.Card.MAX_NUMBER_ON_DICE;
 import static com.shirbi.catandice.MainActivity.ShownState.GAME;
 
 final class FrontEndHandler {
@@ -472,6 +473,35 @@ final class FrontEndHandler {
             }
         });
         builder.setIcon(R.drawable.cancel_last_move);
+        mLastDialog = builder.create();
+        mLastDialog.show();
+    }
+
+    public void showFixOneDiceMenu(int title_id, final boolean is_red) {
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
+        builder.setTitle(getString(title_id));
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+
+        CharSequence[] charSequence = new CharSequence[MAX_NUMBER_ON_DICE + 1];
+        for (int i = 0; i < MAX_NUMBER_ON_DICE ; i++) {
+            charSequence[i] =
+                    getString(is_red ? R.string.fix_red: R.string.fix_yellow) + " - " +
+                            (i + 1);
+        }
+        charSequence[MAX_NUMBER_ON_DICE] = getString(is_red ? R.string.roll_red: R.string.roll_yellow);
+
+        builder.setItems(charSequence,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        m_activity.onChooseFixValueForDice(is_red, which);
+                    }
+                });
+
         mLastDialog = builder.create();
         mLastDialog.show();
     }

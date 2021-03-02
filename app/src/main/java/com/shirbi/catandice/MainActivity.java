@@ -470,37 +470,7 @@ public class MainActivity extends Activity {
     }
 
     private void fixOneDice(int title_id, final boolean is_red) {
-        AlertDialog.Builder builder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle(getString(title_id));
-
-        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Do nothing
-            }
-        });
-
-        CharSequence[] charSequence = new CharSequence[MAX_NUMBER_ON_DICE + 1];
-        for (int i = 0; i < MAX_NUMBER_ON_DICE ; i++) {
-            charSequence[i] =
-                    getString(is_red ? R.string.fix_red: R.string.fix_yellow) + " - " +
-                    (i + 1);
-        }
-        charSequence[MAX_NUMBER_ON_DICE] = getString(is_red ? R.string.roll_red: R.string.roll_yellow);
-
-        builder.setItems(charSequence,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        onChooseFixValueForDice(is_red, which);
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        m_frontend_handler.showFixOneDiceMenu(title_id, is_red);
     }
 
     public void FixDice(int fixed_value, boolean is_red) {
