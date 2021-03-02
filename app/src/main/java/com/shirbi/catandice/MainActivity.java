@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
     private com.shirbi.catandice.BluetoothChatService mChatService = null;
     private final IncomingHandler mHandler = new IncomingHandler(this);
     private Boolean mTwoPlayerGame = false;
+    public Boolean mIsMaster = false;
     private Card m_last_card;
     private Card m_previous_card;
     private CountDownTimer m_count_down_timer;
@@ -406,7 +407,12 @@ public class MainActivity extends Activity {
         m_frontend_handler.SetPiratePosition(m_pirate_position);
     }
 
-    private void onRollRedClick() {
+    public void onRollRedClick() {
+        if (mTwoPlayerGame && (!mIsMaster)) {
+            BluetoothMessageHandler.SendRollOneDiceRequest(MainActivity.this, true);
+            return;
+        }
+
         m_roll_red = true;
         m_roll_yellow = false;
         m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
@@ -419,7 +425,7 @@ public class MainActivity extends Activity {
         rollDice();
     }
 
-    private void onRollYellowClick() {
+    public void onRollYellowClick() {
         m_roll_red = false;
         m_roll_yellow = true;
         m_previous_card = new Card(m_red_dice, m_yellow_dice, m_event_dice);
@@ -520,6 +526,11 @@ public class MainActivity extends Activity {
             if (new_time_stamp - m_last_roll_time_ms <= MILLISECONDS_BETWEEN_ROLLS) {
                 return;
             }
+        }
+
+        if (mTwoPlayerGame && (!mIsMaster)) {
+            BluetoothMessageHandler.SendRollAllDiceRequest(this, m_is_alchemist_active);
+            return;
         }
 
         m_last_roll_time_ms = new_time_stamp;
@@ -1189,6 +1200,10 @@ public class MainActivity extends Activity {
         SetTwoPlayerGame(false);
     }
 
+    private void setMaster(boolean isMaster) {
+        mIsMaster = isMaster;
+    }
+
     private void SetTwoPlayerGame(boolean is_two_player_game) {
         mTwoPlayerGame = is_two_player_game;
 
@@ -1228,12 +1243,14 @@ public class MainActivity extends Activity {
                 String readMessage = new String(readBuf, 0, msg.arg1);
                 BluetoothMessageHandler.ParseMessage(readMessage, this);
                 break;
-            case com.shirbi.catandice.BluetoothChatService.MESSAGE_DEVICE_NAME:
+            case BluetoothChatService.MESSAGE_DEVICE_NAME_MASTER:
+            case BluetoothChatService.MESSAGE_DEVICE_NAME_SLAVE:
                 // save the connected device's name
                 String connectedDeviceName = msg.getData().getString(com.shirbi.catandice.BluetoothChatService.DEVICE_NAME);
                 Toast.makeText(getApplicationContext(), "Connected to "
                         + connectedDeviceName, Toast.LENGTH_SHORT).show();
                 SetTwoPlayerGame(true);
+                setMaster(msg.what ==  BluetoothChatService.MESSAGE_DEVICE_NAME_MASTER);
                 ShowSendStateDialog();
                 break;
             case com.shirbi.catandice.BluetoothChatService.MESSAGE_TOAST:

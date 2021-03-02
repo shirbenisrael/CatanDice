@@ -48,6 +48,7 @@ class BluetoothMessageHandler {
             case BLUETOOTH_MESSAGES.ROLL_ONE_DICE:
                 intArray = ParseAsInts(strArray);
                 activity.RollOneDice(intArray[1], intArray[2] != 0);
+
                 break;
 
             case BLUETOOTH_MESSAGES.ROLL_ALL_DICE:
@@ -73,6 +74,33 @@ class BluetoothMessageHandler {
                         Card.EventDice.values()[intArray[3]],
                         intArray, 4);
                 break;
+
+            case BLUETOOTH_MESSAGES.ROLL_ALL_DICE_REQUEST:
+                if (!activity.findViewById(R.id.roll_button).isEnabled()) {
+                    return;
+                }
+
+                intArray = ParseAsInts(strArray);
+                if (intArray[1] == 1) {
+                    activity.onAlchemistClick(null);
+                } else {
+                    activity.onRollClick(null);
+                }
+
+                break;
+
+            case BLUETOOTH_MESSAGES.ROLL_ONE_DICE_REQUEST:
+                if (!activity.findViewById(R.id.roll_button).isEnabled()) {
+                    return;
+                }
+
+                intArray = ParseAsInts(strArray);
+                if (intArray[1] == 1) {
+                    activity.onRollRedClick();
+                } else {
+                    activity.onRollYellowClick();
+                }
+                break;
         }
     }
 
@@ -97,9 +125,20 @@ class BluetoothMessageHandler {
         activity.sendMessage(message);
     }
 
+    static void SendRollOneDiceRequest(MainActivity activity, boolean is_red) {
+        String message = BLUETOOTH_MESSAGES.ROLL_ONE_DICE_REQUEST + "," + (is_red ? 1 : 0);
+        activity.sendMessage(message);
+    }
+
     static void SendRoleAllDice(MainActivity activity, Card card, boolean is_alchemist_active) {
         String message = BLUETOOTH_MESSAGES.ROLL_ALL_DICE + "," +
                 (is_alchemist_active ? 1 : 0) + "," + card.ToString();
+        activity.sendMessage(message);
+    }
+
+    // slave ask master to roll
+    static void SendRollAllDiceRequest(MainActivity activity, boolean is_alchemist_active) {
+        String message = BLUETOOTH_MESSAGES.ROLL_ALL_DICE_REQUEST + "," + (is_alchemist_active ? 1 : 0);
         activity.sendMessage(message);
     }
 
@@ -138,5 +177,8 @@ class BluetoothMessageHandler {
         static final int CANCEL_LSAT_MOVE = 6;
         static final int SET_FAIR_DICE = 7;
         static final int FULL_STATE = 8;
+
+        static final int ROLL_ALL_DICE_REQUEST = 9;
+        static final int ROLL_ONE_DICE_REQUEST = 10;
     }
 }

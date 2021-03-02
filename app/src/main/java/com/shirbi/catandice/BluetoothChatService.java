@@ -25,8 +25,9 @@ class BluetoothChatService {
     private static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_NAME = 4;
-    public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_DEVICE_NAME_MASTER = 4;
+    public static final int MESSAGE_DEVICE_NAME_SLAVE = 5;
+    public static final int MESSAGE_TOAST = 6;
     // Constants that indicate the current connection state
     private static final int STATE_NONE = 0;       // we're doing nothing
     private static final int STATE_LISTEN = 1;     // now listening for incoming connections
@@ -149,9 +150,9 @@ class BluetoothChatService {
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
         // Send the name of the connected device back to the UI Activity
-        Message msg = mHandler.obtainMessage(MESSAGE_DEVICE_NAME);
+        Message msg = mHandler.obtainMessage(isMaster ? MESSAGE_DEVICE_NAME_MASTER : MESSAGE_DEVICE_NAME_SLAVE);
         Bundle bundle = new Bundle();
-        bundle.putString(DEVICE_NAME, device.getName() + (isMaster ? " as master" : "as slave"));
+        bundle.putString(DEVICE_NAME, device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
         setState(STATE_CONNECTED);
