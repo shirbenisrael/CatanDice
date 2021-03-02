@@ -129,7 +129,7 @@ class BluetoothChatService {
      * @param socket The BluetoothSocket on which the connection was made
      * @param device The BluetoothDevice that has been connected
      */
-    private synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
+    private synchronized void connected(BluetoothSocket socket, BluetoothDevice device, boolean isMaster) {
         // Cancel the thread that completed the connection
         if (mConnectThread != null) {
             mConnectThread.cancel();
@@ -151,7 +151,7 @@ class BluetoothChatService {
         // Send the name of the connected device back to the UI Activity
         Message msg = mHandler.obtainMessage(MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
-        bundle.putString(DEVICE_NAME, device.getName());
+        bundle.putString(DEVICE_NAME, device.getName() + (isMaster ? " as master" : "as slave"));
         msg.setData(bundle);
         mHandler.sendMessage(msg);
         setState(STATE_CONNECTED);
@@ -258,7 +258,7 @@ class BluetoothChatService {
                             case STATE_LISTEN:
                             case STATE_CONNECTING:
                                 // Situation normal. Start the connected thread.
-                                connected(socket, socket.getRemoteDevice());
+                                connected(socket, socket.getRemoteDevice(), false);
                                 break;
                             case STATE_NONE:
                             case STATE_CONNECTED:
@@ -328,7 +328,7 @@ class BluetoothChatService {
                 mConnectThread = null;
             }
             // Start the connected thread
-            connected(mmSocket, mmDevice);
+            connected(mmSocket, mmDevice, true);
         }
 
         void cancel() {
