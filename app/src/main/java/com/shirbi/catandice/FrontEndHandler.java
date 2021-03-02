@@ -506,9 +506,29 @@ final class FrontEndHandler {
         mLastDialog.show();
     }
 
+    public void showSendStateDialog() {
+        AlertDialog.Builder builder = CreateAlertDialogBuilder();
+        builder.setTitle(getString(R.string.send_state_title));
+        builder.setMessage(getString(R.string.send_state_message));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_activity.SendFullState();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        mLastDialog = builder.create();
+        mLastDialog.show();
+    }
+
     public void dismissLastDialog() {
         if ((mLastDialog != null) && mLastDialog.isShowing()) {
             mLastDialog.dismiss();
         }
     }
+
 }
