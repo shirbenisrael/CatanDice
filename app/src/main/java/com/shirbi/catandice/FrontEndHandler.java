@@ -23,6 +23,7 @@ final class FrontEndHandler {
     MainActivity m_activity;
     private Point m_size;
     private ImageView[] m_pirate_positions_images;
+    AlertDialog mLastDialog = null;
 
     public FrontEndHandler(MainActivity activity) {
         m_activity = activity;
@@ -150,7 +151,9 @@ final class FrontEndHandler {
             }
         });
         builder.setIcon(R.drawable.exit_icon);
-        builder.show();
+
+        mLastDialog = builder.create();
+        mLastDialog.show();
     }
 
     private void set_square_size_view(View view, int size) {
@@ -329,16 +332,16 @@ final class FrontEndHandler {
         });
         //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
 
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        mLastDialog = builder.create();
+        mLastDialog.setCanceledOnTouchOutside(false);
+        mLastDialog.show();
 
-        dialog.getWindow().getAttributes();
-        TextView textView = dialog.findViewById(android.R.id.message);
+        mLastDialog.getWindow().getAttributes();
+        TextView textView = mLastDialog.findViewById(android.R.id.message);
         textView.setTextSize(m_activity.getResources().getDimension(R.dimen.info_message_size) /
                 m_activity.getResources().getDisplayMetrics().density);
 
-        Button btn1 = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        Button btn1 = mLastDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btn1.setTextSize(m_activity.getResources().getDimension(R.dimen.info_message_confirm_button_size) /
                 m_activity.getResources().getDisplayMetrics().density);
     }
@@ -369,8 +372,8 @@ final class FrontEndHandler {
                     }
                 });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        mLastDialog = builder.create();
+        mLastDialog.show();
     }
 
     interface Worker {
@@ -450,8 +453,8 @@ final class FrontEndHandler {
                     }
                 });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        mLastDialog = builder.create();
+        mLastDialog.show();
     }
 
     void ShowCancelLastMoveDialog() {
@@ -469,6 +472,13 @@ final class FrontEndHandler {
             }
         });
         builder.setIcon(R.drawable.cancel_last_move);
-        builder.show();
+        mLastDialog = builder.create();
+        mLastDialog.show();
+    }
+
+    public void dismissLastDialog() {
+        if ((mLastDialog != null) && mLastDialog.isShowing()) {
+            mLastDialog.dismiss();
+        }
     }
 }

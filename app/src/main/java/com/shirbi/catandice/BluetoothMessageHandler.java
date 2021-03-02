@@ -18,6 +18,8 @@ class BluetoothMessageHandler {
         int messageType = Integer.parseInt(strArray[0]);
         //Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
+        activity.m_frontend_handler.dismissLastDialog();
+
         switch (messageType) {
             // TODO: Handle messages
             case BLUETOOTH_MESSAGES.START_GAME:
