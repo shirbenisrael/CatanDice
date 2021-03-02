@@ -452,6 +452,23 @@ public class MainActivity extends Activity {
         rollDice();
     }
 
+    public void onChooseFixValueForDice(final boolean is_red, int which) {
+        if (which < MAX_NUMBER_ON_DICE) {
+            int dice_value = which + 1;
+            FixDice(dice_value, is_red);
+
+            if (mTwoPlayerGame) {
+                BluetoothMessageHandler.SendFixDice(MainActivity.this, is_red, dice_value);
+            }
+        } else {
+            if (is_red) {
+                onRollRedClick();
+            } else {
+                onRollYellowClick();
+            }
+        }
+    }
+
     private void fixOneDice(int title_id, final boolean is_red) {
         AlertDialog.Builder builder = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -478,21 +495,7 @@ public class MainActivity extends Activity {
         builder.setItems(charSequence,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if (which < MAX_NUMBER_ON_DICE) {
-                            int dice_value = which + 1;
-                            FixDice(dice_value, is_red);
-
-                            if (mTwoPlayerGame) {
-                                BluetoothMessageHandler.SendFixDice(MainActivity.this, is_red, dice_value);
-                            }
-                        } else {
-                            if (is_red) {
-                                onRollRedClick();
-                            } else {
-                                onRollYellowClick();
-                            }
-                        }
-
+                        onChooseFixValueForDice(is_red, which);
                     }
                 });
 
